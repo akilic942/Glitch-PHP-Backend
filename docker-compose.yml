@@ -1,0 +1,76 @@
+version: "3.4"
+    
+volumes:
+  postgres_database :
+     external: false
+  mysql_data : {}
+  schemas:
+    external: false
+
+services:
+  php:
+    build:
+      context : ./
+      dockerfile : Dockerfile
+      network: host
+    volumes:
+      - ./:/code:delegated
+      - ./.docker/local/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:cached
+    depends_on: [ "postgres"]
+
+    ports:
+        - "9000:9000"
+    expose:
+      - "9000"
+    container_name: glitch_php
+  web:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    expose:
+      - "0"
+    volumes:
+      - ./:/code:delegated
+      - ./.docker/local/site.conf:/etc/nginx/conf.d/default.conf:cached
+    links:
+      - php
+    depends_on:
+      - php
+    container_name: glitch_nginx
+
+  postgres:
+    image: postgres:15.0
+    restart: always
+    container_name: "glitch_postgres"
+    command: ["-c", "shared_buffers=256MB", "-c", "max_connections=400"]
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.docker/local/pg-init-scripts:/docker-entrypoint-initdb.d
+      - postgres_database:/var/postgres_database:delegated
+    environment:
+      - PGDATA=/var/postgres_database
+      - POSTGRES_PASSWORD=glitch_app
+      - POSTGRES_USER=glitch_app
+      - POSTGRES_MULTIPLE_DATABASES=glitch_app,glitch_app_test
+
+  adminer:
+    image: adminer
+    container_name: "glitch_adminer"
+    restart: always
+    ports:
+      - 8080:8080
+
+
+  mailhog:
+    image: "mailhog/mailhog"
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+  meilisearch:
+        image: metamehta/meilisearch-arm64
+        command: ./meilisearch --master-key=masterKey --no-analytics=true
+        ports:
+             - "7700:7700"
