@@ -1,5 +1,5 @@
 # Glitch Gaming Platform PHP Backend
-This repository holds the backend of Glitch Gaming Platform, which is written in PHP. The Glitch Gaming Platform is an open source project to help people easily create their own esports websites.
+This repository holds the backend REST API of Glitch Gaming Platform, which is written in PHP. The Glitch Gaming Platform is an open source project to help people easily create their own esports websites.
 
 ## Understanding the Basics
 
@@ -37,19 +37,20 @@ Inside the `.env` file, you will need your Invirtu/BingeWave Organizer ID and Ac
 2. After you have successfully completed the registration process, click on the Organizer link at the top
 3. Click into Tokens for the organizer account you want to use and create a token
 4. Copy the JSON Web Token into the `INVIRTU_ORGANIZER_TOKEN` in the .env, and the Organizer ID into `INVIRTU_ORGANIZER_ID` also in the .env file.
+5. Optional - leave the `INVIRTU_DEFAULT_TEMPALTE_ID` for using the default template, or on BingeWave/Invirtu, create your own template.
 
 **Important Note**: If you plan on running unit tests, copy the above value into the `.env.testing` file as well.
 
 For the next step, please make sure to have docker installed. If you do not have docker installed, you can download it and set it up here: [https://docs.docker.com/desktop/](https://docs.docker.com/desktop/). Afterward, you can start the application using this on your command line:
 
-docker-compose up
+    docker-compose up
 
 Once the container has successfully started with all the services, in a separate tab on your command line, log into the container:
 
     docker exec -it glitch_php bash
     cd /code
 
-The '/code' is the main directory for the application. Now run the following in the application:
+The `/code` directory is the main directory for the application. Now run the following in the application:
 
     php artisan migrate
     php artistan db:seed
