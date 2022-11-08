@@ -34,6 +34,7 @@ Route::get('/auth/facebook/redirect', function (Request $request) {
 });
  
 Route::get('/auth/faceook/callback', function () {
+
     $user = Socialite::driver('facebook')->user();
 
     $loggedInUser = Auth::user();
@@ -85,6 +86,9 @@ Route::get('/auth/twitch/redirect', function (Request $request) {
 });
  
 Route::get('/auth/twitch/callback', function () {
+
+    print_r("Jere");
+    exit();
     
     $user = Socialite::driver('twitch')->user();
 
