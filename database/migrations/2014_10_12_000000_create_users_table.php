@@ -50,13 +50,50 @@ return new class extends Migration
             $table->string('paetron_handle')->nullable()->default('');
 
             //Invirtu Data
-            $table->string('invirtu_user_id')->uuid('id')->nullable();
+            $table->uuid('invirtu_user_id')->nullable();
             $table->text('invirtu_user_jwt_token')->nullable()->default('');
             $table->integer('invirtu_user_jwt_issued')->nullable();
             $table->integer('invirtu_user_jwt_expiration')->nullable();
 
+            //Facebook OAuth
+            $table->text('facebook_auth_token')->nullable()->default('');
+            $table->text('facebook_refresh_token')->nullable()->default('');
+            $table->integer('facebook_token_issued')->nullable();
+            $table->integer('facebook_token_expiration')->nullable();
+            $table->string('facebook_id')->nullable();
+            $table->string('facebook_name')->nullable();
+            $table->string('facebook_email')->nullable();
+            $table->string('facebook_avatar')->nullable();
+
+            //Youtube OAuth
+            $table->text('youtube_auth_token')->nullable()->default('');
+            $table->text('youtube_refresh_token')->nullable()->default('');
+            $table->integer('youtube_token_issued')->nullable();
+            $table->integer('youtube_token_expiration')->nullable();
+            $table->string('youtube_id')->nullable();
+            $table->string('youtube_username')->nullable();
+            $table->string('youtube_avatar')->nullable();
+
+            //Twitch OAuth
+            $table->text('twitch_auth_token')->nullable()->default('');
+            $table->text('twitch_refresh_token')->nullable()->default('');
+            $table->integer('twitch_token_issued')->nullable();
+            $table->integer('twitch_token_expiration')->nullable();
+            $table->string('twitch_id')->nullable();
+            $table->string('twitch_username')->nullable();
+            $table->string('twitch_email')->nullable();
+            $table->string('twitch_avatar')->nullable();
+
+            //Billing Info
+            $table->boolean('restream_active_subscription')->nullable()->default(0);
+            $table->string('stripe_customer_id')->nullable();
+            $table->string('stripe_subscription_id')->nullable();
+            $table->date('stripe_trial_end')->nullable();
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('one_time_login_token')->nullable()->default('');
+            $table->date('one_time_login_token_date')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

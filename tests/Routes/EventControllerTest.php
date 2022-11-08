@@ -168,10 +168,6 @@ class EventControllerTest extends TestCase
         $this->assertEquals(500, $response->status());
 
         $url = $this->_getApiRoute() . 'events/' . $event->id;
-
-        $response = $this->withHeaders([])->get($url);
-
-        $this->assertEquals(500, $response->status());
         
     }
 

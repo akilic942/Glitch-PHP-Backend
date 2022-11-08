@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\AuthenticationFacade;
 use App\Facades\FollowFacade;
 use App\Http\Resources\AffirmationResource;
 use App\Http\Resources\DiscussionResource;
 use App\Http\Resources\FollowResource;
 use App\Http\Resources\PostResource;
 use App\Http\Resources\UserFullResource;
+use App\Http\Resources\UserOneTimeTokenResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserSchoolResource;
 use App\Models\Affirmation;
@@ -152,6 +154,15 @@ class UserController extends Controller
     $user = User::where('id', $request->user()->id)->first();
 
     return UserFullResource::make($user);
+  }
+
+  public function onetimetoken(Request $request) {
+
+    $user = User::where('id', $request->user()->id)->first();
+
+    $user = AuthenticationFacade::createOneTimeLoginToken($user);
+
+    return UserOneTimeTokenResource::make($user);
   }
 
 }

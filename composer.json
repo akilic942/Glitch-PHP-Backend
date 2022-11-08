@@ -11,6 +11,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
+        "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.7",
         "php-http/client-common": "^1.9 || ^2.0",
         "php-http/client-implementation": "^1.0",
@@ -19,6 +20,9 @@
         "php-http/httplug": "^1.0 || ^2.0",
         "php-http/message": "^1.7",
         "psr/http-message": "^1.0",
+        "socialiteproviders/facebook": "^4.1",
+        "socialiteproviders/twitch": "^5.3",
+        "socialiteproviders/youtube": "^4.1",
         "tymon/jwt-auth": "^1.0.2"
     },
     "require-dev": {

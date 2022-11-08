@@ -30,5 +30,20 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID'), //USE FROM FACEBOOK DEVELOPER ACCOUNT
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'), //USE FROM FACEBOOK DEVELOPER ACCOUNT
+        'redirect' => env('FACEBOOK_REDIRECT_URI')
+    ],
+    'twitch' => [    
+        'client_id' => env('TWITCH_CLIENT_ID'),  
+        'client_secret' => env('TWITCH_CLIENT_SECRET'),  
+        'redirect' => env('TWITCH_REDIRECT_URI') 
+    ],
+    'youtube' => [    
+        'client_id' => env('YOUTUBE_CLIENT_ID'),  
+        'client_secret' => env('YOUTUBE_CLIENT_SECRET'),  
+        'redirect' => env('YOUTUBE_REDIRECT_URI') 
+    ],
 
 ];

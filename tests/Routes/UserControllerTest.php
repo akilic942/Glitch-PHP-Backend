@@ -54,6 +54,25 @@ class UserControllerTest extends TestCase {
         $this->assertEquals($user->id, $jsonData['id']);
     }
 
+    public function testOneTimeToken() {
+
+        $user = User::factory()->create();
+
+        $url = $this->_getApiRoute() . 'users/oneTimeToken';
+
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->get($url, []);
+
+        $json = $response->json();
+
+        $jsonData = $json['data'];
+
+        $this->assertEquals($user->id, $jsonData['id']);
+        $this->assertNotNull($jsonData['one_time_login_token']);
+        $this->assertNotNull($jsonData['one_time_login_token_date']);
+    }
+
     public function testUpdate() {
 
         $user = User::factory()->create();
