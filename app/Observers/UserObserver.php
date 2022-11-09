@@ -40,12 +40,14 @@ class UserObserver
 
 
             if($result->status == 'success') {
-                $user->update([
+                $user->forceFill([
                     'invirtu_user_id' => $result->data->id,
                     'invirtu_user_jwt_token' => $result->data->jwt->token,
                     'invirtu_user_jwt_issued'=> $result->data->jwt->issued_at,
                     'invirtu_user_jwt_expiration'=> $result->data->jwt->expiration,
                 ]);
+
+                $user->save();
             } else {
                 Log::error('Unable to create Invirtu Account', (array)$result->errors);
             }

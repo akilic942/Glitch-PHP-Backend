@@ -13,9 +13,10 @@ class Event extends BaseModel
     protected $keyType =  'string';
 
     protected $rules = array(
-        'title' => 'required',
+        'title' => 'required|string|min:0|max:255',
         'description'  => 'required',
-        'start_date' => 'date_format:"d-m-Y"|nullable'  
+        //'start_date' => 'nullable|sometimes|date_format:"d-m-Y"',
+        'is_public' => 'boolean|nullable' 
     );
 
      /**
@@ -27,12 +28,7 @@ class Event extends BaseModel
         'title',
         'description',
         'start_date',
-
-        'invirtu_id',
-        'invirtu_webrtc_url',
-        'invirtu_broadcast_url',
-        'invirtu_rtmp_broadcast_endpoint',
-        'invirtu_rtmp_broadcast_key'
+        'is_public',
     ];
 
     protected $casts = [

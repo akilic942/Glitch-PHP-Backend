@@ -40,13 +40,15 @@ class EventObserver
             $result = $client->events->create($data);
 
             if($result->status == 'success') {
-                $event->update([
+                $event->forceFill([
                     'invirtu_id' => $result->data->id,
                     'invirtu_webrtc_url' => $result->data->embed_video_chat,
                     'invirtu_broadcast_url'=> $result->data->webview_broadcast,
                     'invirtu_rtmp_broadcast_endpoint'=> $result->data->rtmp_broadcast_endpoint,
                     'invirtu_rtmp_broadcast_key' => $result->data->rtmp_broadcast_key,
                 ]);
+
+                $event->save();
             } else {
                 Log::error('Unable to create Invirtu Event', (array)$result->errors);
             }

@@ -42,6 +42,7 @@ return new class extends Migration
             $table->string('twitch_page')->nullable()->default('');
             $table->string('youtube_page')->nullable()->default('');
             $table->string('paetron_page')->nullable()->default('');
+            $table->string('github_page')->nullable()->default('');
 
             //Social Handles
             $table->string('twitter_handle')->nullable()->default('');
@@ -52,6 +53,7 @@ return new class extends Migration
             $table->string('twitch_handle')->nullable()->default('');
             $table->string('youtube_handle')->nullable()->default('');
             $table->string('paetron_handle')->nullable()->default('');
+            $table->string('github_handle')->nullable()->default('');
 
             //Invirtu Data
             $table->uuid('invirtu_user_id')->nullable();
@@ -94,7 +96,12 @@ return new class extends Migration
             $table->string('stripe_subscription_id')->nullable();
             $table->date('stripe_trial_end')->nullable();
 
+            //Verifications
+            $table->boolean('phone_verification_complete')->nullable()->default(0);
+            $table->boolean('email_verification_complete')->nullable()->default(0);
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('phone_verified_at')->nullable();
+
             $table->string('password');
             $table->string('one_time_login_token')->nullable()->default('');
             $table->date('one_time_login_token_date')->nullable();

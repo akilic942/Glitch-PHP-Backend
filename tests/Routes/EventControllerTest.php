@@ -115,6 +115,7 @@ class EventControllerTest extends TestCase
             'Authorization Bearer' => $this->getAccessToken($user),
         ])->put($url, $data);
 
+        //print_r($response->json());
         $this->assertEquals(200, $response->status());
 
         $json = $response->json();
@@ -129,7 +130,7 @@ class EventControllerTest extends TestCase
             'Authorization Bearer' => $this->getAccessToken($user),
         ])->put($url, ['title' => 'Butt', 'description' => '']);
 
-        print_r($response);
+        //print_r($response);
 
         $this->assertEquals(422, $response->status());
 

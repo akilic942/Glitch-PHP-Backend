@@ -18,11 +18,37 @@ class User extends BaseAuthModel implements JWTSubject
     protected $keyType =  'string';
 
     protected $rules = array(
-        'first_name' => 'required',
-        'last_name'  => 'required',
-        'username'  => 'required',
+        'first_name' => 'required|string|min:0|max:255',
+        'last_name'  => 'required|string|min:0|max:255',
+        'username'  => 'required|string|min:0|max:255|unique:users',
         'password'  => 'required',
-        'email'  => 'required|email|unique:users',   
+        'email'  => 'required|email|unique:users|string|min:0|max:255',  
+        //'date_of_birth' => 'date_format:"Y-m-d"|nullable',
+        
+        //Image validation
+        'avatar' => 'string|min:0|max:255|url|nullable',
+        'banner_image' => 'string|min:0|max:255|url|nullable',
+
+        //Social Pages
+        'twitter_page'  => 'string|min:0|max:255|url|nullable',
+        'facebook_page'  => 'string|min:0|max:255|url|nullable',
+        'instagram_page'  => 'string|min:0|max:255|url|nullable',
+        'snapchat_page'  => 'string|min:0|max:255|url|nullable',
+        'tiktok_page'  => 'string|min:0|max:255|url|nullable',
+        'twitch_page'  => 'string|min:0|max:255|url|nullable',
+        'youtube_page'  => 'string|min:0|max:255|url|nullable',
+        'paetron_page'  => 'string|min:0|max:255|url|nullable',
+
+        //Social Handles
+        'twitter_handle' => 'string|min:0|max:255|nullable',
+        'facebook_handle' => 'string|min:0|max:255|nullable',
+        'instagram_handle' => 'string|min:0|max:255|nullable',
+        'snapchat_handle' => 'string|min:0|max:255|nullable',
+        'tiktok_handle' => 'string|min:0|max:255|nullable',
+        'twitch_handle' => 'string|min:0|max:255|nullable',
+        'youtube_handle' => 'string|min:0|max:255|nullable',
+        'paetron_handle' => 'string|min:0|max:255|nullable',
+        'github_handle' => 'string|min:0|max:255|nullable',
     );
 
     /**
@@ -39,6 +65,8 @@ class User extends BaseAuthModel implements JWTSubject
         'first_name',
         'last_name',
         'date_of_birth',
+        'phone_number',
+        'phone_number_country_code',
         'bio',
         
         //Social Pages
@@ -50,6 +78,7 @@ class User extends BaseAuthModel implements JWTSubject
         'twitch_page',
         'youtube_page',
         'paetron_page',
+        'github_page',
 
         //Social Handles
         'twitter_handle',
@@ -60,12 +89,7 @@ class User extends BaseAuthModel implements JWTSubject
         'twitch_handle',
         'youtube_handle',
         'paetron_handle',
-
-        //Invirtu Data
-        'invirtu_user_id',
-        'invirtu_user_jwt_token',
-        'invirtu_user_jwt_issued',
-        'invirtu_user_jwt_expiration'
+        'github_handle',
     ];
 
     /**

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('start_date')->nullable();
 
             $table->boolean('is_live')->nullable()->default(false);
+            $table->boolean('is_public')->nullable()->default(false);
 
             $table->string('image_main')->nullable();;
             $table->string('image_banner')->nullable();;

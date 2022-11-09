@@ -114,7 +114,7 @@ class EventController extends Controller
 
         $input = $request->all();
 
-        $data = $input + $event->toArray() ;
+        $data = $input + $event->toArray();
 
         $valid = $event->validate($data);
 
