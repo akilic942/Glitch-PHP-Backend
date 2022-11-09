@@ -22,111 +22,118 @@ class InvirtuAccounts extends InvirtuResource
     }
 
     /**
-     * Creates a User
+     * View a users profile
      *
-     * @see    https://developers.thinkific.com/api/api-documentation/
+     * @see    https://developers.bingewave.com/docs/accounts#profile
      * @param  array $options
      * @return stdClass
      * @throws Exception
      */
-    public function create(array $options)
+    public function profile(string $user_id, array $query)
     {
-        return $this->client->post('users', $options);
+        return $this->client->gets('/accounts/' . $user_id, $query);
     }
 
     /**
-     * Gets a single User based on the Thinkific ID.
+     * Updates a user account. A user can only update their own account and their auth token must be used.
      *
-     * @see    https://developers.thinkific.com/api/api-documentation/
+     * @see    https://developers.bingewave.com/docs/accounts#update
      * @param  string $id
      * @return stdClass
      * @throws Exception
      */
-    public function get($id)
+    public function update(array $data, array $query = array())
     {
-        $path = $this->userPath($id);
 
-        return $this->client->get($path);
+        return $this->client->put('/accounts', $data, $query);
     }
 
     /**
-     * Updates a User.
+     * Gets the current user by their auth token.
      *
-     * @see    https://developers.thinkific.com/api/api-documentation/
+     * @see    https://developers.bingewave.com/docs/accounts#me
      * @param string $id
      * @param array $options
      * @return stdClass
      */
-    public function update($id, array $options)
+    public function me(array $query = array())
     {
-        $path = $this->userPath($id);
-
-        return $this->client->put($path, $options);
+        return $this->client->get('/accounts/me', $query);
     }
 
     /**
-     * Deletes a User.
+     * If a user has RSVPed to a Live Event or has purchased tickets, they can retrieve them here.
      *
-     * @see    https://developers.thinkific.com/api/api-documentation/
+     * @see    https://developers.bingewave.com/docs/accounts#mytickets
      * @param string $id
      * @return stdClass
      */
-    public function delete($id)
+    public function myTickets($id)
     {
-        $path = $this->userPath($id);
-
-        return $this->client->delete($path);
+        return $this->client->get('/accounts/mytickets');
     }
 
     /**
-     * Finds Users by given params
-     * Defaults to a search by email address
-     * See Thinkific Docs for more information & filter options
+     * Sets a preference option that will be associated with the user. 
+     * DO NOT store sensitive information about the user (ie: auth tokens) as they will be accessible to everyone.
      *
-     * @see    https://developers.thinkific.com/api/api-documentation/
+     * @see    https://developers.bingewave.com/docs/accounts#setpreference
+     * 
      * @param  string $value The value to search by e.g. An email address
-     * @param  string $query The query param e.g. 'email', 'role' etc
-     * @param  bool $single Return a single result (Defaults to first result on the first page)
-     * @param  array $addOptions Additional parameters e.g. Page, Limit
+
      * @return stdClass
      * @throws Exception
      */
-    public function findBy($value, $query = 'email', $single = true, $addOptions = [])
+    public function setPreference(string $account_id, array $data, array $query = [])
     {
-        $query = "query[$query]";
-
-        $options = [
-            $query => $value
-        ];
-
-        /* Limit to first and single result */
-
-        if($single) {
-
-            $options = array_merge(
-                $options,
-                ['page' => 1, 'limit' => 1]
-            );
-        }
-
-        $options = array_merge($options, $addOptions);
-
-        $result =  $this->client->get('users', $options);
-
-        if($single && isset($result->items)) {
-
-            return reset($result->items);
-        }
-
-        return $result;
+        return $this->client->post('/accounts/'. $account_id .'/setPreference', $data, $query);
     }
 
     /**
-     * @param string $id
-     * @return string
+     * Removes a preference option that will is associated with the user.
+     * 
+     * @see    https://developers.bingewave.com/docs/accounts#removepreference
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
      */
-    public function userPath(string $id)
+    public function removePreference(string $account_id, string $key, array $data, array $query = [])
     {
-        return 'users/' . $id;
+        return $this->client->delete('/accounts/'. $account_id .'/removePreference/' . $key, $data, $query);
     }
+
+    /**
+     * Sets a secure preference option that will be associated with the user. 
+     * This preferences stored here will not be made available to public and only accessible to the owner of the account with their auth token.
+     *
+     * @see    https://developers.bingewave.com/docs/accounts#setsecurepreference
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function setSecurePreference(string $account_id, array $data, array $query = [])
+    {
+        return $this->client->post('/accounts/'. $account_id .'/setSecurePreference', $data, $query);
+    }
+
+    /**
+     * Removes a preference option that will is associated with the user.
+     * 
+     * @see    https://developers.bingewave.com/docs/accounts#removepreference
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function removeSecurePreference(string $account_id, string $key, array $data, array $query = [])
+    {
+        return $this->client->delete('/accounts/'. $account_id .'/removeSecurePreference/' . $key, $data, $query);
+    }
+
+    
 }

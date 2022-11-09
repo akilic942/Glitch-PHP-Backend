@@ -367,7 +367,7 @@ class InvirtuClient
      * @return ResponseInterface
      * @throws ClientExceptionInterface
      */
-    private function sendRequest($method, $uri, $body = null)
+    private function sendRequest($method, $uri, $body = null, $attchment_name = '', $attachment_location = '')
     {
         $headers = $this->getRequestHeaders();
 

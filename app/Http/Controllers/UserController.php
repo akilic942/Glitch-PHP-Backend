@@ -8,6 +8,7 @@ use App\Http\Resources\AffirmationResource;
 use App\Http\Resources\DiscussionResource;
 use App\Http\Resources\FollowResource;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\UnfollowResource;
 use App\Http\Resources\UserFullResource;
 use App\Http\Resources\UserOneTimeTokenResource;
 use App\Http\Resources\UserResource;
@@ -138,7 +139,7 @@ class UserController extends Controller
             return new FollowResource($follower);
         }
 
-        return response()->json(['Unfollowed']);
+        return  new UnfollowResource($following);
     }
 
     public function profile(Request $request, $id) {

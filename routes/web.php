@@ -87,6 +87,10 @@ Route::get('/auth/youtube/callback', function () {
 
     $user = Socialite::driver('youtube')->user();
 
+    echo '<pre>';
+    print_r($user);
+    exit();
+
     //Check to see if the user is logged in
     $loggedInUser = Auth::user();
 

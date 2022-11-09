@@ -23,6 +23,11 @@ return new class extends Migration
             $table->text('description');
             $table->date('start_date')->nullable();
 
+            $table->boolean('is_live')->nullable()->default(false);
+
+            $table->string('image_main')->nullable();;
+            $table->string('image_banner')->nullable();;
+
             //Invirtu Streaming Information
             $table->string('invirtu_id')->uuid('id')->nullable();
             $table->string('invirtu_webrtc_url')->nullable()->default('');

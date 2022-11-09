@@ -28,6 +28,10 @@ return new class extends Migration
             $table->integer('phone_number')->nullable();
             $table->integer('phone_number_country_code')->nullable();
             $table->text('bio')->nullable();
+
+            //Media
+            $table->string('avatar')->nullable()->default('');
+            $table->string('banner_image')->nullable()->default('');
             
             //Social Pages
             $table->string('twitter_page')->nullable()->default('');
