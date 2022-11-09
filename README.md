@@ -70,6 +70,40 @@ You will receive an error response, hopefully, one that says, "you need first na
 
 In Postman's Authorization tab, select the Authorization type to 'Bearer Token' and enter the token. Then, you can access the rest of the routes with that token.
 
+## OAuth Accounts (Twitch, Facebook, Youtube)
+
+One of the goals with Platform is the ability the easiliy authenticate and then restream to other platforms. To accomplished, follow the OAuth steps below.
+
+### Youtube
+
+To authenticate with Youtube, a developer account with Google is required. Most of the information to authenticate with you is in this [Article On Authenticating With You](https://developers.google.com/youtube/v3/guides/auth/server-side-web-apps).
+
+To sum it up:
+1. Create a developer account with Google
+2. Follow the guide above on creating an application for Youtube with the correct scope permissions
+3. After going through all the steps in creating an application, click on Credentials
+4. Creat the credentials for a web applications. But sure to allow the correct auth redirects
+5. Once you obtain the client id and secret, put it into your .env file GOOGLE_OAUTH section.
+
+### Twitch
+
+Users can authenticate with Twitch on the website. To do so:
+
+1. Head over to [Twitch Developers Site](https://dev.twitch.tv/)
+2. Register for an account or login if you already have a developers accounts.
+3. Go the "Register Your Application" section.
+4. Register a new application and when you do, make sure you auth redirect are correct.
+5. After the application is registered, click into it and get the Client ID and create a new Client Screent
+6. Copy those values into your .env file int he YOUTUBE_OAUTH section.
+
+### Facebook
+
+Users can authenticate with Facebook on the website, with the Goal of automatically streaming to Facebook one day. To authenticate with Facebook:
+
+1. Header over to [Facebook Developers Site](https://developers.facebook.com/)
+2. Register for a developers account or login and click on My Apps if already have a developers account.
+3. Create a new application and select Gaming as the category.
+
 ## License
 
   The project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
