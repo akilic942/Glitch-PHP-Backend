@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\EventsFacade;
+use App\Facades\PermissionsFacade;
 use App\Facades\RolesFacade;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use App\Http\Resources\EventFullResource;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\User;
@@ -79,7 +82,7 @@ class EventController extends Controller
     {
         $event = Event::where('id', $id)->first();
 
-        return new EventResource($event);
+        return new EventFullResource($event);
     }
 
     /**
@@ -151,5 +154,26 @@ class EventController extends Controller
         $data = $users->orderBy('events.created_at', 'desc')->paginate(25);
 
         return EventResource::collection($data);
+    }
+
+    public function addRTMPSource(UpdateEventRequest $request, $id) {
+
+        $event = Event::where('id', $id)->first();
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+           return response()->json(['error' => 'Cannot add restream to event.'], 403);
+        }
+
+        $input = $request->all();
+
+        if(!isset($input['rtmp_source'])) {
+            return response()->json(['error' => 'A valid RTMP source is required.'], 403);
+        }
+
+        EventsFacade::addRestream($event, $input['rtmp_source']);
+
+        return new EventFullResource($event);
+
     }
 }

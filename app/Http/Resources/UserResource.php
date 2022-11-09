@@ -45,7 +45,7 @@ class UserResource extends JsonResource
             'youtube_handle' => $this->youtube_handle,
             'paetron_handle' => $this->paetron_handle,
 
-            //Social Info
+            //Timestamp Info
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
         ];

@@ -28,6 +28,7 @@ Route::post('events', 'App\Http\Controllers\EventController@store');
 Route::get('events/{uuid}', 'App\Http\Controllers\EventController@show');
 Route::put('events/{uuid}', 'App\Http\Controllers\EventController@update');
 Route::delete('events/{uuid}', 'App\Http\Controllers\EventController@destroy');
+Route::post('events/{uuid}/addRTMPSource', 'App\Http\Controllers\EventController@addRTMPSource');
 
 Route::get('messages', 'App\Http\Controllers\MessageController@getConversations');
 Route::get('messages/threads', 'App\Http\Controllers\MessageController@getConversations');
