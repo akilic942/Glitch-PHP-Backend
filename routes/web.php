@@ -100,7 +100,7 @@ Route::get('/auth/youtube/callback', function () {
     //and then use a one time token to login them when they return
     //to the frontend
     if(!$loggedInUser) {
-        $loggedInUser = UsersFacade::retrieveOrCreate($user->email, $user->nickname, Str::random(10), $user->nickname);
+        $loggedInUser = UsersFacade::retrieveOrCreate($user->email, $user->nickname, Str::random(10), $user->nickname, $user->avatar);
 
         $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
 
@@ -118,7 +118,13 @@ Route::get('/auth/youtube/callback', function () {
     if($loggedInUser){
         
         $loggedInUser->forceFill([
-            'youtube_auth_token' => $user->token
+            'youtube_auth_token' => $user->token,
+            'youtube_refresh_token' => $user->refreshToken,
+            'youtube_token_expiration' => $user->expires_in,
+            'youtube_id' => $user->id,
+            'youtube_auth_token' => $user->token,
+            'youtube_username' => $user->nickname,
+            'youtube_avatar' => $user -> avatar
         ]);
 
         $loggedInUser->save();
