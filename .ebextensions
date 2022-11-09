@@ -1,0 +1,25 @@
+commands:  
+  01-update-composer:    command: export COMPOSER_HOME=/root && /usr/bin/composer.phar self-update
+option_settings:  
+  - namespace: aws:elasticbeanstalk:application:environment
+    option_name: COMPOSER_HOME
+    value: /root
+container_commands:
+  01-optimize:
+    command: "/usr/bin/composer.phar dump-autoload --optimize"
+
+container_commands:
+    01-no_dev:
+        command: "composer.phar install --optimize-autoloader"
+    02-key_generate:
+        command: "php artisan key:generate"
+    03-config_clear:
+        command: "php artisan config:clear"
+    04-view_clear:
+        command: "php artisan view:clear"
+    05-route_cache:
+        command: "php artisan route:cache"
+    06-view_cache:
+        command: "php artisan view:cache"
+    07-migrate:
+        command: "php artisan migrate"
