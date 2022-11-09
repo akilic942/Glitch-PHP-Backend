@@ -2,6 +2,7 @@
 
 namespace Tests\Routes;
 
+use App\Facades\AuthenticationFacade;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -59,6 +60,43 @@ class AuthControllerTest extends TestCase
         $response = $this->withHeaders([
             'X-Header' => 'Value',
         ])->post($url, ['email' => $user->email, 'password' => $password]);
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+        $this->assertEquals($json['data']['id'], $user->id);
+        $this->assertEquals($json['data']['email'], $user->email);
+        $this->assertNotNull($json['data']['token']['access_token']);
+
+    }
+
+    public function testOneTimeLoginWithToken() {
+
+        $url = $this->_getApiRoute() . 'auth/oneTimeLoginWithToken';
+
+        $faker = \Faker\Factory::create();
+
+        $password = $faker->regexify('[A-Za-z0-9]{20}');
+
+        $user = User::factory()->create(['password' => bcrypt($password)]);
+
+        $user = AuthenticationFacade::createOneTimeLoginToken($user);
+
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->post($url, []);
+
+        $this->assertEquals(422, $response->status());
+
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->post($url, ['token' => $password]);
+
+        $this->assertEquals(422, $response->status());
+
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->post($url, ['token' => $user->one_time_login_token]);
 
         $this->assertEquals(200, $response->status());
 

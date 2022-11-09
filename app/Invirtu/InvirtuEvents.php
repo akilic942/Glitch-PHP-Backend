@@ -223,5 +223,46 @@ class InvirtuEvents extends InvirtuResource
         return $this->client->delete('/events/' . $event_id .'/unblockAccount' , $data, $query);
     }
 
+    /**
+     * Adds a RTMP destination to restream a too when a live event is live streaming or broadcasting.
+     *
+     * @see    https://developers.bingewave.com/docs/eventrestreams#restreamadd
+     * @param  string $id
+     * @return stdClass
+     * @throws Exception
+     */
+    public function addRestream(string $event_id, array $data, array $query = [])
+    {
+        return $this->client->post('/events/' . $event_id .'/addRestream' , $data, $query);
+    }
+
+    /**
+     * Removes a stream that has been added.
+     *
+     * @see    https://developers.bingewave.com/docs/eventrestreams#restreamremove
+     * @param  string $id
+     * @return stdClass
+     * @throws Exception
+     */
+    public function removeRestream(string $event_id, string $stream_id, array $data, array $query = [])
+    {
+        return $this->client->post('/events/' . $event_id .'/removeRestream/' . $stream_id , $data, $query);
+    }
+
+    /**
+     * Get a list of restreams that will restream a livestream or broadcast to other endpoints.
+     *
+     * @see    https://developers.bingewave.com/docs/eventrestreams#restreamlist
+     * @param  string $id
+     * @return stdClass
+     * @throws Exception
+     */
+    public function getRestreams(string $event_id, array $query = [])
+    {
+        return $this->client->get('/events/' . $event_id .'/getRestreams', $query);
+    }
+
+
+
     
 }

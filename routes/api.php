@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('auth/register', 'App\Http\Controllers\AuthController@register');
 Route::post('auth/login', 'App\Http\Controllers\AuthController@login');
+Route::post('auth/oneTimeLoginWithToken', 'App\Http\Controllers\AuthController@oneTimeLoginToken');
 
 
 Route::get('events', 'App\Http\Controllers\EventController@index');

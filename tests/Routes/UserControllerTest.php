@@ -98,7 +98,7 @@ class UserControllerTest extends TestCase {
         $this->assertEquals($user->username, $data['username']);
     }
 
-    public function testProfile() {
+    public function testProfileWithDifferentUser() {
 
         $user = User::factory()->create();
 
@@ -106,6 +106,25 @@ class UserControllerTest extends TestCase {
 
         $response = $this->withHeaders([
             'Authorization' => $this->getAccessToken(),
+        ])->get($url, []);
+
+        $json = $response->json();
+
+        $jsonData = $json['data'];
+
+        $this->assertEquals($user->id, $jsonData['id']);
+        $this->assertFalse(isset($jsonData['email']));
+
+    }
+
+    public function testProfileWithSameUser() {
+
+        $user = User::factory()->create();
+
+        $url = $this->_getApiRoute() . 'users/' . $user->id . '/profile';
+
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
         ])->get($url, []);
 
         $json = $response->json();

@@ -145,7 +145,7 @@ class UserController extends Controller
 
         $user = User::where('id', $id)->first();
 
-        return UserResource::make($user);
+        return UserFullResource::make($user);
     }
 
 

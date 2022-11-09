@@ -1,17 +1,17 @@
 <?php
 namespace Tests\Resources;
 
-use App\Http\Resources\UserResource;
+use App\Http\Resources\UserFullResource;
 use App\Models\User;
 use Tests\TestCase;
 
-class UserResourceTest extends TestCase {
+class UserFullResourceTest extends TestCase {
 
     public function testResource() {
 
         $user = User::factory()->create();
 
-        $resource = UserResource::make($user);
+        $resource = new UserFullResource($user);
 
         //Test Basic Info
         $this->assertEquals($user->id, $resource->id);
@@ -41,6 +41,14 @@ class UserResourceTest extends TestCase {
         $this->assertEquals($user->snapchat_handle, $resource->snapchat_handle);
         $this->assertEquals($user->youtube_handle, $resource->youtube_handle);
         $this->assertEquals($user->paetron_handle, $resource->paetron_handle);
+
+        //User Not Auth, Should Be Empty
+        //$this->assertNull($resource->email);
+        //$this->assertNull($resource->phone_number);
+        //$this->assertNull($resource->phone_number_country_code);
+        //$this->assertNull($resource->date_of_birth);
+        
+
         
     }
 
