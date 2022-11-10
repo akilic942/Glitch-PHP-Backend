@@ -55,6 +55,7 @@ The `/code` directory is the main directory for the application. Now run the fol
     php artisan migrate
     php artistan db:seed
     php artisan key:generate
+    php artisan jwt:generate
 
 And you are done with installing the API with Laravel.
 
