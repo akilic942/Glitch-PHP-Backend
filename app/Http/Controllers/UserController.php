@@ -152,7 +152,13 @@ class UserController extends Controller
 
   public function me(Request $request) {
 
-    $user = User::where('id', $request->user()->id)->first();
+    $user = $request->user();
+
+    if(!$user){
+        return response()->json(['Unauthorized'], 401);
+    }
+
+    $user = User::where('id', $user->id)->first();
 
     return UserFullResource::make($user);
   }
