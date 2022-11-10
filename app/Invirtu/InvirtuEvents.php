@@ -246,7 +246,7 @@ class InvirtuEvents extends InvirtuResource
      */
     public function removeRestream(string $event_id, string $stream_id, array $data, array $query = [])
     {
-        return $this->client->post('/events/' . $event_id .'/removeRestream/' . $stream_id , $data, $query);
+        return $this->client->delete('/events/' . $event_id .'/removeRestream/' . $stream_id , $data, $query);
     }
 
     /**

@@ -36,7 +36,7 @@ Route::get('/auth/facebook/redirect', function (Request $request) {
     return Socialite::driver('facebook')->redirect();
 });
  
-Route::get('/auth/faceook/callback', function () {
+Route::get('/auth/facebook/callback', function () {
 
     $user = Socialite::driver('facebook')->user();
 

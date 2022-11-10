@@ -176,4 +176,25 @@ class EventController extends Controller
         return new EventFullResource($event);
 
     }
+
+    public function removeRTMPSource(UpdateEventRequest $request, $id, $subid) {
+
+        $event = Event::where('id', $id)->first();
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+           return response()->json(['error' => 'Cannot add restream to event.'], 403);
+        }
+
+        $input = $request->all();
+
+        if(!$subid) {
+            return response()->json(['error' => 'The ID of the stream you want to remove is required.'], 403);
+        }
+
+        EventsFacade::removeRestream($event, $subid);
+
+        return new EventFullResource($event);
+
+    }
 }

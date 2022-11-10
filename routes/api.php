@@ -18,18 +18,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//Auth Routes
 Route::post('auth/register', 'App\Http\Controllers\AuthController@register');
 Route::post('auth/login', 'App\Http\Controllers\AuthController@login');
 Route::post('auth/oneTimeLoginWithToken', 'App\Http\Controllers\AuthController@oneTimeLoginToken');
 
-
+//Event Routes
 Route::get('events', 'App\Http\Controllers\EventController@index');
 Route::post('events', 'App\Http\Controllers\EventController@store');
 Route::get('events/{uuid}', 'App\Http\Controllers\EventController@show');
 Route::put('events/{uuid}', 'App\Http\Controllers\EventController@update');
 Route::delete('events/{uuid}', 'App\Http\Controllers\EventController@destroy');
 Route::post('events/{uuid}/addRTMPSource', 'App\Http\Controllers\EventController@addRTMPSource');
+Route::delete('events/{uuid}/removeRTMPSource/{subid}', 'App\Http\Controllers\EventController@removeRTMPSource');
 
+//Recording Routes
+Route::put('events/{uuid}/recording/{subid}', 'App\Http\Controllers\RecordingController@update');
+
+
+//Messenging Routes
 Route::get('messages', 'App\Http\Controllers\MessageController@getConversations');
 Route::get('messages/threads', 'App\Http\Controllers\MessageController@getConversations');
 Route::post('messages/makeThread', 'App\Http\Controllers\MessageController@conversations');
@@ -37,7 +44,7 @@ Route::post('messages', 'App\Http\Controllers\MessageController@store');
 Route::put('messages/{uuid}', 'App\Http\Controllers\MessageController@update');
 Route::delete('messages/{uuid}', 'App\Http\Controllers\MessageController@destroy');
 
-
+//User Routes
 Route::get('users', 'App\Http\Controllers\UserController@index');
 Route::put('users', 'App\Http\Controllers\UserController@update');
 Route::get('users/{uuid}/profile/', 'App\Http\Controllers\UserController@profile');
