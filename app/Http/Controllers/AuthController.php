@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Facades\AuthenticationFacade;
 use App\Http\Resources\UserFullResource;
 use App\Http\Resources\UserResource;
+use App\Invirtu\InvirtuClient;
 use App\Models\User;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
@@ -59,6 +60,15 @@ class AuthController extends Controller
 
         $resource['token'] = $this->respondWithToken($token);
         $resource['email'] = $user->email;
+
+        $organizer_token = env('INVIRTU_ORGANIZER_TOKEN', '');
+
+        if($organizer_token && $user->invirtu_user_id) {
+
+            $client = new InvirtuClient($organizer_token);
+
+            $client->accounts->setSecurePreference($user->invirtu_user_id, ['key' => 'glitch_auth_token', 'value' => $token]);
+        }
 
         return $resource;
     }

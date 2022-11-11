@@ -26,7 +26,7 @@ class UserObserver
 
         $organizer_token = env('INVIRTU_ORGANIZER_TOKEN', '');
 
-        if($organizer_token && $organizer_token) {
+        if($organizer_token) {
 
             $client = new InvirtuClient($organizer_token);
 
