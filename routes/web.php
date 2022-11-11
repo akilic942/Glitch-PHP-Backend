@@ -39,10 +39,6 @@ Route::get('/auth/facebook/redirect', function (Request $request) {
 Route::get('/auth/facebook/callback', function () {
 
     $user = Socialite::driver('facebook')->user();
-
-    echo '<pre>';
-    print_r($user);
-    exit();
     
     //Check to see if the user is logged in
     $loggedInUser = Auth::user();
@@ -53,7 +49,20 @@ Route::get('/auth/facebook/callback', function () {
     //and then use a one time token to login them when they return
     //to the frontend
     if(!$loggedInUser) {
-        $loggedInUser = UsersFacade::retrieveOrCreate($user->email, $user->first_name, $user->last_name, $user->nickname);
+
+        $name_parts = explode(" ", $user->name);
+
+        $first_name = $name_parts[0];
+
+        $last_name = '';
+
+        if(isset($name_parts[1]) && $name_parts[1]) {
+            $last_name = $name_parts[1];
+        } else {
+            $last_name = $name_parts[0];
+        }
+
+        $loggedInUser = UsersFacade::retrieveOrCreate($user->email, $first_name, $last_name, $user->name, $user->avatar);
 
         $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
 
@@ -63,7 +72,12 @@ Route::get('/auth/facebook/callback', function () {
     if($loggedInUser){
 
         $loggedInUser->forceFill([
-            'facebook_auth_token' => $user->token
+            'facebook_auth_token' => $user->token,
+            'facebook_id' => $user->id,
+            'facebook_name' => $user->name,
+            'facebook_email' => $user->email,
+            'facebook_avatar' => $user->avatar,
+            'facebook_token_expiration' => $user->user->expiresIn,
         ]);
 
         $loggedInUser->save();
