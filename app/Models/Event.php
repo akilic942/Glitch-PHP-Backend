@@ -16,7 +16,8 @@ class Event extends BaseModel
         'title' => 'required|string|min:0|max:255',
         'description'  => 'required',
         //'start_date' => 'nullable|sometimes|date_format:"d-m-Y"',
-        'is_public' => 'boolean|nullable' 
+        'is_public' => 'boolean|nullable',
+        'is_live'  => 'boolean|nullable',
     );
 
      /**
@@ -29,6 +30,7 @@ class Event extends BaseModel
         'description',
         'start_date',
         'is_public',
+        'is_live',
     ];
 
     protected $casts = [
