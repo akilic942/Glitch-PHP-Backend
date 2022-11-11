@@ -22,14 +22,14 @@ First, in your `/etc/hosts`, add the following line to allow your local version 
 
     127.0.0.1 api.glitch.local
 
-Then clone the repo to your local computer.
+When this tutorial is completed, the site will be available at http://api.glitch.local. Then clone the repo to your local computer.
 
     git clone https://github.com/Glitch-Gaming-Platform/Glitch-PHP-Backend.git
 
 Go into the clone folder and copy the sample .env.sample file to .env as such:
 
     cd glitch-php-backend
-    cp .env.sample .env
+    cp .env.example .env
 
 Inside the `.env` file, you will need your Invirtu/BingeWave Organizer ID and Access Token. To obtain that:
 
@@ -45,19 +45,20 @@ For the next step, please make sure to have docker installed. If you do not have
 
     docker-compose up
 
-Once the container has successfully started with all the services, in a separate tab on your command line, log into the container:
+Once the container has successfully started with all the services, in a separate tab on your command line, log into the container and go the the `/code` directory:
 
     docker exec -it glitch_php bash
     cd /code
 
 The `/code` directory is the main directory for the application. Now run the following in the application:
 
+    composer install
     php artisan migrate
     php artistan db:seed
     php artisan key:generate
-    php artisan jwt:generate
+    php artisan jwt:secret
 
-And you are done with installing the API with Laravel.
+For the final step, in your browser go to https://api.glitch.local . You will recieve a warning about an untrusted SSL Certificate. Accept the certificate and proceed to the site. Your backend is now setup! The backend is meant to connect with the frontend of the site at this repo: [https://github.com/Glitch-Gaming-Platform/Glitch-React-Frontend](https://github.com/Glitch-Gaming-Platform/Glitch-React-Frontend).
 
 ## Interfacing With The API
 
