@@ -125,4 +125,12 @@ class User extends BaseAuthModel implements JWTSubject
     public function events() {
        return $this->hasManyThrough(Event::class, EventUser::class, 'user_id', 'id','id', 'event_id');
     }
+
+    public function followers() {
+        return $this->hasManyThrough(User::class, Follow::class, 'following_id', 'id','id', 'follower_id');
+     }
+
+     public function following() {
+        return $this->hasManyThrough(User::class, Follow::class, 'follower_id', 'id','id', 'following_id');
+     }
 }

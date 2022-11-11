@@ -52,8 +52,8 @@ class UserFullResource extends JsonResource
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
 
-            'followers' => $this->followers,
-            'following' => $this->following,
+            'followers' => UserResource::collection($this->followers),
+            'following' => UserResource::collection($this->following),
             'events' => $this->events
         ];
 
