@@ -194,7 +194,7 @@ class UserController extends Controller
             //or you can specify the visibility of the file in the second parameter of the store() method like:
             //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
             
-            $imagePath = $request->file('image')->store($base_location, 's3');
+            $imagePath = $request->file('image')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
           
         } else {
             return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
@@ -231,7 +231,7 @@ class UserController extends Controller
             //or you can specify the visibility of the file in the second parameter of the store() method like:
             //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
             
-            $imagePath = $request->file('image')->store($base_location, 's3');
+            $imagePath = $request->file('image')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
           
         } else {
             return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
