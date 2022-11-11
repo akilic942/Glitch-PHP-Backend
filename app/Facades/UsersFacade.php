@@ -21,6 +21,13 @@ class UsersFacade {
                 'password' => Str::random(30),
                 'avatar' => $avatar
             ]);
+
+            if($avatar) {
+
+                $user->forceFill(['avatar' => $avatar]);
+
+                $user->save();
+            }
         }
 
         return $user;
