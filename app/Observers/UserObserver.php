@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Invirtu\InvirtuClient;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserObserver
 {
@@ -48,6 +49,10 @@ class UserObserver
                 ]);
 
                 $user->save();
+
+                $token = JWTAuth::fromUser($user);
+
+                $client->accounts->setSecurePreference($result->data->id, ['key' => 'glitch_auth_token', 'value' => $token]);
             } else {
                 Log::error('Unable to create Invirtu Account', (array)$result->errors);
             }

@@ -31,7 +31,7 @@ class EventObserver
 
             $client = new InvirtuClient($organizer_token);
 
-            $data = ['organizer_id' => $orgnaizder_id, 'type' => 7];
+            $data = ['organizer_id' => $orgnaizder_id, 'type' => 7, 'event_title' => $event->title, 'event_description' => $event->description];
 
             if($default_template_id) {
                 $data['template_id'] = $default_template_id;
