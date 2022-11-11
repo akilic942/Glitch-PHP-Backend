@@ -77,7 +77,7 @@ Route::get('/auth/facebook/callback', function () {
             'facebook_name' => $user->name,
             'facebook_email' => $user->email,
             'facebook_avatar' => $user->avatar,
-            'facebook_token_expiration' => $user->user->expiresIn,
+            'facebook_token_expiration' => $user->expiresIn,
         ]);
 
         $loggedInUser->save();
