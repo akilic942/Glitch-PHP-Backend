@@ -49,6 +49,9 @@ class EventObserver
                 ]);
 
                 $event->save();
+
+                $client->events->setPreference($event->id, ['key' => 'glitch_stream_id', 'value' => $event->id]);
+
             } else {
                 Log::error('Unable to create Invirtu Event', (array)$result->errors);
             }

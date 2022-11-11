@@ -262,6 +262,36 @@ class InvirtuEvents extends InvirtuResource
         return $this->client->get('/events/' . $event_id .'/getRestreams', $query);
     }
 
+    /**
+     * Sets a preference options to the live event.
+     *
+     * @see    https://developers.bingewave.com/docs/accounts#setpreference
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function setPreference(string $event_id, array $data, array $query = [])
+    {
+        return $this->client->post('/events/'. $event_id .'/setPreference', $data, $query);
+    }
+
+    /**
+     * Removes a preference option from the live event.
+     * 
+     * @see    https://developers.bingewave.com/docs/accounts#removepreference
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function removePreference(string $event_id, string $key, array $data, array $query = [])
+    {
+        return $this->client->delete('/events/'. $event_id .'/removePreference/' . $key, $data, $query);
+    }
+
 
 
     
