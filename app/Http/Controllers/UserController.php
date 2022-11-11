@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Facades\AuthenticationFacade;
 use App\Facades\FollowFacade;
+use App\Http\Requests\StoreImageRequest;
 use App\Http\Resources\AffirmationResource;
 use App\Http\Resources\DiscussionResource;
 use App\Http\Resources\FollowResource;
@@ -171,5 +172,79 @@ class UserController extends Controller
 
     return UserOneTimeTokenResource::make($user);
   }
+
+  public function uploadAvatarImage(StoreImageRequest $request)
+   {
+       /*$this->validate($request, [
+            'image' => 'required|mimes:png,jpg,gif|max:9999',
+        ]);*/
+
+        $user = $request->user();
+
+        if(!$user){
+            return response()->json(['Unauthorized'], 401);
+        }
+
+        $base_location = 'images';
+
+        // Handle File Upload
+        if($request->hasFile('image')) {              
+            //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
+            //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
+            //or you can specify the visibility of the file in the second parameter of the store() method like:
+            //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
+            
+            $imagePath = $request->file('image')->store($base_location, 's3');
+          
+        } else {
+            return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
+        }
+    
+        //We save new path
+        $user->forceFill([
+            'avatar' => $imagePath
+        ]);
+
+        $user->save();
+       
+        return UserFullResource::make($user);
+    }
+
+    public function uploadBannerImage(StoreImageRequest $request)
+    {
+       /*$this->validate($request, [
+            'image' => 'required|mimes:png,jpg,gif|max:9999',
+        ]);*/
+
+        $user = $request->user();
+
+        if(!$user){
+            return response()->json(['Unauthorized'], 401);
+        }
+
+        $base_location = 'images';
+
+        // Handle File Upload
+        if($request->hasFile('image')) {              
+            //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
+            //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
+            //or you can specify the visibility of the file in the second parameter of the store() method like:
+            //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
+            
+            $imagePath = $request->file('image')->store($base_location, 's3');
+          
+        } else {
+            return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
+        }
+    
+        //We save new path
+        $user->forceFill([
+            'banner_image' => $imagePath
+        ]);
+
+        $user->save();
+       
+        return UserFullResource::make($user);
+    }
 
 }

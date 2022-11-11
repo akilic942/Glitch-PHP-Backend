@@ -171,4 +171,48 @@ class UserControllerTest extends TestCase {
 
     }
 
+    public function testAvatarImage(){
+
+        $url = $this->_getApiRoute() . 'users/uploadAvatarImage';
+
+        $data = [
+            'image' => UploadedFile::fake()->image('avatar.png')
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken(),
+        ])->post($url, $data);
+
+
+        $this->assertEquals(201, $response->status());
+
+        $json = $response->json();
+
+        $this->assertNotNull($json['data']['avatar']);
+        $this->assertNotEmpty($json['data']['avatar']);
+
+    }
+
+    public function testBannerImage(){
+
+        $url = $this->_getApiRoute() . 'users/uploadBannerImage';
+
+        $data = [
+            'image' => UploadedFile::fake()->image('avatar.png')
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken(),
+        ])->post($url, $data);
+
+
+        $this->assertEquals(201, $response->status());
+
+        $json = $response->json();
+
+        $this->assertNotNull($json['data']['banner_image']);
+        $this->assertNotEmpty($json['data']['banner_image']);
+
+    }
+
 }

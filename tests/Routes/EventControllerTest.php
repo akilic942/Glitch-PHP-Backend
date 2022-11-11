@@ -2,8 +2,10 @@
 
 namespace Tests\Routes;
 
+use App\Facades\RolesFacade;
 use App\Models\Event;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
 class EventControllerTest extends TestCase
@@ -170,6 +172,62 @@ class EventControllerTest extends TestCase
 
         $url = $this->_getApiRoute() . 'events/' . $event->id;
         
+    }
+
+    public function testMainImage(){
+
+        $user = User::factory()->create();
+
+        $event = Event::factory()->create();
+
+        RolesFacade::eventMakeAdmin($event, $user);
+
+        $url = $this->_getApiRoute() . 'events/' . $event->id. '/uploadMainImage';
+
+        $data = [
+            'image' => UploadedFile::fake()->image('avatar.png')
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+
+        $this->assertNotNull($json['data']['image_main']);
+        $this->assertNotEmpty($json['data']['image_main']);
+
+    }
+
+    public function testBannerImage(){
+
+        $user = User::factory()->create();
+
+        $event = Event::factory()->create();
+
+        RolesFacade::eventMakeAdmin($event, $user);
+
+        $url = $this->_getApiRoute() . 'events/' . $event->id. '/uploadBannerImage';
+
+        $data = [
+            'image' => UploadedFile::fake()->image('avatar.png')
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+
+        $this->assertNotNull($json['data']['image_banner']);
+        $this->assertNotEmpty($json['data']['image_banner']);
+
     }
 
 

@@ -31,6 +31,8 @@ Route::put('events/{uuid}', 'App\Http\Controllers\EventController@update');
 Route::delete('events/{uuid}', 'App\Http\Controllers\EventController@destroy');
 Route::post('events/{uuid}/addRTMPSource', 'App\Http\Controllers\EventController@addRTMPSource');
 Route::delete('events/{uuid}/removeRTMPSource/{subid}', 'App\Http\Controllers\EventController@removeRTMPSource');
+Route::post('events/{uuid}/uploadMainImage', 'App\Http\Controllers\EventController@uploadMainImage');
+Route::post('events/{uuid}/uploadBannerImage', 'App\Http\Controllers\EventController@uploadBannerImage');
 
 //Recording Routes
 Route::put('events/{uuid}/recording/{subid}', 'App\Http\Controllers\RecordingController@update');
@@ -53,3 +55,9 @@ Route::get('users/oneTimeToken', 'App\Http\Controllers\UserController@onetimetok
 Route::get('users/{uuid}/followers', 'App\Http\Controllers\UserController@followers');
 Route::get('users/{uuid}/following', 'App\Http\Controllers\UserController@following');
 Route::post('users/{uuid}/follow', 'App\Http\Controllers\UserController@toggleFollow');
+Route::post('users/uploadAvatarImage', 'App\Http\Controllers\UserController@uploadAvatarImage');
+Route::post('users/uploadBannerImage', 'App\Http\Controllers\UserController@uploadBannerImage');
+
+
+Route::post('images/upload', 'App\Http\Controllers\ImageController@store');
+Route::delete('images/{uuid}', 'App\Http\Controllers\ImageController@destroy');

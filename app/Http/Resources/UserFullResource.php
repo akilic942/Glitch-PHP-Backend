@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserFullResource extends JsonResource
 {
@@ -22,6 +23,10 @@ class UserFullResource extends JsonResource
             'last_name' => $this->last_name,
             'username' => $this->username,
             'bio' => $this->bio,
+            
+            //Media
+            'avatar' => !empty($this->avatar) ? Storage::disk('s3')->url($this->avatar) : null,
+            'banner_image' => !empty($this->banner_image) ? Storage::disk('s3')->url($this->banner_image) : null,
 
             //Social Pages
             'twitter_page' => $this->twitter_page,

@@ -6,6 +6,7 @@ use App\Facades\EventsFacade;
 use App\Facades\PermissionsFacade;
 use App\Facades\RolesFacade;
 use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Http\Resources\EventFullResource;
 use App\Http\Resources\EventResource;
@@ -196,5 +197,73 @@ class EventController extends Controller
 
         return new EventFullResource($event);
 
+    }
+
+    public function uploadMainImage(StoreImageRequest $request, $id)
+    {
+        $event = Event::where('id', $id)->first();
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+        return response()->json(['error' => 'Cannot add restream to event.'], 403);
+        }
+
+        $base_location = 'images';
+
+        // Handle File Upload
+        if($request->hasFile('image')) {              
+            //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
+            //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
+            //or you can specify the visibility of the file in the second parameter of the store() method like:
+            //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
+            
+            $imagePath = $request->file('image')->store($base_location, 's3');
+          
+        } else {
+            return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
+        }
+    
+        //We save new path
+        $event->forceFill([
+            'image_main' => $imagePath
+        ]);
+
+        $event->save();
+       
+        return EventFullResource::make($event);
+    }
+
+    public function uploadBannerImage(StoreImageRequest $request, $id)
+    {
+        $event = Event::where('id', $id)->first();
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+        return response()->json(['error' => 'Cannot add restream to event.'], 403);
+        }
+
+        $base_location = 'images';
+
+        // Handle File Upload
+        if($request->hasFile('image')) {              
+            //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
+            //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
+            //or you can specify the visibility of the file in the second parameter of the store() method like:
+            //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
+            
+            $imagePath = $request->file('image')->store($base_location, 's3');
+          
+        } else {
+            return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
+        }
+    
+        //We save new path
+        $event->forceFill([
+            'image_banner' => $imagePath
+        ]);
+
+        $event->save();
+       
+        return EventFullResource::make($event);
     }
 }
