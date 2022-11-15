@@ -293,6 +293,98 @@ class InvirtuEvents extends InvirtuResource
     }
 
 
+    /**
+     * List the widgets that are currently associated with a live event.
+     * 
+     * @see    https://developers.bingewave.com/docs/eventwidgets#listwidget
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function listWidgets(string $event_id, array $query = [])
+    {
+        return $this->client->get('/events/'. $event_id .'/getWidgets', $query);
+    }
+
+    /**
+     * Add a widget to the live event and set which user roles will have access to the widget.
+     * 
+     * @see    https://developers.bingewave.com/docs/eventwidgets#addwidget
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function addWidgets(string $event_id, array $data = [], array $query = [])
+    {
+        return $this->client->post('/events/'. $event_id .'/addWidget', $data, $query);
+    }
+
+    /**
+     * Update the settings for the current widget associated with the live event.
+     * 
+     * @see    https://developers.bingewave.com/docs/eventwidgets#updatewidget
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function updateWidgets(string $event_id, string $widget_id, array $data = [], array $query = [])
+    {
+        return $this->client->put('/events/'. $event_id .'/updateWidget/' . $widget_id, $data, $query);
+    }
+
+    /**
+     * Removes the widget from the live event, and this will cause the widget to be removed from the screen.
+     * 
+     * @see    https://developers.bingewave.com/docs/eventwidgets#removewidget
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function removeWidgets(string $event_id, array $data = [], array $query = [])
+    {
+        return $this->client->delete('/events/'. $event_id .'/updateWidget', $data, $query);
+    }
+
+    /**
+     * Each position that a widget is placed in has options that can be used to configure how the elements behave inside that space. Set the options below.
+     * 
+     * @see    https://developers.bingewave.com/docs/eventwidgets#setoptions
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function setWidgetOptions(string $event_id, string $widget_id, array $data = [], array $query = [])
+    {
+        return $this->client->post('/events/'. $event_id .'/setWidgetPositioningOptions/' . $widget_id, $data, $query);
+    }
+
+    /**
+     * Return a list of configured options for the current live event.
+     * 
+     * @see    https://developers.bingewave.com/docs/eventwidgets#getoptions
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function getWidgetPositioningOptions(string $event_id, array $query = [])
+    {
+        return $this->client->get('/events/'. $event_id .'/getWidgetPositioningOptions',  $query);
+    }
+
+
+
 
     
 }

@@ -22,6 +22,7 @@ use App\Models\User;
 use App\Models\UserImage;
 use App\Models\UserSchool;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -101,19 +102,26 @@ class UserController extends Controller
             unset($input['password']);
         }
 
-        $data = $input + $user->toArray();
+        if(isset($input['avatar'])) {
+            unset($input['avatar']);
+        }
 
-        //unset($data['email']);
-        //unset($data['password']);
 
-        //$valid = $user->validate($data, ['email', 'password']);
 
-        //if (!$valid) {
-         //   return response()->json($user->getValidationErrors(), 422);
-        //}
+        $data = $input + $user->getFillable();
 
-       
-        $user->update($data);
+        $valid = $user->validate($data, ['email', 'password', 'username', 'avatar'], ['username' => Rule::unique('users')->ignore($user->id), 'email' => Rule::unique('users')->ignore($user->id)]);
+
+        if (!$valid) {
+            return response()->json($user->getValidationErrors(), 422);
+        }
+
+        // For some weird reason, I have to get a new uer object.
+        
+        $user = User::where('id', $request->user()->id)->first();
+
+        //return response()->json($data, 422);
+        $user->update($input + $user->getFillable());
 
         return UserResource::make($user);
     }

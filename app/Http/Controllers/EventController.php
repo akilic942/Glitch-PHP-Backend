@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Modes;
 use App\Facades\EventsFacade;
 use App\Facades\PermissionsFacade;
 use App\Facades\RolesFacade;
@@ -265,5 +266,55 @@ class EventController extends Controller
         $event->save();
        
         return EventFullResource::make($event);
+    }
+
+    public function enableBroadcastMode(UpdateEventRequest $request, $id) {
+
+        $event = Event::where('id', $id)->first();
+
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+           return response()->json(['error' => 'Cannot add restream to event.'], 403);
+        }
+
+        $event->forceFill(['mode' => Modes::BROADCAST]);
+        $event->save();
+
+        EventsFacade::setToBroadcastMode($event);
+
+        //return response()->json(EventsFacade::setToBroadcastMode($event));
+
+        return new EventFullResource($event);
+
+    }
+
+    public function enableLivestreamMode(UpdateEventRequest $request, $id) {
+
+        $event = Event::where('id', $id)->first();
+
+        $input = $request->all();
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+           return response()->json(['error' => 'Cannot add restream to event.'], 403);
+        }
+
+        if($event->mode == Modes::BROADCAST) {
+            EventsFacade::setToLivestreamMode($event);
+        }
+
+        if(isset($input['mode']) && $input['mode'] == Modes::OBS) {
+            $event->forceFill(['mode' => Modes::OBS]);
+            $event->save();
+        } else {
+            $event->forceFill(['mode' => Modes::RTMP]);
+            $event->save();
+        }
+
+        //return response()->json( EventsFacade::setToLivestreamMode($event));
+
+        return new EventFullResource($event);
+
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class BaseAuthModel extends Authenticatable {
 
-    public function validate($data, array $omitRules = array())
+    public function validate($data, array $omitRules = array(), array $addRules = [])
     {
     
         $rules = $this->rules;
@@ -19,6 +19,10 @@ class BaseAuthModel extends Authenticatable {
                 unset($rules[$omit]);
             }
             
+        }
+
+        if($addRules) {
+            $rules += $addRules;
         }
 
        // make a new validator object

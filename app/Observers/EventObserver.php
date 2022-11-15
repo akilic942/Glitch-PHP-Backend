@@ -46,6 +46,8 @@ class EventObserver
                     'invirtu_broadcast_url'=> $result->data->webview_broadcast,
                     'invirtu_rtmp_broadcast_endpoint'=> $result->data->rtmp_broadcast_endpoint,
                     'invirtu_rtmp_broadcast_key' => $result->data->rtmp_broadcast_key,
+                    'invirtu_rtmp_livestream_endpoint'=> $result->data->rtmp_ingestion_endpoint,
+                    'invirtu_rtmp_livestream_key' => $result->data->rtmp_ingestion_key,
                 ]);
 
                 $event->save();

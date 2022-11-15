@@ -19,7 +19,7 @@ class BaseModel extends Model {
 
     protected $_validator = null;
 
-    public function validate($data, array $omitRules = array())
+    public function validate($data, array $omitRules = array(), array $addRules = [])
     {
     
         $rules = $this->rules;
@@ -31,6 +31,11 @@ class BaseModel extends Model {
             }
             
         }
+
+        if($addRules) {
+            $rules += $addRules;
+        }
+        
        // make a new validator object
        $this->_validator = Validator::make($data, $rules);
 
