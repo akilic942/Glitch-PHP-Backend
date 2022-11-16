@@ -32,5 +32,6 @@ class EventInvite extends BaseModel
         'name',
         'event_id',
         'invited_as_cohost',
+        'token'
     ];
 }

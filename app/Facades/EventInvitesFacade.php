@@ -13,7 +13,11 @@ class EventInvitesFacade {
 
         $event = Event::where('id', $invite->event_id)->first();
 
-        Mail::send('email.eventInvite', ['invite' => $invite, 'event' => $event], function($message) use($invite, $event){
+        $login_link = env('COHOST_LOGIN_REDIRECT') . '?iscohost=true&token=' . $invite->token . '&stream=' . $event->id;;
+
+        $registration_link = env('COHOST_REGISTER_REDIRECT') . '?iscohost=true&token=' . $invite->token . '&stream=' . $event->id;
+
+        Mail::send('email.eventInvite', ['invite' => $invite, 'event' => $event, 'login_link' => $login_link, 'registration_link' => $registration_link ], function($message) use($invite, $event){
 
             $message->to($invite->email);
             $message->subject('Invited As Co-Host To ' . $event->title);

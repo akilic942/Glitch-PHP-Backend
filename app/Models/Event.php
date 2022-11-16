@@ -57,5 +57,10 @@ class Event extends BaseModel
     {
         return $this->hasManyThrough(User::class, EventUser::class, 'event_id', 'id','id', 'user_id')->where('user_role', Roles::Speaker);
     }
+
+    public function invites()
+    {
+        return $this->hasMany(EventInvite::class, 'event_id', 'id');
+    }
     
 }

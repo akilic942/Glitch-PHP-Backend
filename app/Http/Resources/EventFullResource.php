@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Facades\PermissionsFacade;
 use App\Invirtu\InvirtuClient;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class EventFullResource extends JsonResource
@@ -45,6 +47,13 @@ class EventFullResource extends JsonResource
              'invirtu_rtmp_broadcast_endpoint' => $this->invirtu_rtmp_broadcast_endpoint,
              'invirtu_rtmp_broadcast_key' => $this->invirtu_rtmp_broadcast_key,
         ];
+
+        $loggedin_user = Auth::user();
+
+        //if($loggedin_user && PermissionsFacade::eventCanUpdate($this, $loggedin_user)) {
+            //Should only show for admins of the event
+            $data['invites'] = $this->invites;
+        //}
 
         $organizer_token = env('INVIRTU_ORGANIZER_TOKEN', '');
 
