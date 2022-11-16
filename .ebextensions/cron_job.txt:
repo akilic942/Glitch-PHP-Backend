@@ -1,0 +1,1 @@
+*/3 * * * * root php /var/www/html/artisan glitch:expire_events
