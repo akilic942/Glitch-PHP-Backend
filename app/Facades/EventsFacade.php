@@ -5,6 +5,7 @@ use App\Enums\Roles;
 use App\Enums\Widgets;
 use App\Invirtu\InvirtuClient;
 use App\Models\Event;
+use Carbon\Carbon;
 
 class EventsFacade {
 
@@ -148,6 +149,17 @@ class EventsFacade {
         return $results;
         
     }
+
+    /**
+     * All events that haven't had a check-in in 5 minutes are no longer
+     * considered live
+     */
+    public static function checkIfLive() {
+
+        Event::where('live_last_checkin', '>=', Carbon::now()->addMinutes(5)->toDateTimeString())
+        ->update(array('live_last_checkin' => null, 'is_live' => 0));
+ 
+     }
 
     
 }

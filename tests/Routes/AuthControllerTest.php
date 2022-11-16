@@ -3,6 +3,7 @@
 namespace Tests\Routes;
 
 use App\Facades\AuthenticationFacade;
+use App\Facades\UsersFacade;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -104,6 +105,66 @@ class AuthControllerTest extends TestCase
         $this->assertEquals($json['data']['id'], $user->id);
         $this->assertEquals($json['data']['email'], $user->email);
         $this->assertNotNull($json['data']['token']['access_token']);
+
+    }
+
+
+    public function testForgotPassword() {
+
+        $url = $this->_getApiRoute() . 'auth/forgotpassword';
+
+        $faker = \Faker\Factory::create();
+
+        $fake_email = $faker->unique()->safeEmail();
+
+        $user = User::factory()->create();
+
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->post($url, ['email' => $fake_email]);
+
+        $this->assertEquals(302, $response->status());
+
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->post($url, ['email' => $user->email]);
+
+
+        $this->assertEquals(201, $response->status());
+
+    }
+
+    public function testRestPassword() {
+
+        $url = $this->_getApiRoute() . 'auth/resetpassword';
+
+        $faker = \Faker\Factory::create();
+
+        $fake_email = $faker->unique()->safeEmail();
+
+        $user_without_reset = User::factory()->create();
+
+        $user_with_reset = User::factory()->create();
+
+        $password = UsersFacade::sendPasswordReset($user_with_reset->email);
+
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->post($url, ['email' => $fake_email, 'new_password' => 'sdfsdsf', 'token' => $password->token]);
+
+        $this->assertEquals(422, $response->status());
+
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->post($url, ['email' => $user_without_reset, 'new_password' => 'sdfsdsf', 'token' => $password->token]);
+
+        $this->assertEquals(422, $response->status());
+
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->post($url, ['email' => $user_with_reset->email, 'new_password' => 'sdfsdsf', 'token' => $password->token]);
+
+        $this->assertEquals(201, $response->status());
 
     }
 }

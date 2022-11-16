@@ -22,6 +22,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('auth/register', 'App\Http\Controllers\AuthController@register');
 Route::post('auth/login', 'App\Http\Controllers\AuthController@login');
 Route::post('auth/oneTimeLoginWithToken', 'App\Http\Controllers\AuthController@oneTimeLoginToken');
+Route::post('auth/forgotpassword', 'App\Http\Controllers\ForgotPasswordController@requestNewPassword');
+Route::post('auth/resetpassword', 'App\Http\Controllers\ForgotPasswordController@changePassword');
 
 //Event Routes
 Route::get('events', 'App\Http\Controllers\EventController@index');
@@ -63,9 +65,3 @@ Route::post('users/uploadBannerImage', 'App\Http\Controllers\UserController@uplo
 
 Route::post('images/upload', 'App\Http\Controllers\ImageController@store');
 Route::delete('images/{uuid}', 'App\Http\Controllers\ImageController@destroy');
-
-
-Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm']);
-Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm']); 
-Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm']);
-Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm']);

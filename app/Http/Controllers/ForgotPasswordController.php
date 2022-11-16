@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\UsersFacade;
 use App\Http\Controllers\Controller;
+use App\Models\PasswordReset;
 use Illuminate\Http\Request; 
 use Carbon\Carbon; 
 use App\Models\User; 
@@ -14,50 +16,45 @@ class ForgotPasswordController extends Controller
 {
     public function requestNewPassword(Request $request) {
 
-        $request->validate([
+        $result = $request->validate([
             'email' => 'required|email|exists:users',
         ]);
 
-        $token = Str::random(64);
+        if(!$result) {
+            return response()->json(['There is no user with that email.'], 422);
+        }
 
-        DB::table('password_resets')->insert([
-            'email' => $request->email, 
-            'token' => $token, 
-            'created_at' => Carbon::now()
-          ]);
+        $input = $request->all();
 
-        Mail::send('email.forgetPassword', ['token' => $token], function($message) use($request){
-            $message->to($request->email);
-            $message->subject('Reset Password');
-        });
+        UsersFacade::sendPasswordReset($input['email']);
 
-        return back()->with('message', 'We have e-mailed your password reset link!');
+        return response()->json(['New Password request send'], 201);
     }
 
     public function changePassword(Request $request) {
 
-        $request->validate([
-            'email' => 'required|email|exists:users',
-            'password' => 'required|string|min:6|confirmed',
-            'password_confirmation' => 'required'
-        ]);
+        $input = $request->all();
 
-        $updatePassword = DB ::table('password_resets')
-                            ->where([
-                              'email' => $request->email, 
-                              'token' => $request->token
-                            ])
-                            ->first();
-
-        if(!$updatePassword){
-            return back()->withInput()->with('error', 'Invalid token!');
+        if(!isset($input['email']) || isset($input['email']) && !$input['email']) {
+            return response()->json(['An email is required to reset the password'], 422);
         }
 
-        $user = User::where('email', $request->email)
-                    ->update(['password' => Hash::make($request->password)]);
+        if(!isset($input['token']) || isset($input['token']) && !$input['token']) {
+            return response()->json(['A valid token is required reset the password'], 422);
+        }
 
-        DB::table('password_resets')->where(['email'=> $request->email])->delete();
+        if(!isset($input['new_password']) || isset($input['new_password']) && !$input['new_password']) {
+            return response()->json(['A valid token is required reset the password'], 422);
+        }
 
-        return redirect('/login')->with('message', 'Your password has been changed!');
+        $password = PasswordReset::where('email', $input['email']) -> where('token', $input['token']) -> first();
+
+        if(!$password) {
+            return response()->json(['No password reset request was found.'], 422);
+        }
+
+        UsersFacade::resetPassword($password, $input['new_password']);
+
+        return response()->json(['Password has been reset.'], 201);
     }
 }
