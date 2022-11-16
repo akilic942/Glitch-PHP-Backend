@@ -47,7 +47,13 @@ class UsersFacade {
 
         ]);
 
-        Mail::send('email.forgetPassword', ['token' => $token], function($message) use($email){
+        $user = User::where('email', $password->email)->first();
+
+        $password_reset_url = env('PASSWORD_RESET_REDIRECT');
+
+        $password_reset_url = $password_reset_url . '?token=' . $password->token . '&email=' . $user->email; 
+
+        Mail::send('email.forgetPassword', ['token' => $token, 'password' => $password, 'user' => $user, 'password_reset_url' => $password_reset_url], function($message) use($email){
 
             $message->to($email);
             $message->subject('Reset Password');

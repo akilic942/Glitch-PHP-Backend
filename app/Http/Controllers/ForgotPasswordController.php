@@ -36,15 +36,15 @@ class ForgotPasswordController extends Controller
         $input = $request->all();
 
         if(!isset($input['email']) || isset($input['email']) && !$input['email']) {
-            return response()->json(['An email is required to reset the password'], 422);
+            return response()->json(['message' => 'An email is required to reset the password'], 422);
         }
 
         if(!isset($input['token']) || isset($input['token']) && !$input['token']) {
-            return response()->json(['A valid token is required reset the password'], 422);
+            return response()->json(['message' => 'A valid token is required reset the password'], 422);
         }
 
         if(!isset($input['new_password']) || isset($input['new_password']) && !$input['new_password']) {
-            return response()->json(['A valid token is required reset the password'], 422);
+            return response()->json(['message' => 'A new password is required to update the old password.'], 422);
         }
 
         $password = PasswordReset::where('email', $input['email']) -> where('token', $input['token']) -> first();
