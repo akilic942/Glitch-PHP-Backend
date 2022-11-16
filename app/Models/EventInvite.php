@@ -21,6 +21,7 @@ class EventInvite extends BaseModel
         'email' => 'required|string|min:0|max:255',
         'name' => 'required|string|min:0|max:255',
         'event_id' => 'required|uuid',
+        'user_id' => 'uuid|nullable',
         'token' => 'required|string|min:0|max:255',
         'invited_as_cohost' => 'boolean|nullable',
         'accepted_invite'  => 'boolean|nullable',

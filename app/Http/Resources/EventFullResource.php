@@ -23,6 +23,10 @@ class EventFullResource extends JsonResource
             'live_last_checkin' => $this->live_last_checkin,
             'mode' => $this->mode,
 
+            'admins' => UserResource::collection($this->admins),
+            'moderators' => UserResource::collection($this->moderators),
+            'speakers' => UserResource::collection($this->cohosts),
+
              //Timestamp Info
              'created_at' => (string) $this->created_at,
              'updated_at' => (string) $this->updated_at,

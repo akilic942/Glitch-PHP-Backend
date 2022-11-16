@@ -163,9 +163,5 @@ class EventsFacade {
      }
 
 
-    public static function sendInvite(EventInvite $invite) {
-
-    }
-
     
 }

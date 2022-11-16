@@ -18,6 +18,7 @@ return new class extends Migration
             $table->uuid('id');
             $table->primary('id');
             $table->uuid('event_id');
+            $table->uuid('user_id')->nullable();
 
             $table->string('email')->unique();
             $table->string('name')->nullable()->default('');
@@ -28,6 +29,7 @@ return new class extends Migration
             $table->boolean('accepted_invite')->nullable()->default(0);
 
             $table->foreign('event_id')->references('id')->on('events');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
         });

@@ -22,6 +22,22 @@ class PermissionsFacade {
         return false;
     }
 
+    public static function eventCanJoinVideoSession(Event $event, User $user) {
+
+        $eventUser = self::_retrieveEventUser($event, $user);
+
+        if(!$eventUser) {
+            return false;
+        }
+
+        if($eventUser->user_role == Roles::SuperAdministrator || $eventUser->user_role == Roles::Administrator || $eventUser->user_role == Roles::Moderator || $eventUser->user_role == Roles::Speaker) {
+            return true;
+        }
+
+        return false;
+    }
+
+
     public static function eventCanEngage(Event $event, User $user) {
 
         $eventUser = self::_retrieveEventUser($event, $user);

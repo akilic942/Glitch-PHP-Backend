@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Roles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Event extends BaseModel
@@ -39,6 +40,22 @@ class Event extends BaseModel
 
     public function users()
     {
-        return $this->hasManyThrough(User::class, EventUser::class, 'user_id', 'id','id', 'event_id');
+        return $this->hasManyThrough(User::class, EventUser::class, 'event_id', 'id','id', 'user_id');
     }
+
+    public function admins()
+    {
+        return $this->hasManyThrough(User::class, EventUser::class, 'event_id', 'id','id', 'user_id')->where('user_role', Roles::Administrator)->orWhere('user_role', Roles::SuperAdministrator);
+    }
+
+    public function moderators()
+    {
+        return $this->hasManyThrough(User::class, EventUser::class, 'event_id', 'id','id', 'user_id')->where('user_role', Roles::Moderator);
+    }
+
+    public function cohosts()
+    {
+        return $this->hasManyThrough(User::class, EventUser::class, 'event_id', 'id','id', 'user_id')->where('user_role', Roles::Speaker);
+    }
+    
 }

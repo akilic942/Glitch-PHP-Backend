@@ -2,9 +2,12 @@
 
 namespace Tests\Routes;
 
+use App\Facades\EventInvitesFacade;
 use App\Facades\RolesFacade;
 use App\Models\Event;
+use App\Models\EventInvite;
 use App\Models\User;
+use Database\Factories\EventInviteFactory;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
@@ -256,6 +259,61 @@ class EventControllerTest extends TestCase
         $this->assertNotNull($event->live_last_checkin);
 
     }
+
+    public function testSendInviteCohost() {
+
+        $user = User::factory()->create();
+
+        $event = Event::factory()->create();
+
+        RolesFacade::eventMakeAdmin($event, $user);
+
+        $url = $this->_getApiRoute() . 'events/' . $event->id. '/sendInvite';
+
+        $faker = \Faker\Factory::create();
+
+        $data = array(
+            'name' => $faker->firstName(),
+            'email' => $faker->email,
+        );
+
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+        $this->assertEquals(201, $response->status());
+
+        $json = $response->json();
+
+        $this->assertEquals($data['email'], $json['data']['email']);
+        $this->assertEquals($data['name'], $json['data']['name']);
+
+    }
+
+    public function testAcceptInviteCohost() {
+
+        $user = User::factory()->create();
+
+        $event = Event::factory()->create();
+
+        $invite = EventInvite::factory()->create(['email' => $user->email, 'event_id' => $event->id]);
+
+        $data = array(
+            'token' => $invite->token,
+        );
+        $url = $this->_getApiRoute() . 'events/' . $event->id. '/acceptInvite'; 
+
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+        $this->assertEquals(204, $response->status());
+
+
+    }
+
+
+    
 
 
 }

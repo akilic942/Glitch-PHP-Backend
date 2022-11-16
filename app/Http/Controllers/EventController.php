@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\HttpStatusCodes;
 use App\Enums\Modes;
 use App\Facades\EventsFacade;
 use App\Facades\PermissionsFacade;
@@ -57,7 +58,6 @@ class EventController extends Controller
     {
         $input = $request->all();
 
-
         $event = new Event();
 
         $valid = $event->validate($input);
@@ -109,6 +109,10 @@ class EventController extends Controller
     public function update(UpdateEventRequest $request, $id)
     {
         $event = Event::where('id', $id)->first();
+
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
 
         // check if currently authenticated user is the owner of the book
         //if ($request->user()->id !== $event->user_id) {
@@ -163,6 +167,10 @@ class EventController extends Controller
 
         $event = Event::where('id', $id)->first();
 
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
         // check if currently authenticated user is the owner of the book
         if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
            return response()->json(['error' => 'Cannot add restream to event.'], 403);
@@ -184,6 +192,10 @@ class EventController extends Controller
 
         $event = Event::where('id', $id)->first();
 
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
         // check if currently authenticated user is the owner of the book
         if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
            return response()->json(['error' => 'Cannot add restream to event.'], 403);
@@ -204,6 +216,10 @@ class EventController extends Controller
     public function uploadMainImage(StoreImageRequest $request, $id)
     {
         $event = Event::where('id', $id)->first();
+
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
 
         // check if currently authenticated user is the owner of the book
         if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
@@ -239,6 +255,10 @@ class EventController extends Controller
     {
         $event = Event::where('id', $id)->first();
 
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
         // check if currently authenticated user is the owner of the book
         if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
         return response()->json(['error' => 'Cannot add restream to event.'], 403);
@@ -273,6 +293,9 @@ class EventController extends Controller
 
         $event = Event::where('id', $id)->first();
 
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
 
         // check if currently authenticated user is the owner of the book
         if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
@@ -293,6 +316,10 @@ class EventController extends Controller
     public function enableLivestreamMode(UpdateEventRequest $request, $id) {
 
         $event = Event::where('id', $id)->first();
+
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
 
         $input = $request->all();
 
@@ -323,7 +350,9 @@ class EventController extends Controller
 
         $event = Event::where('id', $id)->first();
 
-        $input = $request->all();
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
 
         // check if currently authenticated user is the owner of the book
         if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
