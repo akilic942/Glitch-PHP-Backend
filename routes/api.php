@@ -37,6 +37,10 @@ Route::post('events/{uuid}/uploadMainImage', 'App\Http\Controllers\EventControll
 Route::post('events/{uuid}/uploadBannerImage', 'App\Http\Controllers\EventController@uploadBannerImage');
 Route::post('events/{uuid}/enableBroadcastMode', 'App\Http\Controllers\EventController@enableBroadcastMode');
 Route::post('events/{uuid}/enableLivestreamMode', 'App\Http\Controllers\EventController@enableLivestreamMode');
+Route::post('events/{uuid}/syncAsLive', 'App\Http\Controllers\EventController@syncAsLive');
+Route::post('events/{uuid}/sendInvite', 'App\Http\Controllers\EventController@sendInvite');
+
+
 
 //Recording Routes
 Route::put('events/{uuid}/recording/{subid}', 'App\Http\Controllers\RecordingController@update');

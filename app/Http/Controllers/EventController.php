@@ -13,6 +13,7 @@ use App\Http\Resources\EventFullResource;
 use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\User;
+use Carbon\Carbon;
 
 class EventController extends Controller
 {
@@ -311,6 +312,30 @@ class EventController extends Controller
             $event->forceFill(['mode' => Modes::RTMP]);
             $event->save();
         }
+
+        //return response()->json( EventsFacade::setToLivestreamMode($event));
+
+        return new EventFullResource($event);
+
+    }
+
+    public function syncAsLive(UpdateEventRequest $request, $id) {
+
+        $event = Event::where('id', $id)->first();
+
+        $input = $request->all();
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+           return response()->json(['error' => 'Cannot add restream to event.'], 403);
+        }
+
+        $event->forceFill([
+            'live_last_checkin' => Carbon::now()->toDateTimeString(),
+            'is_live' => 1
+        ]);
+        
+        $event->save();
 
         //return response()->json( EventsFacade::setToLivestreamMode($event));
 

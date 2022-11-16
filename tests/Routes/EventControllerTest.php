@@ -230,5 +230,32 @@ class EventControllerTest extends TestCase
 
     }
 
+    public function testSyncAsLive(){
+
+        $user = User::factory()->create();
+
+        $event = Event::factory()->create();
+
+        RolesFacade::eventMakeAdmin($event, $user);
+
+        $this->assertEquals($event->is_live, 0);
+        $this->assertEquals($event->live_last_checkin, null);
+
+        $url = $this->_getApiRoute() . 'events/' . $event->id. '/syncAsLive';
+        
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, []);
+
+
+        $this->assertEquals(200, $response->status());
+
+        $event->refresh();
+
+        $this->assertEquals($event->is_live, 1);
+        $this->assertNotNull($event->live_last_checkin);
+
+    }
+
 
 }

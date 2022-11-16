@@ -5,6 +5,7 @@ use App\Enums\Roles;
 use App\Enums\Widgets;
 use App\Invirtu\InvirtuClient;
 use App\Models\Event;
+use App\Models\EventInvite;
 use Carbon\Carbon;
 
 class EventsFacade {
@@ -160,6 +161,11 @@ class EventsFacade {
         ->update(array('live_last_checkin' => null, 'is_live' => 0));
  
      }
+
+
+    public static function sendInvite(EventInvite $invite) {
+
+    }
 
     
 }
