@@ -108,7 +108,7 @@ class UserController extends Controller
 
 
 
-        $data = $input + $user->getFillable();
+        $data = $input + $user->toArray();
 
         $valid = $user->validate($data, ['email', 'password', 'username', 'avatar'], ['username' => Rule::unique('users')->ignore($user->id), 'email' => Rule::unique('users')->ignore($user->id)]);
 
@@ -121,7 +121,7 @@ class UserController extends Controller
         $user = User::where('id', $request->user()->id)->first();
 
         //return response()->json($data, 422);
-        $user->update($input + $user->getFillable());
+        $user->update($input + $user->toArray());
 
         return UserResource::make($user);
     }
