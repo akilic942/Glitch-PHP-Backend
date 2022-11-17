@@ -162,6 +162,25 @@ class EventsFacade {
  
      }
 
+     public static function sendOnScreenMessage(Event $event, string $message, array $options = []) {
+
+        $organizer_token = env('INVIRTU_ORGANIZER_TOKEN', '');
+
+        //This should be set run async
+        if($organizer_token &&  $event->invirtu_id){
+            $client = new InvirtuClient($organizer_token);
+
+            $data = [
+                'message' => $message
+            ];
+
+            $data += $options;
+
+            return $client->events->sendOnScreenMessage($event->invirtu_id, $data);
+           
+        }
+    }
+
 
     
 }

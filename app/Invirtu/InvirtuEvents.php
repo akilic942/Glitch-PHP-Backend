@@ -383,6 +383,67 @@ class InvirtuEvents extends InvirtuResource
         return $this->client->get('/events/'. $event_id .'/getWidgetPositioningOptions',  $query);
     }
 
+    /**
+     * Send generic content, ie HTML, that can be displayed on-screen to a user.
+     * 
+     * @see    https://developers.bingewave.com/docs/onscreen#content
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function sendOnscreenContent(string $event_id, array $data, array $query = [])
+    {
+        return $this->client->post('/events/'. $event_id .'/sendOnscreenContent',  $data, $query);
+    }
+
+    /**
+     * Display a text message over the video (live or pre-recorded) during an event.
+     * 
+     * @see    https://developers.bingewave.com/docs/onscreen#message
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function sendOnscreenMessage(string $event_id, array $data, array $query = [])
+    {
+        return $this->client->post('/events/'. $event_id .'/sendOnscreenMessage',  $data, $query);
+    }
+
+    /**
+     * Send a poll on-screen that users can take as a video is playing. Requires a poll to be created first.
+     * 
+     * @see    https://developers.bingewave.com/docs/onscreen#poll
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function sendOnscreenPoll(string $event_id, array $data, array $query = [])
+    {
+        return $this->client->post('/events/'. $event_id .'/sendOnscreenPoll',  $data, $query);
+    }
+
+     /**
+     * Removes an overlay that is currently being displayed on-screen.
+     * 
+     * @see    https://developers.bingewave.com/docs/onscreen#closeoverlay
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function closeOverlay(string $event_id, array $data, array $query = [])
+    {
+        return $this->client->post('/events/'. $event_id .'/closeOverlay',  $data, $query);
+    }
+
+
 
 
 

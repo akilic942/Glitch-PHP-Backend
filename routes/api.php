@@ -38,6 +38,8 @@ Route::post('events/{uuid}/uploadBannerImage', 'App\Http\Controllers\EventContro
 Route::post('events/{uuid}/enableBroadcastMode', 'App\Http\Controllers\EventController@enableBroadcastMode');
 Route::post('events/{uuid}/enableLivestreamMode', 'App\Http\Controllers\EventController@enableLivestreamMode');
 Route::post('events/{uuid}/syncAsLive', 'App\Http\Controllers\EventController@syncAsLive');
+Route::post('events/{uuid}/sendOnScreenContent', 'App\Http\Controllers\EventController@sendOnScreenContent');
+
 
 Route::post('events/{uuid}/sendInvite', 'App\Http\Controllers\EventInviteController@store');
 Route::post('events/{uuid}/acceptInvite', 'App\Http\Controllers\EventInviteController@acceptInvite');

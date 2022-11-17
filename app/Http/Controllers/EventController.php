@@ -371,4 +371,40 @@ class EventController extends Controller
         return new EventFullResource($event);
 
     }
+
+    public function sendOnScreenContent(UpdateEventRequest $request, $id) {
+
+        $event = Event::where('id', $id)->first();
+
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+           return response()->json(['error' => 'Cannot add restream to event.'], 403);
+        }
+
+        $input = $request->all();
+
+        if(!isset($input['type'])){
+            return response()->json(['error' => 'The type of content being sent must be present.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        if(!isset($input['content']) || (isset($input['content']) && !$input['content'])){
+            return response()->json(['error' => 'The content must be submitted.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        if($input['type'] == 'message') {
+
+            EventsFacade::sendOnScreenMessage($event, $input['content'], $input);
+        }  else if($input['type'] == 'image') {
+            
+        }
+
+        //return response()->json( EventsFacade::setToLivestreamMode($event));
+
+        return new EventFullResource($event);
+
+    }
 }
