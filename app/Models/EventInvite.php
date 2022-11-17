@@ -18,7 +18,7 @@ class EventInvite extends BaseModel
     ];
 
     protected $rules = array(
-        'email' => 'required|email|string|min:0|max:255',
+        'email' => 'required|string|min:0|max:255',
         'name' => 'required|string|min:0|max:255',
         'event_id' => 'required|uuid',
         'user_id' => 'uuid|nullable',
