@@ -168,18 +168,18 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if(!$event){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The stream does not exist.', 'message' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
-           return response()->json(['error' => 'Cannot add restream to event.'], 403);
+           return response()->json(['error' => 'Cannot add restream to event.' , 'message' => 'Cannot add restream to event.'], 403);
         }
 
         $input = $request->all();
 
         if(!isset($input['rtmp_source'])) {
-            return response()->json(['error' => 'A valid RTMP source is required.'], 403);
+            return response()->json(['error' => 'A valid RTMP source is required.', 'message' => 'A valid RTMP source is required.'], 403);
         }
 
         EventsFacade::addRestream($event, $input['rtmp_source']);
@@ -351,12 +351,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if(!$event){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The stream does not exist.', 'message' => 'The stream does not exist.' ], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
-           return response()->json(['error' => 'Cannot add restream to event.'], 403);
+           return response()->json(['error' => 'Cannot add restream to event.', 'message' => 'Cannot add restream to event.'], 403);
         }
 
         $event->forceFill([
@@ -377,7 +377,7 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if(!$event){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The stream does not exist.', 'message' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
@@ -388,11 +388,11 @@ class EventController extends Controller
         $input = $request->all();
 
         if(!isset($input['type'])){
-            return response()->json(['error' => 'The type of content being sent must be present.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The type of content being sent must be present.', 'message' => 'The type of content being sent must be present.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if(!isset($input['content']) || (isset($input['content']) && !$input['content'])){
-            return response()->json(['error' => 'The content must be submitted.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The contents cannot be empty.', 'message' => 'The contents cannot be empty.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if($input['type'] == 'message') {
