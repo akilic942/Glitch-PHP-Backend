@@ -46,13 +46,28 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
 
+        $token = null;
+
+        $query = 'email';
+
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Invalid Login Credentials'], 401);
+
+            $query = 'username';
+
+            $credentials = $request->only(['username', 'password']);
+
+            if (!$token = auth()->attempt($credentials)) {
+                return response()->json(['error' => 'Invalid Login Credentials'], 401);
+            }
         }
 
         $input = $request->all();
 
-        $user = User::where('email', $input['email'])->first();
+        if($query == 'email'){
+            $user = User::where('email', $input['email'])->first();
+        } else {
+            $user = User::where('username', $input['username'])->first();
+        }
 
         $user->token = $this->respondWithToken($token);
 

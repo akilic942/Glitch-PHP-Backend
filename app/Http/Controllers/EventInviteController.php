@@ -131,7 +131,7 @@ class EventInviteController extends Controller
 
         $input = $request->all();
 
-        if(isset($input['token'])){
+        if(!isset($input['token']) || (isset($input['token']) || !$input['token'])){
             return response()->json(['message' => 'Invites require the token to accept.'], HttpStatusCodes::HTTP_NO_CONTENT);
         }
 

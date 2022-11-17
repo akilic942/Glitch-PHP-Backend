@@ -42,7 +42,7 @@ class AuthControllerTest extends TestCase
         $this->assertNotNull($json['data']['token']['access_token']);
     }
 
-    public function testLogin() {
+    public function testLoginEmail() {
 
         $url = $this->_getApiRoute() . 'auth/login';
 
@@ -61,6 +61,35 @@ class AuthControllerTest extends TestCase
         $response = $this->withHeaders([
             'X-Header' => 'Value',
         ])->post($url, ['email' => $user->email, 'password' => $password]);
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+        $this->assertEquals($json['data']['id'], $user->id);
+        $this->assertEquals($json['data']['email'], $user->email);
+        $this->assertNotNull($json['data']['token']['access_token']);
+
+    }
+
+    public function testLoginUsername() {
+
+        $url = $this->_getApiRoute() . 'auth/login';
+
+        $faker = \Faker\Factory::create();
+
+        $password = $faker->regexify('[A-Za-z0-9]{20}');
+
+        $user = User::factory()->create(['password' => bcrypt($password)]);
+
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->post($url, ['username' => $user->username, 'password' => 'abc123']);
+
+        $this->assertEquals(401, $response->status());
+
+        $response = $this->withHeaders([
+            'X-Header' => 'Value',
+        ])->post($url, ['username' => $user->username, 'password' => $password]);
 
         $this->assertEquals(200, $response->status());
 
