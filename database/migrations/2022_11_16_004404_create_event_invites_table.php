@@ -20,7 +20,7 @@ return new class extends Migration
             $table->uuid('event_id');
             $table->uuid('user_id')->nullable();
 
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('name')->nullable()->default('');
 
             $table->string('token')->nullable()->default('');
