@@ -23,6 +23,7 @@
         "php-http/message": "^1.7",
         "psr/http-message": "^1.0",
         "socialiteproviders/facebook": "^4.1",
+        "socialiteproviders/google": "^4.1",
         "socialiteproviders/twitch": "^5.3",
         "socialiteproviders/youtube": "^4.1",
         "tymon/jwt-auth": "^1.0.2"

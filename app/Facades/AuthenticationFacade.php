@@ -24,7 +24,7 @@ class AuthenticationFacade {
     /**
      * @todo have a timeout feature that counts the token as expired after a certian period of time.
      */
-    public static function useOneTimeLoginToken($token) : User | bool {
+    public static function useOneTimeLoginToken($token, string $guard = 'api') : User | bool {
 
         $user = User::where('one_time_login_token', $token)->first();
 
@@ -32,7 +32,7 @@ class AuthenticationFacade {
             return false;
         }
 
-        Auth::login($user, true);
+        Auth::guard($guard)->login($user, true);
 
         $user->forceFill([
             'one_time_login_token' => null,

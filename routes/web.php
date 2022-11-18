@@ -30,7 +30,7 @@ Route::get('/auth/facebook/redirect', function (Request $request) {
     $input = $request->all();
 
     if(isset($input['token']) && $input['token']){
-        AuthenticationFacade::useOneTimeLoginToken($input['token']);
+        AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
     }
 
     return Socialite::driver('facebook')->redirect();
@@ -41,7 +41,7 @@ Route::get('/auth/facebook/callback', function () {
     $user = Socialite::driver('facebook')->user();
     
     //Check to see if the user is logged in
-    $loggedInUser = Auth::user();
+    $loggedInUser = Auth::guard('web')->user();
 
     $redirect_query='';
 
@@ -91,7 +91,7 @@ Route::get('/auth/youtube/redirect', function (Request $request) {
     $input = $request->all();
 
     if(isset($input['token']) && $input['token']){
-        AuthenticationFacade::useOneTimeLoginToken($input['token']);
+        AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
     }
 
     return Socialite::driver('youtube')->redirect();
@@ -101,12 +101,8 @@ Route::get('/auth/youtube/callback', function () {
 
     $user = Socialite::driver('youtube')->user();
 
-    echo '<pre>';
-    print_r($user);
-    exit();
-
     //Check to see if the user is logged in
-    $loggedInUser = Auth::user();
+    $loggedInUser = Auth::guard('web')->user();
 
     $redirect_query='';
 
@@ -153,7 +149,7 @@ Route::get('/auth/twitch/redirect', function (Request $request) {
     $input = $request->all();
 
     if(isset($input['token']) && $input['token']){
-        AuthenticationFacade::useOneTimeLoginToken($input['token']);
+        AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
     }
 
     return Socialite::driver('twitch')->redirect();
@@ -164,7 +160,7 @@ Route::get('/auth/twitch/callback', function () {
     $user = Socialite::driver('twitch')->user();
 
     //Check to see if the user is logged in
-    $loggedInUser = Auth::user();
+    $loggedInUser = Auth::guard('web')->user();
 
     $redirect_query='';
 
