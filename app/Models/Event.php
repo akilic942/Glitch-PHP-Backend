@@ -45,17 +45,19 @@ class Event extends BaseModel
 
     public function admins()
     {
-        return $this->hasManyThrough(User::class, EventUser::class, 'event_id', 'id','id', 'user_id')->where('user_role', Roles::Administrator)->orWhere('user_role', Roles::SuperAdministrator);
+        return $this->hasManyThrough(User::class, EventUser::class, 'event_id', 'id','id', 'user_id')->where( 'event_id', $this->id)->where(function($query) {
+            $query->where('user_role', Roles::SuperAdministrator)->orWhere('user_role', Roles::Administrator);
+        });
     }
 
     public function moderators()
     {
-        return $this->hasManyThrough(User::class, EventUser::class, 'event_id', 'id','id', 'user_id')->where('user_role', Roles::Moderator);
+        return $this->hasManyThrough(User::class, EventUser::class, 'event_id', 'id','id', 'user_id')->where('user_role', Roles::Moderator)->where('event_id', $this->id);;
     }
 
     public function cohosts()
     {
-        return $this->hasManyThrough(User::class, EventUser::class, 'event_id', 'id','id', 'user_id')->where('user_role', Roles::Speaker);
+        return $this->hasManyThrough(User::class, EventUser::class, 'event_id', 'id','id', 'user_id')->where('user_role', Roles::Speaker)->where('event_id', $this->id);;
     }
 
     public function invites()
