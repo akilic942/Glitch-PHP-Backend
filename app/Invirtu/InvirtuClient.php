@@ -14,6 +14,8 @@ use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 use stdClass;
+use Symfony\Component\Mime\Part\DataPart;
+use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 
 class InvirtuClient
 {
@@ -380,6 +382,33 @@ class InvirtuClient
         $request = $this->requestFactory->createRequest($method, $uri, $headers, $body);
 
         return $this->httpClient->sendRequest($request);
+    }
+
+    public function sendFile($endpoint, string $file, array $queryParams = []) {
+
+        $uri = $this->uriFactory->createUri($this->invirtuApiEndPoint . $endpoint);
+
+        if (!empty($queryParams)) {
+            $uri = $uri->withQuery(http_build_query($queryParams));
+        }
+
+        $headers = $this->getRequestHeaders();
+
+        $authHeaders = $this->getRequestAuthHeaders();
+
+        $headers = array_merge($headers, $authHeaders);
+
+        $formFields = [
+            'file' => DataPart::fromPath($file),
+        ];
+        
+        $formData = new FormDataPart($formFields);
+
+        $request = $this->requestFactory->createRequest('POST', $uri, $headers, $formData);
+
+        $response = $this->httpClient->sendRequest($request);
+
+        return $this->handleResponse($response);
     }
 
     /**

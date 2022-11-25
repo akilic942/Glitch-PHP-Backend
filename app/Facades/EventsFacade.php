@@ -181,6 +181,23 @@ class EventsFacade {
         }
     }
 
+    public static function updateInvirtuEvent(Event $event, array $data) {
+
+        $organizer_token = env('INVIRTU_ORGANIZER_TOKEN', '');
+
+        //This should be set run async
+        if($organizer_token &&  $event->invirtu_id){
+            $client = new InvirtuClient($organizer_token);
+
+            return $client->events->update($event->invirtu_id, $data);
+           
+        }
+
+        return false;
+
+
+    }
+
 
     
 }

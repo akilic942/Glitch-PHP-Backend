@@ -65,6 +65,8 @@ class EventFullResource extends JsonResource
             //Get full event info
             $result = $client->events->get($this->invirtu_id);
 
+            $data['invirtu_event'] = (array) $result->data;
+
             $data['recordings'] = (array)$result->data->pre_recorded_contents;
 
             //Get Restreams

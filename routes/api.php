@@ -30,6 +30,7 @@ Route::get('events', 'App\Http\Controllers\EventController@index');
 Route::post('events', 'App\Http\Controllers\EventController@store');
 Route::get('events/{uuid}', 'App\Http\Controllers\EventController@show');
 Route::put('events/{uuid}', 'App\Http\Controllers\EventController@update');
+Route::put('events/{uuid}/invirtu', 'App\Http\Controllers\EventController@updateInvirtuEvent');
 Route::delete('events/{uuid}', 'App\Http\Controllers\EventController@destroy');
 Route::post('events/{uuid}/addRTMPSource', 'App\Http\Controllers\EventController@addRTMPSource');
 Route::delete('events/{uuid}/removeRTMPSource/{subid}', 'App\Http\Controllers\EventController@removeRTMPSource');

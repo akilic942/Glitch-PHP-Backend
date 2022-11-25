@@ -134,6 +134,34 @@ class EventController extends Controller
         return new EventResource($event);
     }
 
+    public function updateInvirtuEvent(UpdateEventRequest $request, $id)
+    {
+        $event = Event::where('id', $id)->first();
+
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        // check if currently authenticated user is the owner of the book
+        //if ($request->user()->id !== $event->user_id) {
+        //    return response()->json(['error' => 'You can only edit your own Forum.'], 403);
+        //}
+
+        $input = $request->all();
+
+        $result = EventsFacade::updateInvirtuEvent($event, $input);
+
+        if(!$result){
+            return response()->json(['error' => 'There was an error.'], HttpStatusCodes::HTTP_NO_CONTENT);
+        }
+
+        if($result->status == 'failure') {
+            return response()->json(['errors' => $result->errors], HttpStatusCodes::HTTP_NO_CONTENT);
+        }
+
+        return new EventResource($event);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
