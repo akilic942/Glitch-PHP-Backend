@@ -517,4 +517,48 @@ class EventController extends Controller
         return EventFullResource::make($event);
 
     }
+
+    public function enableOverlay(StoreImageRequest $request, $id, $subid)
+    {
+
+        $event = Event::where('id', $id)->first();
+
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+            return response()->json(['error' => 'Access denied to live stream.'], 403);
+        }
+
+        $overlay = EventOverlay::where('id', $subid)->where('event_id', $id)->first();
+
+        if(!$overlay){
+            return response()->json(['error' => 'Overlay not found.'], HttpStatusCodes::HTTP_NO_CONTENT);
+        }
+
+        EventsFacade::activateOverlay($event, $overlay);
+
+        return EventFullResource::make($event);
+    }
+
+    public function disableOverlay(StoreImageRequest $request, $id)
+    {
+
+        $event = Event::where('id', $id)->first();
+
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+            return response()->json(['error' => 'Access denied to live stream.'], 403);
+        }
+
+        EventsFacade::deactivateOverlay($event);
+
+        return EventFullResource::make($event);
+    }
 }

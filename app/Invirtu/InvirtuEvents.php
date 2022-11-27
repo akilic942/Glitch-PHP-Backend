@@ -384,6 +384,36 @@ class InvirtuEvents extends InvirtuResource
     }
 
     /**
+     * Set an environment variable for the widget that has been associated with the live event.
+     * 
+     * @see    https://developers.bingewave.com/docs/eventwidgets#setenv
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function setWidgetEnvironmentVariable(string $event_id, string $widget_id, array $data = [], array $query = [])
+    {
+        return $this->client->post('/events/'. $event_id .'/widget/' . $widget_id . '/setEnvironmentVariable/', $data, $query);
+    }
+
+    /**
+     * Remove the environment variable for the widget that is associated with a live event.
+     * 
+     * @see    https://developers.bingewave.com/docs/eventwidgets#removeenv
+     * 
+     * @param  string $value The value to search by e.g. An email address
+
+     * @return stdClass
+     * @throws Exception
+     */
+    public function removeWidgetEnvironmentVariable(string $event_id, string $widget_id, string $key, array $data = [], array $query = [])
+    {
+        return $this->client->delete('/events/'. $event_id .'/widget/' . $widget_id . '/removeEnvironmentVariable/' . $key, $data, $query);
+    }
+
+    /**
      * Send generic content, ie HTML, that can be displayed on-screen to a user.
      * 
      * @see    https://developers.bingewave.com/docs/onscreen#content

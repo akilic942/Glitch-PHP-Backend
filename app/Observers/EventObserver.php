@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Facades\EventsFacade;
 use App\Invirtu\InvirtuClient;
 use App\Models\Event;
 use Illuminate\Support\Facades\Log;
@@ -60,6 +61,8 @@ class EventObserver
         } else {
             Log::error('Both an invirtu organizer ID and token is required to create an event.');
         }
+
+        EventsFacade::createDefaultOverlays($event);
 
     }
 

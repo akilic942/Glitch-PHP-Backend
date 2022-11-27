@@ -41,7 +41,16 @@ class EventsFacadeTest extends TestCase {
         $this->assertCount($number_of_live_events_new, $young_events );
         $this->assertCount(0, $old_events);
 
-        
+
+    }
+
+    public function testCreateDefaultOverlays() {
+
+        $event = Event::factory()->create();
+
+        $overlays = EventsFacade::createDefaultOverlays($event);
+
+        $this->assertCount(5, $overlays);
     }
 
 }

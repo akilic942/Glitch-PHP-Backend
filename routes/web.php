@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,11 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    //echo '123';
+    //print_r(Storage::disk('local')->exists('public/banners/esports/offline_banner_1920x1080px.jpeg'));
+    //print_r(Storage::disk('local')->get('public/banners/esports/offline_banner_1920x1080px.jpeg'));
+    //exit();
+    //return view('welcome');
 });
 
 Route::get('/auth/facebook/redirect', function (Request $request) {

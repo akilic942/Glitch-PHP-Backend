@@ -6,7 +6,9 @@ use App\Enums\Widgets;
 use App\Invirtu\InvirtuClient;
 use App\Models\Event;
 use App\Models\EventInvite;
+use App\Models\EventOverlay;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class EventsFacade {
 
@@ -78,6 +80,7 @@ class EventsFacade {
 
                 if($role == Roles::Subscriber) {
                     $data['accessible_for_streamer'] = 1;
+                    $data['accessible_for_broadcaster'] = 1;
                 }
             }
 
@@ -109,7 +112,56 @@ class EventsFacade {
             return $client->events->updateWidgets($event->invirtu_id, $widget_id, $data);
            
         }
+
+        return false;
         
+    }
+
+    public static function setWidgetEnvOptions(Event $event, string $widget_id, array $options) {
+
+        $organizer_token = env('INVIRTU_ORGANIZER_TOKEN', '');
+
+        //This should be set run async
+        if($organizer_token &&  $event->invirtu_id){
+            $client = new InvirtuClient($organizer_token);
+
+            return $client->events->setWidgetEnvironmentVariable($event->invirtu_id, $widget_id, $options);
+           
+        }
+
+        return false;
+    }
+
+    public static function activateOverlay(Event $event, EventOverlay $overlay) {
+
+        //Set all overally for event to inactive
+        EventOverlay::where('event_id', $event->id)->update(['is_active' => 0]);
+
+        //First set the overlay image
+        $image_url = $overlay->getImageUrl();
+
+        //Update the Widget
+        self::setWidgetEnvOptions($event, Widgets::GLITCH_FULL_SCREEN_OVERLAY, ['key' => 'overlay_image', 'value' => $image_url]);
+
+        //Activate Widget For Everyone
+        self::enableWidget($event, Widgets::GLITCH_FULL_SCREEN_OVERLAY, [Roles::Administrator, Roles::Speaker, Roles::Moderator, Roles::Subscriber]);
+
+        $overlay->forceFill(['is_active' => 1]);
+        
+        $overlay->save();
+
+        return $overlay;
+        
+    }
+
+    public static function deactivateOverlay(Event $event){
+
+          //Set all overally for event to inactive
+          EventOverlay::where('event_id', $event->id)->update(['is_active' => 0]);
+
+          //Activate Widget
+          self::disableWidget($event, Widgets::GLITCH_FULL_SCREEN_OVERLAY);
+
     }
 
     /**
@@ -196,6 +248,117 @@ class EventsFacade {
         return false;
 
 
+    }
+
+    /**
+     * @todo Eventually, this should work with a themes model
+     * that the user passes in their own themes
+     */
+    public static function createDefaultOverlays(Event $event) {
+
+        $overlays = [];
+
+        //Offline Line
+        if(Storage::disk('local')->exists('public/banners/esports/offline_banner_1920x1080px.jpeg')){
+
+            $filename = 'overlays/default_offline_overlay_' . $event->id;
+
+            Storage::disk('s3')->put($filename, Storage::disk('local')->get('public/banners/esports/offline_banner_1920x1080px.jpeg'), 'public');
+
+            $data = [
+                'event_id' => $event->id,
+                'label' => 'Currently Offline',
+                'image_url' =>   Storage::disk('s3')->path($filename),          
+            ];
+
+            $overlay = EventOverlay::create($data);
+
+            if($overlay) {
+                $overlays[] = $overlay;
+            }
+        }
+
+        //Startng Soon
+        if(Storage::disk('local')->exists('public/banners/esports/starting_soon 1920x1080px.jpeg')){
+
+            $filename = 'overlays/default_starting_soon_overlay_' . $event->id;
+
+            Storage::disk('s3')->put($filename, Storage::disk('local')->get('public/banners/esports/starting_soon 1920x1080px.jpeg'), 'public');
+
+            $data = [
+                'event_id' => $event->id,
+                'label' => 'Starting Soon',
+                'image_url' =>   Storage::disk('s3')->path($filename),          
+            ];
+
+            $overlay = EventOverlay::create($data);
+
+            if($overlay) {
+                $overlays[] = $overlay;
+            }
+        }
+
+        //Intermission
+        if(Storage::disk('local')->exists('public/banners/esports/intermission_1920x1080px.jpeg')){
+
+            $filename = 'overlays/default_intermission_overlay_' . $event->id;
+
+            Storage::disk('s3')->put($filename, Storage::disk('local')->get('public/banners/esports/intermission_1920x1080px.jpeg'), 'public');
+
+            $data = [
+                'event_id' => $event->id,
+                'label' => 'Intermission',
+                'image_url' =>   Storage::disk('s3')->path($filename),          
+            ];
+
+            $overlay = EventOverlay::create($data);
+
+            if($overlay) {
+                $overlays[] = $overlay;
+            }
+        }
+
+        //Be Right Right
+        if(Storage::disk('local')->exists('public/banners/esports/be_right_back_1920x1080px.jpeg')){
+
+            $filename = 'overlays/default_be_right_back_overlay_' . $event->id;
+
+            Storage::disk('s3')->put($filename, Storage::disk('local')->get('public/banners/esports/be_right_back_1920x1080px.jpeg'), 'public');
+
+            $data = [
+                'event_id' => $event->id,
+                'label' => 'Be Right Back',
+                'image_url' =>   Storage::disk('s3')->path($filename),          
+            ];
+
+            $overlay = EventOverlay::create($data);
+
+            if($overlay) {
+                $overlays[] = $overlay;
+            }
+        }
+
+        //Be Right Right
+        if(Storage::disk('local')->exists('public/banners/esports/finished_1920x1080px.jpeg')){
+
+            $filename = 'overlays/default_finished_overlay_' . $event->id;
+
+            Storage::disk('s3')->put($filename, Storage::disk('local')->get('public/banners/esports/finished_1920x1080px.jpeg'), 'public');
+
+            $data = [
+                'event_id' => $event->id,
+                'label' => 'Finished',
+                'image_url' =>   Storage::disk('s3')->path($filename),          
+            ];
+
+            $overlay = EventOverlay::create($data);
+
+            if($overlay) {
+                $overlays[] = $overlay;
+            }
+        }
+
+        return $overlays;
     }
 
 

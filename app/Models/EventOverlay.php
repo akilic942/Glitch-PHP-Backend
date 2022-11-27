@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class EventOverlay extends BaseModel
 {
@@ -27,4 +28,9 @@ class EventOverlay extends BaseModel
         'event_id',
         'image_url',
     ];
+    
+    public function getImageUrl() {
+
+        return Storage::disk('s3')->url($this->image_url);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class EventOverlayResource extends JsonResource
 {
@@ -14,6 +15,12 @@ class EventOverlayResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'event_id' => $this->event_id,
+            'label' => $this->label,
+            'image_url' => !empty($this->image_url) ? Storage::disk('s3')->url($this->image_url) : null,
+            'is_active' => $this->is_active
+        ];
     }
 }
