@@ -64,5 +64,10 @@ class Event extends BaseModel
     {
         return $this->hasMany(EventInvite::class, 'event_id', 'id');
     }
+
+    public function overlays()
+    {
+        return $this->hasMany(EventOverlay::class, 'event_id', 'id');
+    }
     
 }

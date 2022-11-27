@@ -30,6 +30,8 @@ class EventFullResource extends JsonResource
             'moderators' => UserResource::collection($this->moderators),
             'speakers' => UserResource::collection($this->cohosts),
 
+            'overlays' => EventOverlayResource::collection($this->overlays),
+
              //Timestamp Info
              'created_at' => (string) $this->created_at,
              'updated_at' => (string) $this->updated_at,

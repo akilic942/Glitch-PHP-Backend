@@ -6,6 +6,7 @@ use App\Facades\EventInvitesFacade;
 use App\Facades\RolesFacade;
 use App\Models\Event;
 use App\Models\EventInvite;
+use App\Models\EventOverlay;
 use App\Models\User;
 use Database\Factories\EventInviteFactory;
 use Illuminate\Http\UploadedFile;
@@ -146,6 +147,8 @@ class EventControllerTest extends TestCase
         $user = User::factory()->create();
 
         $event = Event::factory()->create();
+
+        RolesFacade::eventMakeAdmin($event, $user);
 
         $url = $this->_getApiRoute() . 'events/' . $event->id;
 
@@ -312,6 +315,56 @@ class EventControllerTest extends TestCase
 
     }
 
+    public function testUploadOverlay(){
+
+        $user = User::factory()->create();
+
+        $event = Event::factory()->create();
+
+        RolesFacade::eventMakeAdmin($event, $user);
+
+        $url = $this->_getApiRoute() . 'events/' . $event->id. '/addOverlay';
+
+        $faker = \Faker\Factory::create();
+
+        $data = [
+            'label' => $faker->name(),
+            'image' => UploadedFile::fake()->image('avatar.png')
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+
+        //$this->assertNotNull($json['data']['image_main']);
+        //$this->assertNotEmpty($json['data']['image_main']);
+
+    }
+
+    public function testDeleteOverlay() {
+
+        $user = User::factory()->create();
+
+        $event = Event::factory()->create();
+
+        RolesFacade::eventMakeAdmin($event, $user);
+
+        $overlay = EventOverlay::factory()->create(['event_id' => $event->id]);
+
+        $url = $this->_getApiRoute() . 'events/' . $event->id .'/removeOverlay/' . $overlay->id;
+
+        $response = $this->withHeaders([
+            'Authorization Bearer' => $this->getAccessToken($user),
+        ])->delete($url);
+
+        $this->assertEquals(204, $response->status());
+
+    }
 
     
 

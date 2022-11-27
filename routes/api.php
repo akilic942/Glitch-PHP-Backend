@@ -40,6 +40,9 @@ Route::post('events/{uuid}/enableBroadcastMode', 'App\Http\Controllers\EventCont
 Route::post('events/{uuid}/enableLivestreamMode', 'App\Http\Controllers\EventController@enableLivestreamMode');
 Route::post('events/{uuid}/syncAsLive', 'App\Http\Controllers\EventController@syncAsLive');
 Route::post('events/{uuid}/sendOnScreenContent', 'App\Http\Controllers\EventController@sendOnScreenContent');
+Route::post('events/{uuid}/addOverlay', 'App\Http\Controllers\EventController@uploadOverlay');
+Route::delete('events/{uuid}/removeOverlay/{subid}', 'App\Http\Controllers\EventController@removeOverlay');
+
 
 
 Route::post('events/{uuid}/sendInvite', 'App\Http\Controllers\EventInviteController@store');
