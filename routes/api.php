@@ -47,6 +47,10 @@ Route::delete('events/{uuid}/removeOverlay/{subid}', 'App\Http\Controllers\Event
 Route::post('events/{uuid}/enableOverlay/{subid}', 'App\Http\Controllers\EventController@enableOverlay');
 Route::post('events/{uuid}/disableOverlay', 'App\Http\Controllers\EventController@disableOverlay');
 
+//Donations Buttons
+Route::post('events/{uuid}/enableDonations', 'App\Http\Controllers\EventController@enableOverlay');
+Route::post('events/{uuid}/disableDonations', 'App\Http\Controllers\EventController@disableOverlay');
+
 
 
 Route::post('events/{uuid}/sendInvite', 'App\Http\Controllers\EventInviteController@store');
@@ -76,6 +80,7 @@ Route::get('users/{uuid}/following', 'App\Http\Controllers\UserController@follow
 Route::post('users/{uuid}/follow', 'App\Http\Controllers\UserController@toggleFollow');
 Route::post('users/uploadAvatarImage', 'App\Http\Controllers\UserController@uploadAvatarImage');
 Route::post('users/uploadBannerImage', 'App\Http\Controllers\UserController@uploadBannerImage');
+Route::post('users/createDonationPage', 'App\Http\Controllers\UserController@createDonationPage');
 
 
 Route::post('images/upload', 'App\Http\Controllers\ImageController@store');

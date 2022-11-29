@@ -45,5 +45,10 @@ return [
         'client_secret' => env('YOUTUBE_CLIENT_SECRET'),  
         'redirect' => env('YOUTUBE_REDIRECT_URI') 
     ],
+    'stripe' => [    
+        'client_id' => env('STRIPE_CLIENT_ID'),  
+        'client_secret' => env('STRIPE_CLIENT_SECRET'),  
+        'redirect' => env('STRIPE_REDIRECT_URI') 
+    ],
 
 ];

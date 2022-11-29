@@ -7,6 +7,7 @@ use App\Enums\Modes;
 use App\Facades\EventsFacade;
 use App\Facades\PermissionsFacade;
 use App\Facades\RolesFacade;
+use App\Facades\UsersFacade;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateEventRequest;
@@ -558,6 +559,50 @@ class EventController extends Controller
         }
 
         EventsFacade::deactivateOverlay($event);
+
+        return EventFullResource::make($event);
+    }
+
+    public function enableDonations(StoreImageRequest $request, $id)
+    {
+
+        $event = Event::where('id', $id)->first();
+
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+            return response()->json(['error' => 'Access denied to live stream.'], 403);
+        }
+
+        $user = $request->user();
+
+        if(!$user->stripe_donation_purhcase_link_url){
+            return response()->json(['error' => 'A donation page is required.'], HttpStatusCodes::HTTP_NO_CONTENT);
+        }
+
+        UsersFacade::activateDonationForEvent($event, $user);
+
+        return EventFullResource::make($event);
+    }
+
+    public function disableDonations(StoreImageRequest $request, $id)
+    {
+
+        $event = Event::where('id', $id)->first();
+
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+            return response()->json(['error' => 'Access denied to live stream.'], 403);
+        }
+
+        UsersFacade::deactivateDonationForEvent($event);
 
         return EventFullResource::make($event);
     }

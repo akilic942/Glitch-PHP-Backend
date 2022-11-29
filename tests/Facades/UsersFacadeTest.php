@@ -67,6 +67,59 @@ class UsersFacadeTest extends TestCase {
 
         $this->assertNotEquals($old_password, $user->password);
 
+    }
+
+    public function testUserDonationLinkCreation() {
+
+        $user = User::factory()->create(['stripe_express_account_id' => env('STRIPE_TEST_USER_ID')]);
+
+        //Create the product
+        $this->assertNull($user->stripe_donation_product_id);
+
+        UsersFacade::createUserDonationProduct($user);
+
+        $user->refresh();
+
+        $this->assertNotNull($user->stripe_donation_product_id);
+
+        //Create the price
+        $this->assertNull($user->stripe_donation_price_id);
+
+        UsersFacade::createUserDonationtPrice($user);
+
+        $user->refresh();
+
+        $this->assertNotNull($user->stripe_donation_price_id);
+
+        //Create the link
+        $this->assertNull($user->stripe_donation_purhcase_link_id);
+        $this->assertNull($user->stripe_donation_purhcase_link_url);
+
+        UsersFacade::createUserDonationPaymentLink($user);
+
+        $user->refresh();
+
+        $this->assertNotNull($user->stripe_donation_purhcase_link_id);
+        $this->assertNotNull($user->stripe_donation_purhcase_link_url);
+
+    }
+
+    public function testrunAllDonationLinkCreation() {
+
+        $user = User::factory()->create(['stripe_express_account_id' => env('STRIPE_TEST_USER_ID')]);
+
+        //Assert All is null
+        $this->assertNull($user->stripe_donation_product_id);
+        $this->assertNull($user->stripe_donation_price_id);
+        $this->assertNull($user->stripe_donation_purhcase_link_id);
+        $this->assertNull($user->stripe_donation_purhcase_link_url);
+
+        $user = UsersFacade::runAllDonationLinkCreation($user);
+
+        $this->assertNotNull($user->stripe_donation_purhcase_link_id);
+        $this->assertNotNull($user->stripe_donation_purhcase_link_url);
+        $this->assertNotNull($user->stripe_donation_price_id);
+        $this->assertNotNull($user->stripe_donation_product_id);
 
     }
 }

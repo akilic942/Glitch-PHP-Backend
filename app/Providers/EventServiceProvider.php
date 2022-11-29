@@ -22,6 +22,7 @@ class EventServiceProvider extends ServiceProvider
             \SocialiteProviders\Twitch\TwitchExtendSocialite::class.'@handle',
             \SocialiteProviders\YouTube\YouTubeExtendSocialite::class.'@handle',
             \SocialiteProviders\Facebook\FacebookExtendSocialite::class.'@handle',
+            \SocialiteProviders\Stripe\StripeExtendSocialite::class.'@handle',
         ],
     ];
 

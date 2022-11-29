@@ -1,6 +1,9 @@
 <?php
 namespace App\Facades;
 
+use App\Enums\Roles;
+use App\Enums\Widgets;
+use App\Models\Event;
 use App\Models\PasswordReset;
 use App\Models\User;
 use Carbon\Carbon;
@@ -72,4 +75,114 @@ class UsersFacade {
 
         return $result;
     }
+    
+
+
+    public static function createUserDonationPaymentLink(User $user)
+    {
+
+        $data = [
+            'line_items' => [
+                [
+                    'price' => $user->stripe_donation_price_id,
+                    'quantity' => 1,
+                ],
+            ],
+            'application_fee_amount' => 2,
+            'on_behalf_of' => $user->stripe_express_account_id,
+            'transfer_data' => [
+                'destination' => $user->stripe_express_account_id,
+            ]
+        ];
+
+        
+        //$account_data = ['stripe_account' => trim($user->stripe_express_account_id)];
+        $account_data = [];
+        
+
+        $link = StripeFacade::createPaymentLink($data, $account_data);
+
+        $user->forceFill([
+            'stripe_donation_purhcase_link_id' => $link->id,
+            'stripe_donation_purhcase_link_url' => $link->url
+        ]);
+
+        $user->save();
+
+        return $link;
+    }
+
+    public static function createUserDonationProduct(User $user)
+    {
+        $data = array(
+            'name' => $user->username . ' Donation',
+            'active' => true,
+            'description' => 'Make a donation to ' . $user->username . ' and support them in their content.'
+        );
+
+        $product = StripeFacade::createProduct($user->username . ' Donation', $data);
+
+        $user->forceFill(['stripe_donation_product_id' => $product->id]);
+        $user->save();
+
+        return $product;
+
+    }
+
+    public static function createUserDonationtPrice(User $user) {
+
+
+        $data = [
+            'currency' => 'usd',
+            'custom_unit_amount' => ['enabled' => true],
+            'product' => $user->stripe_donation_product_id,
+        ];
+
+        $price = StripeFacade::createPrice($user->stripe_donation_product_id, $data);
+
+        $user->forceFill(['stripe_donation_price_id' => $price->id]);
+        $user->save();
+
+        return $price;
+    }
+
+    public static function runAllDonationLinkCreation(User $user) {
+
+        UsersFacade::createUserDonationProduct($user);
+        $user->refresh();
+
+
+        UsersFacade::createUserDonationtPrice($user);
+        $user->refresh();
+
+
+        UsersFacade::createUserDonationPaymentLink($user);
+        $user->refresh();
+
+        return $user;
+    }
+
+    public static function activateDonationForEvent(Event $event, User $user) {
+
+        if(!$user->stripe_donation_purhcase_link_url) {
+            return false;
+        }
+
+        EventsFacade::setWidgetEnvOptions($event, Widgets::GLITCH_DONATION_BUTTON, ['key' => 'stripe_payment_link', 'value' => $user->stripe_donation_purhcase_link_url]);
+
+        //Activate Widget For Everyone
+        EventsFacade::enableWidget($event, Widgets::GLITCH_DONATION_BUTTON, [Roles::Subscriber]);
+
+
+        return $event;
+    }
+
+    public static function deactivateDonationForEvent(Event $event) {
+
+        EventsFacade::disableWidget($event, Widgets::GLITCH_DONATION_BUTTON);
+
+        return $event;
+    }
+
+
 }

@@ -123,7 +123,7 @@ class User extends BaseAuthModel implements JWTSubject
     }
 
     public function events() {
-       return $this->hasManyThrough(Event::class, EventUser::class, 'user_id', 'id','id', 'event_id');
+       return $this->hasManyThrough(Event::class, EventUser::class, 'user_id', 'id','id', 'event_id')->orderBy('created_at', 'DESC');;
     }
 
     public function followers() {

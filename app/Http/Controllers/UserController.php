@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\HttpStatusCodes;
 use App\Facades\AuthenticationFacade;
 use App\Facades\FollowFacade;
+use App\Facades\UsersFacade;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Resources\AffirmationResource;
 use App\Http\Resources\DiscussionResource;
@@ -253,6 +255,24 @@ class UserController extends Controller
         $user->save();
        
         return UserFullResource::make($user);
+    }
+
+    public function createDonationPage(StoreImageRequest $request) {
+
+        $user = $request->user();
+
+        if(!$user){
+            return response()->json(['Unauthorized'], 401);
+        }
+
+        if(!$user->stripe_express_account_id) {
+            return response()->json(['Must be authenticated with Stripe first.'], HttpStatusCodes::HTTP_NO_CONTENT);
+        }
+
+        UsersFacade::runAllDonationLinkCreation($user);
+
+        return UserFullResource::make($user);
+
     }
 
 }
