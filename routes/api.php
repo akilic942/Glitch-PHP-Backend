@@ -48,8 +48,8 @@ Route::post('events/{uuid}/enableOverlay/{subid}', 'App\Http\Controllers\EventCo
 Route::post('events/{uuid}/disableOverlay', 'App\Http\Controllers\EventController@disableOverlay');
 
 //Donations Buttons
-Route::post('events/{uuid}/enableDonations', 'App\Http\Controllers\EventController@enableOverlay');
-Route::post('events/{uuid}/disableDonations', 'App\Http\Controllers\EventController@disableOverlay');
+Route::post('events/{uuid}/enableDonations', 'App\Http\Controllers\EventController@enableDonations');
+Route::post('events/{uuid}/disableDonations', 'App\Http\Controllers\EventController@disableDonations');
 
 
 
