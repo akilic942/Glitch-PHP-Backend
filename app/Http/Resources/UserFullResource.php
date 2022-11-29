@@ -59,7 +59,7 @@ class UserFullResource extends JsonResource
 
         $loggedin_user = Auth::user();
 
-        if($loggedin_user->id == $this->id) {
+        if($loggedin_user && $loggedin_user->id == $this->id) {
             $data['stripe_express_account_id'] = $this->stripe_express_account_id;
             $data['stripe_donation_purhcase_link_url'] = $this->stripe_donation_purhcase_link_url;
         }
