@@ -133,7 +133,7 @@ class EventController extends Controller
 
         $event->update($data);
 
-        return new EventResource($event);
+        return new EventFullResource($event);
     }
 
     public function updateInvirtuEvent(UpdateEventRequest $request, $id)
