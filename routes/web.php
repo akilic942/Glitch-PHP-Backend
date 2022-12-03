@@ -38,6 +38,10 @@ Route::get('/auth/facebook/redirect', function (Request $request) {
         AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
     }
 
+    if(isset($input['redirect']) && $input['redirect']) {
+        AuthenticationFacade::setRedirectURI($input['redirect']);
+    }
+
     return Socialite::driver('facebook')->redirect();
 });
 
@@ -48,7 +52,7 @@ Route::get('/auth/facebook/callback', function () {
     //Check to see if the user is logged in
     $loggedInUser = Auth::guard('web')->user();
 
-    $redirect_query = '';
+    $redirect_query = (AuthenticationFacade::getRedirectURI()) ? AuthenticationFacade::getRedirectURI() :  env('FACEBOOK_REDIRECT_BACK_TO_SITE');
 
     //If they are not logged in, we are going to authenticate them
     //and then use a one time token to login them when they return
@@ -71,7 +75,7 @@ Route::get('/auth/facebook/callback', function () {
 
         $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
 
-        $redirect_query = '?loginToken=' . $loggedInUser->one_time_login_token;
+        $redirect_query = AuthenticationFacade::appendOneTimeLoginTokenToRedirect($redirect_query, $loggedInUser->one_time_login_token);
     }
 
     if ($loggedInUser) {
@@ -88,7 +92,10 @@ Route::get('/auth/facebook/callback', function () {
         $loggedInUser->save();
     }
 
-    return Redirect::to(env('FACEBOOK_REDIRECT_BACK_TO_SITE') . $redirect_query);
+    AuthenticationFacade::clearRedirectURI();
+    Auth::logout();
+ 
+    return Redirect::to($redirect_query);
 });
 
 Route::get('/auth/youtube/redirect', function (Request $request) {
@@ -97,6 +104,10 @@ Route::get('/auth/youtube/redirect', function (Request $request) {
 
     if (isset($input['token']) && $input['token']) {
         AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
+    }
+
+    if(isset($input['redirect']) && $input['redirect']) {
+        AuthenticationFacade::setRedirectURI($input['redirect']);
     }
 
     return Socialite::driver('youtube')->redirect();
@@ -109,7 +120,7 @@ Route::get('/auth/youtube/callback', function () {
     //Check to see if the user is logged in
     $loggedInUser = Auth::guard('web')->user();
 
-    $redirect_query = '';
+    $redirect_query = (AuthenticationFacade::getRedirectURI()) ? AuthenticationFacade::getRedirectURI() :  env('YOUTUBE_REDIRECT_BACK_TO_SITE');
 
     //If they are not logged in, we are going to authenticate them
     //and then use a one time token to login them when they return
@@ -119,15 +130,7 @@ Route::get('/auth/youtube/callback', function () {
 
         $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
 
-        $redirect_query = '?loginToken=' . $loggedInUser->one_time_login_token;
-    }
-
-    if (!$loggedInUser) {
-        $loggedInUser = UsersFacade::retrieveOrCreate($user->email, $user->nickname, Str::random(10), $user->nickname);
-
-        $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
-
-        $redirect_query = '?loginToken=' . $loggedInUser->one_time_login_token;
+        $redirect_query = AuthenticationFacade::appendOneTimeLoginTokenToRedirect($redirect_query, $loggedInUser->one_time_login_token);
     }
 
     if ($loggedInUser) {
@@ -145,7 +148,10 @@ Route::get('/auth/youtube/callback', function () {
         $loggedInUser->save();
     }
 
-    return Redirect::to(env('YOUTUBE_REDIRECT_BACK_TO_SITE') . $redirect_query);
+    AuthenticationFacade::clearRedirectURI();
+    Auth::logout();
+ 
+    return Redirect::to($redirect_query);
 });
 
 
@@ -155,6 +161,10 @@ Route::get('/auth/twitch/redirect', function (Request $request) {
 
     if (isset($input['token']) && $input['token']) {
         AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
+    }
+
+    if(isset($input['redirect']) && $input['redirect']) {
+        AuthenticationFacade::setRedirectURI($input['redirect']);
     }
 
     return Socialite::driver('twitch')->redirect();
@@ -167,7 +177,7 @@ Route::get('/auth/twitch/callback', function () {
     //Check to see if the user is logged in
     $loggedInUser = Auth::guard('web')->user();
 
-    $redirect_query = '';
+    $redirect_query = (AuthenticationFacade::getRedirectURI()) ? AuthenticationFacade::getRedirectURI() :  env('TWITCH_REDIRECT_BACK_TO_SITE');
 
     //If they are not logged in, we are going to authenticate them
     //and then use a one time token to login them when they return
@@ -177,7 +187,7 @@ Route::get('/auth/twitch/callback', function () {
 
         $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
 
-        $redirect_query = '?loginToken=' . $loggedInUser->one_time_login_token;
+        $redirect_query = AuthenticationFacade::appendOneTimeLoginTokenToRedirect($redirect_query, $loggedInUser->one_time_login_token);
     }
 
     if ($loggedInUser) {
@@ -196,7 +206,10 @@ Route::get('/auth/twitch/callback', function () {
         $loggedInUser->save();
     }
 
-    return Redirect::to(env('TWTICH_REDIRECT_BACK_TO_SITE') . $redirect_query);
+    AuthenticationFacade::clearRedirectURI();
+    Auth::logout();
+
+    return Redirect::to($redirect_query);
 });
 
 Route::get('/auth/stripe/redirect', function (Request $request) {
@@ -214,6 +227,10 @@ Route::get('/auth/stripe/redirect', function (Request $request) {
         exit();
     }
 
+    if(isset($input['redirect']) && $input['redirect']) {
+        AuthenticationFacade::setRedirectURI($input['redirect']);
+    }
+
     return Socialite::driver('stripe')->redirect();
 });
 
@@ -229,7 +246,7 @@ Route::get('/auth/stripe/callback', function () {
         exit();
     }
 
-    $redirect_query = '';
+    $redirect_query = (AuthenticationFacade::getRedirectURI()) ? AuthenticationFacade::getRedirectURI() :  env('STRIPE_REDIRECT_BACK_TO_SITE');
 
     //Login User is required for stripe
 
@@ -245,11 +262,12 @@ Route::get('/auth/stripe/callback', function () {
         ]);
 
         $loggedInUser->save();
-    } else {
-
     }
 
-    return Redirect::to(env('STRIPE_REDIRECT_BACK_TO_SITE') . $redirect_query);
+    AuthenticationFacade::clearRedirectURI();
+    Auth::logout();
+
+    return Redirect::to($redirect_query);
 });
 
 
@@ -261,6 +279,10 @@ Route::get('/auth/google/redirect', function (Request $request) {
         AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
     }
 
+    if(isset($input['redirect']) && $input['redirect']) {
+        AuthenticationFacade::setRedirectURI($input['redirect']);
+    }
+
     return Socialite::driver('google')->redirect();
 });
 
@@ -268,10 +290,14 @@ Route::get('/auth/google/callback', function () {
 
     $user = Socialite::driver('google')->user();
 
+    echo '<pre>';
+    print_r($user);
+    exit();
+
     //Check to see if the user is logged in
     $loggedInUser = Auth::guard('web')->user();
 
-    $redirect_query = '';
+    $redirect_query = (AuthenticationFacade::getRedirectURI()) ? AuthenticationFacade::getRedirectURI() :  env('GOOGLE_REDIRECT_BACK_TO_SITE');
 
     //If they are not logged in, we are going to authenticate them
     //and then use a one time token to login them when they return
@@ -294,7 +320,7 @@ Route::get('/auth/google/callback', function () {
 
         $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
 
-        $redirect_query = '?loginToken=' . $loggedInUser->one_time_login_token;
+        $redirect_query = AuthenticationFacade::appendOneTimeLoginTokenToRedirect($redirect_query, $loggedInUser->one_time_login_token);
     }
 
     if ($loggedInUser) {
@@ -311,7 +337,10 @@ Route::get('/auth/google/callback', function () {
         $loggedInUser->save();
     }
 
-    return Redirect::to(env('GOOGLE_REDIRECT_BACK_TO_SITE') . $redirect_query);
+    AuthenticationFacade::clearRedirectURI();
+    Auth::logout();
+
+    return Redirect::to($redirect_query);
 });
 
 
@@ -323,6 +352,10 @@ Route::get('/auth/microsoft/redirect', function (Request $request) {
         AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
     }
 
+    if(isset($input['redirect']) && $input['redirect']) {
+        AuthenticationFacade::setRedirectURI($input['redirect']);
+    }
+
     return Socialite::driver('microsoft')->redirect();
 });
 
@@ -330,10 +363,14 @@ Route::get('/auth/microsoft/callback', function () {
 
     $user = Socialite::driver('microsoft')->user();
 
+    echo '<pre>';
+    print_r($user);
+    exit();
+
     //Check to see if the user is logged in
     $loggedInUser = Auth::guard('web')->user();
 
-    $redirect_query = '';
+    $redirect_query = (AuthenticationFacade::getRedirectURI()) ? AuthenticationFacade::getRedirectURI() :  env('MICROSOFT_REDIRECT_BACK_TO_SITE');
 
     //If they are not logged in, we are going to authenticate them
     //and then use a one time token to login them when they return
@@ -356,7 +393,7 @@ Route::get('/auth/microsoft/callback', function () {
 
         $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
 
-        $redirect_query = '?loginToken=' . $loggedInUser->one_time_login_token;
+        $redirect_query = AuthenticationFacade::appendOneTimeLoginTokenToRedirect($redirect_query, $loggedInUser->one_time_login_token);
     }
 
     if ($loggedInUser) {
@@ -373,7 +410,10 @@ Route::get('/auth/microsoft/callback', function () {
         $loggedInUser->save();
     }
 
-    return Redirect::to(env('MICROSOFT_REDIRECT_BACK_TO_SITE') . $redirect_query);
+    AuthenticationFacade::clearRedirectURI();
+    Auth::logout();
+
+    return Redirect::to($redirect_query);
 });
 
 
@@ -385,6 +425,10 @@ Route::get('/auth/teams/redirect', function (Request $request) {
         AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
     }
 
+    if(isset($input['redirect']) && $input['redirect']) {
+        AuthenticationFacade::setRedirectURI($input['redirect']);
+    }
+
     return Socialite::driver('teamservice')->redirect();
 });
 
@@ -392,10 +436,14 @@ Route::get('/auth/teams/callback', function () {
 
     $user = Socialite::driver('teamservice')->user();
 
+    echo '<pre>';
+    print_r($user);
+    exit();
+
     //Check to see if the user is logged in
     $loggedInUser = Auth::guard('web')->user();
 
-    $redirect_query = '';
+    $redirect_query = (AuthenticationFacade::getRedirectURI()) ? AuthenticationFacade::getRedirectURI() :  env('TEAMSERVICE_REDIRECT_BACK_TO_SITE');
 
     //If they are not logged in, we are going to authenticate them
     //and then use a one time token to login them when they return
@@ -418,22 +466,25 @@ Route::get('/auth/teams/callback', function () {
 
         $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
 
-        $redirect_query = '?loginToken=' . $loggedInUser->one_time_login_token;
+        $redirect_query = AuthenticationFacade::appendOneTimeLoginTokenToRedirect($redirect_query, $loggedInUser->one_time_login_token);
     }
 
     if ($loggedInUser) {
 
         $loggedInUser->forceFill([
-            'google_auth_token' => $user->token,
-            'google_id' => $user->id,
-            'google_name' => $user->name,
-            'google_email' => $user->email,
-            'google_avatar' => $user->avatar,
-            'google_token_expiration' => $user->expiresIn,
+            'microsoft_teams_auth_token' => $user->token,
+            'microsoft_teamsid' => $user->id,
+            'microsoft_teams_name' => $user->name,
+            'microsoft_teams_email' => $user->email,
+            'microsoft_teams_avatar' => $user->avatar,
+            'microsoft_teams_token_expiration' => $user->expiresIn,
         ]);
 
         $loggedInUser->save();
     }
 
-    return Redirect::to(env('TEAMSERVICE_REDIRECT_BACK_TO_SITE') . $redirect_query);
+    AuthenticationFacade::clearRedirectURI();
+    Auth::logout();
+
+    return Redirect::to($redirect_query);
 });
