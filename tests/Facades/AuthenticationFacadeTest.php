@@ -30,4 +30,19 @@ class AuthenticationFacadeTest extends TestCase {
         $this->assertNull($userAuthenticate->one_time_login_token);
         $this->assertNull($userAuthenticate->one_time_login_token_date);
     }
+
+    public function testOAuthRedirect() {
+
+        $redirect = 'http://www.example.com';
+
+        $this->assertNull(AuthenticationFacade::getRedirectURI());
+
+        AuthenticationFacade::setRedirectURI($redirect);
+
+        $this->assertEquals($redirect, AuthenticationFacade::getRedirectURI());
+
+        AuthenticationFacade::clearRedirectURI();
+
+        $this->assertNull(AuthenticationFacade::getRedirectURI());
+    }
 }

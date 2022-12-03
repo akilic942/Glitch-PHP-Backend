@@ -50,5 +50,20 @@ return [
         'client_secret' => env('STRIPE_CLIENT_SECRET'),  
         'redirect' => env('STRIPE_REDIRECT_URI') 
     ],
+    'google' => [    
+        'client_id' => env('GOOGLE_CLIENT_ID'),  
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),  
+        'redirect' => env('GOOGLE_REDIRECT_URI') 
+    ],
+    'microsoft' => [    
+        'client_id' => env('MICROSOFT_CLIENT_ID'),  
+        'client_secret' => env('MICROSOFT_CLIENT_SECRET'),  
+        'redirect' => env('MICROSOFT_REDIRECT_URI') 
+    ],
+    'teamservice' => [    
+        'client_id' => env('TEAMSERVICE_CLIENT_ID'),  
+        'client_secret' => env('TEAMSERVICE_CLIENT_SECRET'),  
+        'redirect' => env('TEAMSERVICE_REDIRECT_URI') 
+    ],
 
 ];
