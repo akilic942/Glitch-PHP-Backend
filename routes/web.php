@@ -251,3 +251,189 @@ Route::get('/auth/stripe/callback', function () {
 
     return Redirect::to(env('STRIPE_REDIRECT_BACK_TO_SITE') . $redirect_query);
 });
+
+
+Route::get('/auth/google/redirect', function (Request $request) {
+
+    $input = $request->all();
+
+    if (isset($input['token']) && $input['token']) {
+        AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
+    }
+
+    return Socialite::driver('google')->redirect();
+});
+
+Route::get('/auth/google/callback', function () {
+
+    $user = Socialite::driver('google')->user();
+
+    //Check to see if the user is logged in
+    $loggedInUser = Auth::guard('web')->user();
+
+    $redirect_query = '';
+
+    //If they are not logged in, we are going to authenticate them
+    //and then use a one time token to login them when they return
+    //to the frontend
+    if (!$loggedInUser) {
+
+        $name_parts = explode(" ", $user->name);
+
+        $first_name = $name_parts[0];
+
+        $last_name = '';
+
+        if (isset($name_parts[1]) && $name_parts[1]) {
+            $last_name = $name_parts[1];
+        } else {
+            $last_name = $name_parts[0];
+        }
+
+        $loggedInUser = UsersFacade::retrieveOrCreate($user->email, $first_name, $last_name, $user->nickname, $user->avatar);
+
+        $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
+
+        $redirect_query = '?loginToken=' . $loggedInUser->one_time_login_token;
+    }
+
+    if ($loggedInUser) {
+
+        $loggedInUser->forceFill([
+            'google_auth_token' => $user->token,
+            'google_id' => $user->id,
+            'google_name' => $user->name,
+            'google_email' => $user->email,
+            'google_avatar' => $user->avatar,
+            'google_token_expiration' => $user->expiresIn,
+        ]);
+
+        $loggedInUser->save();
+    }
+
+    return Redirect::to(env('GOOGLE_REDIRECT_BACK_TO_SITE') . $redirect_query);
+});
+
+
+Route::get('/auth/microsoft/redirect', function (Request $request) {
+
+    $input = $request->all();
+
+    if (isset($input['token']) && $input['token']) {
+        AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
+    }
+
+    return Socialite::driver('microsoft')->redirect();
+});
+
+Route::get('/auth/microsoft/callback', function () {
+
+    $user = Socialite::driver('microsoft')->user();
+
+    //Check to see if the user is logged in
+    $loggedInUser = Auth::guard('web')->user();
+
+    $redirect_query = '';
+
+    //If they are not logged in, we are going to authenticate them
+    //and then use a one time token to login them when they return
+    //to the frontend
+    if (!$loggedInUser) {
+
+        $name_parts = explode(" ", $user->name);
+
+        $first_name = $name_parts[0];
+
+        $last_name = '';
+
+        if (isset($name_parts[1]) && $name_parts[1]) {
+            $last_name = $name_parts[1];
+        } else {
+            $last_name = $name_parts[0];
+        }
+
+        $loggedInUser = UsersFacade::retrieveOrCreate($user->email, $first_name, $last_name, $user->nickname, $user->avatar);
+
+        $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
+
+        $redirect_query = '?loginToken=' . $loggedInUser->one_time_login_token;
+    }
+
+    if ($loggedInUser) {
+
+        $loggedInUser->forceFill([
+            'microsoft_auth_token' => $user->token,
+            'microsoft_id' => $user->id,
+            'microsoft_name' => $user->name,
+            'microsoft_email' => $user->email,
+            'microsoft_avatar' => $user->avatar,
+            'microsoft_token_expiration' => $user->expiresIn,
+        ]);
+
+        $loggedInUser->save();
+    }
+
+    return Redirect::to(env('MICROSOFT_REDIRECT_BACK_TO_SITE') . $redirect_query);
+});
+
+
+Route::get('/auth/teams/redirect', function (Request $request) {
+
+    $input = $request->all();
+
+    if (isset($input['token']) && $input['token']) {
+        AuthenticationFacade::useOneTimeLoginToken($input['token'], 'web');
+    }
+
+    return Socialite::driver('teamservice')->redirect();
+});
+
+Route::get('/auth/teams/callback', function () {
+
+    $user = Socialite::driver('teamservice')->user();
+
+    //Check to see if the user is logged in
+    $loggedInUser = Auth::guard('web')->user();
+
+    $redirect_query = '';
+
+    //If they are not logged in, we are going to authenticate them
+    //and then use a one time token to login them when they return
+    //to the frontend
+    if (!$loggedInUser) {
+
+        $name_parts = explode(" ", $user->name);
+
+        $first_name = $name_parts[0];
+
+        $last_name = '';
+
+        if (isset($name_parts[1]) && $name_parts[1]) {
+            $last_name = $name_parts[1];
+        } else {
+            $last_name = $name_parts[0];
+        }
+
+        $loggedInUser = UsersFacade::retrieveOrCreate($user->email, $first_name, $last_name, $user->nickname, $user->avatar);
+
+        $loggedInUser = AuthenticationFacade::createOneTimeLoginToken($loggedInUser);
+
+        $redirect_query = '?loginToken=' . $loggedInUser->one_time_login_token;
+    }
+
+    if ($loggedInUser) {
+
+        $loggedInUser->forceFill([
+            'google_auth_token' => $user->token,
+            'google_id' => $user->id,
+            'google_name' => $user->name,
+            'google_email' => $user->email,
+            'google_avatar' => $user->avatar,
+            'google_token_expiration' => $user->expiresIn,
+        ]);
+
+        $loggedInUser->save();
+    }
+
+    return Redirect::to(env('TEAMSERVICE_REDIRECT_BACK_TO_SITE') . $redirect_query);
+});

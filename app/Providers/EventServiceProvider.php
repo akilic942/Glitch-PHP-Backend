@@ -23,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
             \SocialiteProviders\YouTube\YouTubeExtendSocialite::class.'@handle',
             \SocialiteProviders\Facebook\FacebookExtendSocialite::class.'@handle',
             \SocialiteProviders\Stripe\StripeExtendSocialite::class.'@handle',
+            \SocialiteProviders\Google\GoogleExtendSocialite::class.'@handle',
+            \SocialiteProviders\Microsoft\MicrosoftExtendSocialite::class.'@handle',
+            \SocialiteProviders\TeamService\TeamServiceExtendSocialite::class.'@handle',
         ],
     ];
 

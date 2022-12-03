@@ -3,9 +3,13 @@ namespace App\Facades;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 class AuthenticationFacade {
+
+
+    static const OAUTH_REDIRECT_KEY = 'oauth_redirect_uri';
 
     public static function createOneTimeLoginToken(User $user) : User {
 
@@ -43,4 +47,19 @@ class AuthenticationFacade {
 
         return $user;
     }
+
+    public static function setRedirectURI(string $redirect_url, string $guard = 'web') : User | bool {
+
+        return Session::set(self::OAUTH_REDIRECT_KEY, $redirect_url);
+    }
+
+    public static function getRedirectURI() {
+        return Session::get(self::OAUTH_REDIRECT_KEY);
+    }
+
+    public static function clearRedirectURI() {
+        return Session::forget(self::OAUTH_REDIRECT_KEY);
+    }
+
+
 }
