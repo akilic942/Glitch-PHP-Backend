@@ -226,6 +226,31 @@ class EventController extends Controller
 
     }
 
+    public function updateRTMPSource(UpdateEventRequest $request, $id, $subid) {
+
+        $event = Event::where('id', $id)->first();
+
+        if(!$event){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+           return response()->json(['error' => 'Access denied to live stream.'], 403);
+        }
+
+        $input = $request->all();
+
+        if(!$subid) {
+            return response()->json(['error' => 'The ID of the stream you want to remove is required.'], 403);
+        }
+
+        EventsFacade::updateRestream($event, $subid, $input);
+
+        return new EventFullResource($event);
+
+    }
+
     public function removeRTMPSource(UpdateEventRequest $request, $id, $subid) {
 
         $event = Event::where('id', $id)->first();
