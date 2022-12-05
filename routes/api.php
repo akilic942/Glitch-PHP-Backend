@@ -32,8 +32,13 @@ Route::get('events/{uuid}', 'App\Http\Controllers\EventController@show');
 Route::put('events/{uuid}', 'App\Http\Controllers\EventController@update');
 Route::put('events/{uuid}/invirtu', 'App\Http\Controllers\EventController@updateInvirtuEvent');
 Route::delete('events/{uuid}', 'App\Http\Controllers\EventController@destroy');
+
+//Event RTMP
 Route::post('events/{uuid}/addRTMPSource', 'App\Http\Controllers\EventController@addRTMPSource');
+Route::put('events/{uuid}/updateRTMPSource/{subid}', 'App\Http\Controllers\EventController@updateRTMPSource');
 Route::delete('events/{uuid}/removeRTMPSource/{subid}', 'App\Http\Controllers\EventController@removeRTMPSource');
+
+//Main Image
 Route::post('events/{uuid}/uploadMainImage', 'App\Http\Controllers\EventController@uploadMainImage');
 Route::post('events/{uuid}/uploadBannerImage', 'App\Http\Controllers\EventController@uploadBannerImage');
 Route::post('events/{uuid}/enableBroadcastMode', 'App\Http\Controllers\EventController@enableBroadcastMode');

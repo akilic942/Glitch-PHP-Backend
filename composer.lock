@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "20b3933d2afc3417a4feb5fc52379a0b",
+    "content-hash": "28ca898d777a778f7c96aa7bc46f15f9",
     "packages": [
         {
             "name": "adam-paterson/oauth2-stripe",
@@ -5064,6 +5064,101 @@
                 "source": "https://github.com/socialiteproviders/manager"
             },
             "time": "2022-09-02T10:20:10+00:00"
+        },
+        {
+            "name": "socialiteproviders/microsoft",
+            "version": "4.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SocialiteProviders/Microsoft.git",
+                "reference": "a29ead01978fbfc10e6e6acac03467bb4eb27944"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SocialiteProviders/Microsoft/zipball/a29ead01978fbfc10e6e6acac03467bb4eb27944",
+                "reference": "a29ead01978fbfc10e6e6acac03467bb4eb27944",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.4 || ^8.0",
+                "socialiteproviders/manager": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialiteProviders\\Microsoft\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brian Faust",
+                    "email": "hello@brianfaust.de"
+                }
+            ],
+            "description": "Microsoft OAuth2 Provider for Laravel Socialite",
+            "keywords": [
+                "laravel",
+                "microsoft",
+                "oauth",
+                "provider",
+                "socialite"
+            ],
+            "support": {
+                "docs": "https://socialiteproviders.com/microsoft",
+                "issues": "https://github.com/socialiteproviders/providers/issues",
+                "source": "https://github.com/socialiteproviders/providers"
+            },
+            "time": "2022-09-02T10:07:27+00:00"
+        },
+        {
+            "name": "socialiteproviders/microsoft-teamservice",
+            "version": "4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SocialiteProviders/Microsoft-TeamService.git",
+                "reference": "2f394fb5cab963a869d3d3bf423bdc1d02af3827"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SocialiteProviders/Microsoft-TeamService/zipball/2f394fb5cab963a869d3d3bf423bdc1d02af3827",
+                "reference": "2f394fb5cab963a869d3d3bf423bdc1d02af3827",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.2 || ^8.0",
+                "socialiteproviders/manager": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SocialiteProviders\\TeamService\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Te7a-Houdini",
+                    "email": "ahmedabdelftah95165@gmail.com"
+                },
+                {
+                    "name": "Anton Komarev",
+                    "email": "ell@cybercog.su"
+                }
+            ],
+            "description": "Microsoft TeamService OAuth2 Provider for Laravel Socialite",
+            "support": {
+                "source": "https://github.com/SocialiteProviders/Microsoft-TeamService/tree/4.1.0"
+            },
+            "time": "2020-12-01T23:10:59+00:00"
         },
         {
             "name": "socialiteproviders/stripe",

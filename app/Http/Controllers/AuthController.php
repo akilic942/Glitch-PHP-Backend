@@ -46,6 +46,10 @@ class AuthController extends Controller
     {
         $credentials = $request->only(['email', 'password']);
 
+        if(isset($credentials['email']) && $credentials['email']){
+            $credentials['email'] = mb_strtolower($credentials['email']);
+        }
+
         $token = null;
 
         $query = 'email';
@@ -56,6 +60,10 @@ class AuthController extends Controller
 
             $credentials = $request->only(['username', 'password']);
 
+            if(isset($credentials['username']) && $credentials['username']){
+                $credentials['username'] = mb_strtolower($credentials['username']);
+            }
+
             if (!$token = auth()->attempt($credentials)) {
                 return response()->json(['error' => 'Invalid Login Credentials'], 401);
             }
@@ -64,9 +72,9 @@ class AuthController extends Controller
         $input = $request->all();
 
         if($query == 'email'){
-            $user = User::where('email', $input['email'])->first();
+            $user = User::where('email', mb_strtolower($input['email']))->first();
         } else {
-            $user = User::where('username', $input['username'])->first();
+            $user = User::where('username', mb_strtolower($input['username']))->first();
         }
 
         $user->token = $this->respondWithToken($token);

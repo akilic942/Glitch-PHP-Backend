@@ -12,7 +12,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends BaseAuthModel implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
-    
+
     protected $primaryKey = "id";
 
     protected $keyType =  'string';
@@ -22,9 +22,9 @@ class User extends BaseAuthModel implements JWTSubject
         'last_name'  => 'required|string|min:0|max:255',
         'username'  => 'required|string|min:0|max:255|unique:users',
         'password'  => 'required',
-        'email'  => 'required|email|unique:users|string|min:0|max:255',  
+        'email'  => 'required|email|unique:users|string|min:0|max:255',
         //'date_of_birth' => 'date_format:"Y-m-d"|nullable',
-        
+
         //Image validation
         'avatar' => 'string|min:0|max:255|url|nullable',
         'banner_image' => 'string|min:0|max:255|url|nullable',
@@ -68,7 +68,7 @@ class User extends BaseAuthModel implements JWTSubject
         'phone_number',
         'phone_number_country_code',
         'bio',
-        
+
         //Social Pages
         'twitter_page',
         'facebook_page',
@@ -114,23 +114,46 @@ class User extends BaseAuthModel implements JWTSubject
 
     public function getJWTIdentifier()
     {
-      return $this->getKey();
+        return $this->getKey();
     }
 
     public function getJWTCustomClaims()
     {
-      return [];
+        return [];
     }
 
-    public function events() {
-       return $this->hasManyThrough(Event::class, EventUser::class, 'user_id', 'id','id', 'event_id')->orderBy('created_at', 'DESC');;
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = strtolower($value);
     }
 
-    public function followers() {
-        return $this->hasManyThrough(User::class, Follow::class, 'following_id', 'id','id', 'follower_id');
-     }
+    public function getEmailAttribute($value)
+    {
+        return strtolower($value);
+    }
 
-     public function following() {
-        return $this->hasManyThrough(User::class, Follow::class, 'follower_id', 'id','id', 'following_id');
-     }
+    public function setUsernameAttribute($value)
+    {
+        $this->attributes['username'] = strtolower($value);
+    }
+
+    public function getUsernameAttribute($value)
+    {
+        return strtolower($value);
+    }
+
+    public function events()
+    {
+        return $this->hasManyThrough(Event::class, EventUser::class, 'user_id', 'id', 'id', 'event_id')->orderBy('created_at', 'DESC');;
+    }
+
+    public function followers()
+    {
+        return $this->hasManyThrough(User::class, Follow::class, 'following_id', 'id', 'id', 'follower_id');
+    }
+
+    public function following()
+    {
+        return $this->hasManyThrough(User::class, Follow::class, 'follower_id', 'id', 'id', 'following_id');
+    }
 }

@@ -237,6 +237,19 @@ class InvirtuEvents extends InvirtuResource
     }
 
     /**
+     * Update a restream.
+     *
+     * @see    https://developers.bingewave.com/docs/eventrestreams#restreamupdate
+     * @param  string $id
+     * @return stdClass
+     * @throws Exception
+     */
+    public function updateRestream(string $event_id, string $stream_id, array $data, array $query = [])
+    {
+        return $this->client->put('/events/' . $event_id .'/updateRestream/' . $stream_id, $data, $query);
+    }
+
+    /**
      * Removes a stream that has been added.
      *
      * @see    https://developers.bingewave.com/docs/eventrestreams#restreamremove

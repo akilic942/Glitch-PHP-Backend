@@ -20,7 +20,7 @@ class EventsFacade {
         if($organizer_token &&  $event->invirtu_id){
             $client = new InvirtuClient($organizer_token);
 
-            $client->events->addRestream($event->invirtu_id, ['stream_url' => $rtmp_url]);
+            return $client->events->addRestream($event->invirtu_id, ['stream_url' => $rtmp_url]);
            
         }
 
@@ -34,7 +34,21 @@ class EventsFacade {
         if($organizer_token &&  $event->invirtu_id){
             $client = new InvirtuClient($organizer_token);
 
-            $client->events->getRestreams($event->invirtu_id);
+            return $client->events->getRestreams($event->invirtu_id);
+           
+        }
+
+    }
+
+    public static function updateRestream(Event $event, string $stream_id, array $data) {
+
+        $organizer_token = env('INVIRTU_ORGANIZER_TOKEN', '');
+
+        //This should be set run async
+        if($organizer_token &&  $event->invirtu_id){
+            $client = new InvirtuClient($organizer_token);
+
+            return $client->events->updateRestream($event->invirtu_id, $stream_id, $data);
            
         }
 
@@ -48,7 +62,7 @@ class EventsFacade {
         if($organizer_token &&  $event->invirtu_id){
             $client = new InvirtuClient($organizer_token);
 
-            $client->events->removeRestream($event->invirtu_id, $stream_id, []);
+            return $client->events->removeRestream($event->invirtu_id, $stream_id, []);
            
         }
 
