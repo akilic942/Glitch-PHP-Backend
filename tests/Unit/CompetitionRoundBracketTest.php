@@ -48,6 +48,10 @@ class CompetitionRoundBracketTest extends TestCase {
         $this->assertEquals($bracket->bracket, $data['bracket']);
         $this->assertEquals($bracket->competition_id, $data['competition_id']);
 
+        $bracket->refresh();
+
+        $this->assertNotNull($bracket->event_id);
+
 
     }
 

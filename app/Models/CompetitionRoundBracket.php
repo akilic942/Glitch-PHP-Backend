@@ -41,5 +41,10 @@ class CompetitionRoundBracket extends BaseModel
         'bracket_end_date'
     ];
 
+    public function competition()
+    {
+        return $this->belongsTo(Competition::class);
+    }
+
 
 }
