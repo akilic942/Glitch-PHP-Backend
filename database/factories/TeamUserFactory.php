@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,14 @@ class TeamUserFactory extends Factory
      */
     public function definition()
     {
+
+        $team = Team::factory()->create();
+
+        $user = User::factory()->create();
+
         return [
-            //
+            'team_id' => $team->id,
+            'user_id' => $user->id
         ];
     }
 }

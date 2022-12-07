@@ -6,39 +6,37 @@ use App\Traits\HasCompositePrimaryKeyTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CompetitionTeam extends BaseModel
+class CompetitionRound extends BaseModel
 {
     use HasFactory, HasCompositePrimaryKeyTrait;
 
-    protected $primaryKey = ['competition_id','team_id'];
+    protected $primaryKey = ['competition_id','round'];
     
     public $incrementing = false;
 
     protected $keyType =  'string';
 
     protected $casts = [
-        'team_id' => 'string',
         'competition_id' => 'string',
+        'round' => 'integer',
     ];
 
     protected $rules = array(
         'competition_id' => 'required|uuid',
-        'team_id'  => 'required|uuid',
+        'round'  => 'required|integer',
+        'title' => 'nullable|string|min:0|max:255'
     );
 
     protected $fillable = [
-        'team_id',
         'competition_id',
-        'status'
+        'round',
+        'title',
+        'overview'
     ];
-
-    public function team()
-    {
-        return $this->belongsTo(Team::class);
-    }
 
     public function competition()
     {
         return $this->belongsTo(Competition::class);
     }
+
 }

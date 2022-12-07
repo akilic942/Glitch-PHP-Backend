@@ -55,13 +55,6 @@ return new class extends Migration
             $table->string('contact_phone_number')->nullable()->default('');
             $table->string('website')->nullable()->default('');
 
-            //Location
-            $table->string('venue_address_line_1')->nullable()->default('');
-            $table->string('venue_address_line_2')->nullable()->default('');
-            $table->string('zipcode')->nullable()->default('');
-            $table->string('city')->nullable()->default('');
-            $table->string('state ')->nullable()->default('');
-
             //Dates
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
@@ -71,6 +64,14 @@ return new class extends Migration
 
             $table->boolean('allow_team_signup')->nullable()->default(false);
             $table->boolean('allow_individual_signup')->nullable()->default(false);
+            $table->boolean('is_private')->nullable()->default(false);
+
+
+            $table->integer('competitors_per_match')->default(2);
+            $table->integer('winners_per_match')->default(1);
+
+            $table->double('team_registration_price')->nullable()->default(0);
+            $table->double('individual_registration_price')->nullable()->default(0);
 
             $table->timestamps();
         });

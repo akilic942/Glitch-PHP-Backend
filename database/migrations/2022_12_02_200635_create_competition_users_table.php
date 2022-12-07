@@ -14,7 +14,18 @@ return new class extends Migration
     public function up()
     {
         Schema::create('competition_users', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('competition_id');
+            $table->uuid('user_id');
+            $table->primary(['competition_id', 'user_id']);
+
+            $table->integer('user_role')->nullable();
+
+            $table->integer('status')->nullable();
+            $table->boolean('entry_fee_paid')->nullable()->default(0);
+            
+            $table->foreign('competition_id')->references('id')->on('competitions');
+            $table->foreign('user_id')->references('id')->on('users');
+
             $table->timestamps();
         });
     }

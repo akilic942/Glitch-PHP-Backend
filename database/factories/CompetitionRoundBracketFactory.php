@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Competition>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CompetitionRoundBracket>
  */
-class CompetitionFactory extends Factory
+class CompetitionRoundBracketFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,11 +16,8 @@ class CompetitionFactory extends Factory
      */
     public function definition()
     {
-        $faker = \Faker\Factory::create();
-
         return [
-           'name' => $faker->name(),
-           'description' => $faker->text(),
+            //
         ];
     }
 }

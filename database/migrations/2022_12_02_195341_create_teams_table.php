@@ -52,6 +52,8 @@ return new class extends Migration
             $table->string('contact_phone_number')->nullable()->default('');
             $table->string('website')->nullable()->default('');
 
+            $table->tinyInteger('join_process')->nullable()->default(0);
+
             $table->timestamps();
         });
 

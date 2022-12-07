@@ -14,7 +14,18 @@ return new class extends Migration
     public function up()
     {
         Schema::create('team_users', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('team_id');
+            $table->uuid('user_id');
+            $table->primary(['team_id', 'user_id']);
+
+            $table->integer('user_role')->nullable();
+
+            $table->integer('status')->nullable();
+
+            $table->foreign('team_id')->references('id')->on('teams');
+            $table->foreign('user_id')->references('id')->on('users');
+
+
             $table->timestamps();
         });
     }

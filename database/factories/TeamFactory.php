@@ -16,8 +16,13 @@ class TeamFactory extends Factory
      */
     public function definition()
     {
+
+        $faker = \Faker\Factory::create();
+
         return [
-            //
+            'name' => $faker->name(),
+            'description' => $faker->text(),
+            'join_process' => rand(1,3)
         ];
     }
 }

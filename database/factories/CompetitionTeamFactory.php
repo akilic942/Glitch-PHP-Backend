@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Competition;
+use App\Models\Team;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +19,14 @@ class CompetitionTeamFactory extends Factory
      */
     public function definition()
     {
+
+        $competition = Competition::factory()->create();
+
+        $team = Team::factory()->create();
+
         return [
-            //
+            'competition_id' => $competition->id,
+            'team_id' => $team->id
         ];
     }
 }

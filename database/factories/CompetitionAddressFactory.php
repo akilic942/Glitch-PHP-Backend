@@ -3,13 +3,12 @@
 namespace Database\Factories;
 
 use App\Models\Competition;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CompetitionUser>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CompetitionAddress>
  */
-class CompetitionUserFactory extends Factory
+class CompetitionAddressFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,15 +17,14 @@ class CompetitionUserFactory extends Factory
      */
     public function definition()
     {
-
+        $faker = \Faker\Factory::create();
 
         $competition = Competition::factory()->create();
 
-        $user = User::factory()->create();
-
         return [
+            'venue_name' => $faker->name(),
             'competition_id' => $competition->id,
-            'user' => $user->id
+            'is_virtual_hybrid_remote' => rand(1,3),
         ];
     }
 }
