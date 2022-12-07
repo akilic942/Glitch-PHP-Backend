@@ -21,6 +21,8 @@ return new class extends Migration
 
             $table->string('title')->nullable();
             $table->text('overview')->nullable();
+            $table->timestamp('round_start_date')->nullable();
+            $table->timestamp('round_end_date')->nullable();
 
             $table->foreign('competition_id')->references('id')->on('competitions');
             

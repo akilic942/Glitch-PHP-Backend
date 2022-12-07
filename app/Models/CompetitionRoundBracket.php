@@ -37,6 +37,8 @@ class CompetitionRoundBracket extends BaseModel
         'event_id',
         'is_winner',
         'is_finished',
+        'bracket_start_date',
+        'bracket_end_date'
     ];
 
 

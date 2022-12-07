@@ -69,6 +69,9 @@ return new class extends Migration
 
             $table->integer('competitors_per_match')->default(2);
             $table->integer('winners_per_match')->default(1);
+            
+            $table->integer('max_registration_for_teams')->nullable();
+            $table->integer('max_registration_for_users')->nullable();
 
             $table->double('team_registration_price')->nullable()->default(0);
             $table->double('individual_registration_price')->nullable()->default(0);

@@ -118,5 +118,50 @@ class CompetitionController extends Controller
         return response()->json(null, 204);
     }
 
-    
+    public function addTeam(Request $request, $id) {
+
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+            return response()->json(['error' => 'Access denied to live stream.'], 403);
+        }
+
+    }
+
+    public function addParticipant(Request $request, $id) {
+
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+            return response()->json(['error' => 'Access denied to live stream.'], 403);
+        }
+
+    }
+
+    public function registerTeam(Request $request, $id) {
+
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+    }
+
+    public function registerParticipant(Request $request, $id) {
+
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+        
+    }
 }

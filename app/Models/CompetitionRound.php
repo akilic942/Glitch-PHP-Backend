@@ -31,7 +31,9 @@ class CompetitionRound extends BaseModel
         'competition_id',
         'round',
         'title',
-        'overview'
+        'overview',
+        'round_start_date',
+        'round_end_date'
     ];
 
     public function competition()

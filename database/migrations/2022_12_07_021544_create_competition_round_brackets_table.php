@@ -30,6 +30,9 @@ return new class extends Migration
             $table->boolean('is_winner')->nullable();
             $table->boolean('is_finished')->nullable();
 
+            $table->timestamp('bracket_start_date')->nullable();
+            $table->timestamp('bracket_end_date')->nullable();
+
             $table->foreign('competition_id')->references('id')->on('competitions');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('team_id')->references('id')->on('teams');

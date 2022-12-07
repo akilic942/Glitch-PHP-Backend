@@ -63,6 +63,8 @@ class Competition extends BaseModel
 
         'competitors_per_match' => 'integer',
         'winners_per_match' => 'integer',
+        'max_registration_for_teams' => 'integer|nullable',
+        'max_registration_for_users' => 'integer|nullable',
         
         'team_registration_price' => 'double|nullable',
         'individual_registration_price' => 'double|nullable',
