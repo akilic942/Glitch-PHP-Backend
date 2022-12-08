@@ -99,5 +99,7 @@ class Team extends BaseModel
 
         'team_registration_price',
         'individual_registration_price',
+
+        'join_process'
     ];
 }

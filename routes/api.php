@@ -25,6 +25,13 @@ Route::post('auth/oneTimeLoginWithToken', 'App\Http\Controllers\AuthController@o
 Route::post('auth/forgotpassword', 'App\Http\Controllers\ForgotPasswordController@requestNewPassword');
 Route::post('auth/resetpassword', 'App\Http\Controllers\ForgotPasswordController@changePassword');
 
+//Competition Routes
+Route::get('competitions', 'App\Http\Controllers\CompetitionController@index');
+Route::post('competitions', 'App\Http\Controllers\CompetitionController@store');
+Route::get('competitions/{uuid}', 'App\Http\Controllers\CompetitionController@show');
+Route::put('competitions/{uuid}', 'App\Http\Controllers\CompetitionController@update');
+Route::delete('competitions/{uuid}', 'App\Http\Controllers\CompetitionController@destroy');
+
 //Event Routes
 Route::get('events', 'App\Http\Controllers\EventController@index');
 Route::post('events', 'App\Http\Controllers\EventController@store');
@@ -73,6 +80,13 @@ Route::post('messages/makeThread', 'App\Http\Controllers\MessageController@conve
 Route::post('messages', 'App\Http\Controllers\MessageController@store');
 Route::put('messages/{uuid}', 'App\Http\Controllers\MessageController@update');
 Route::delete('messages/{uuid}', 'App\Http\Controllers\MessageController@destroy');
+
+//Teams Routes
+Route::get('teams', 'App\Http\Controllers\TeamController@index');
+Route::post('teams', 'App\Http\Controllers\TeamController@store');
+Route::get('teams/{uuid}', 'App\Http\Controllers\TeamController@show');
+Route::put('teams/{uuid}', 'App\Http\Controllers\TeamController@update');
+Route::delete('teams/{uuid}', 'App\Http\Controllers\TeamController@destroy');
 
 //User Routes
 Route::get('users', 'App\Http\Controllers\UserController@index');

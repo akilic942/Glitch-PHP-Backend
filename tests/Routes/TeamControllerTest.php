@@ -2,27 +2,26 @@
 
 namespace Tests\Routes;
 
-use App\Facades\EventInvitesFacade;
+use App\Facades\TeamInvitesFacade;
 use App\Facades\RolesFacade;
-use App\Models\Event;
-use App\Models\EventInvite;
-use App\Models\EventOverlay;
+use App\Models\Team;
+
 use App\Models\User;
-use Database\Factories\EventInviteFactory;
+use Database\Factories\TeamInviteFactory;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
-class EventControllerTest extends TestCase
+class TeamControllerTest extends TestCase
 {
 
 
     public function testList(){
 
-        $events = Event::factory(30)->create();
+        $teams = Team::factory(30)->create();
 
         $user = User::factory()->create();
 
-        $url = $this->_getApiRoute() . 'events';
+        $url = $this->_getApiRoute() . 'teams';
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
@@ -32,11 +31,11 @@ class EventControllerTest extends TestCase
 
         $json = $response->json();
 
-        $eventData = $json['data'];
+        $teamData = $json['data'];
 
-        $this->assertCount(25, $eventData);
+        $this->assertCount(25, $teamData);
 
-        foreach($eventData as $event){
+        foreach($teamData as $team){
 
         }
 
@@ -44,7 +43,7 @@ class EventControllerTest extends TestCase
 
     public function testCreation(){
 
-        $url = $this->_getApiRoute() . 'events';
+        $url = $this->_getApiRoute() . 'teams';
 
         $user = User::factory()->create();
 
@@ -59,8 +58,9 @@ class EventControllerTest extends TestCase
         $user = User::factory()->create();
 
         $data = [
-            'title' => $faker->title(),
+            'name' => $faker->title(),
             'description' => $faker->paragraphs(8, true),
+            'join_process' => rand(1,3)
         ];
         
         $response = $this->withHeaders([
@@ -71,19 +71,20 @@ class EventControllerTest extends TestCase
 
         $json = $response->json();
 
-        $event = $json['data'];
+        $team = $json['data'];
 
-        $this->assertEquals($event['title'], $data['title']);
-        $this->assertEquals($event['description'], $data['description']);
-        //$this->assertEquals($event['user']['id'], $user->id);
+        $this->assertEquals($team['name'], $data['name']);
+        $this->assertEquals($team['description'], $data['description']);
+        $this->assertEquals($team['join_process'], $data['join_process']);
+        //$this->assertEquals($team['user']['id'], $user->id);
 
     }
 
     public function testView() {
 
-        $event = Event::factory()->create();
+        $team = Team::factory()->create();
 
-        $url = $this->_getApiRoute() . 'events/' . $event->id;
+        $url = $this->_getApiRoute() . 'teams/' . $team->id;
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken(),
@@ -95,10 +96,10 @@ class EventControllerTest extends TestCase
 
         $data = $json['data'];
 
-        $this->assertEquals($event->id, $data['id']);
-        $this->assertEquals($event->title, $data['title']);
-        $this->assertEquals($event->description, $data['description']);
-        //$this->assertEquals($event->user_id, $data['user']['id']);
+        $this->assertEquals($team->id, $data['id']);
+        $this->assertEquals($team->name, $data['name']);
+        $this->assertEquals($team->description, $data['description']);
+        //$this->assertEquals($team->user_id, $data['user']['id']);
 
     }
 
@@ -106,16 +107,16 @@ class EventControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $event = Event::factory()->create();
+        $team = Team::factory()->create();
 
-        $url = $this->_getApiRoute() . 'events/' . $event->id;
+        RolesFacade::teamMakeAdmin($team, $user);
 
-        RolesFacade::eventMakeAdmin($event, $user);
+        $url = $this->_getApiRoute() . 'teams/' . $team->id;
 
         $faker = \Faker\Factory::create();
 
         $data = [
-            'title' => $faker->title(),
+            'name' => $faker->title(),
             'description' => $faker->paragraphs(8, true),
         ];
 
@@ -130,13 +131,13 @@ class EventControllerTest extends TestCase
 
         $jsonData = $json['data'];
 
-        $this->assertEquals($event->id, $jsonData['id']);
-        $this->assertEquals($jsonData['title'], $data['title']);
+        $this->assertEquals($team->id, $jsonData['id']);
+        $this->assertEquals($jsonData['name'], $data['name']);
         $this->assertEquals($jsonData['description'], $data['description']);
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
-        ])->put($url, ['title' => 'Butt', 'description' => '']);
+        ])->put($url, ['name' => 'Butt', 'description' => '']);
 
         //print_r($response);
 
@@ -148,11 +149,11 @@ class EventControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $event = Event::factory()->create();
+        $team = Team::factory()->create();
 
-        RolesFacade::eventMakeAdmin($event, $user);
+        RolesFacade::teamMakeAdmin($team, $user);
 
-        $url = $this->_getApiRoute() . 'events/' . $event->id;
+        $url = $this->_getApiRoute() . 'teams/' . $team->id;
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
@@ -164,33 +165,34 @@ class EventControllerTest extends TestCase
 
     public function testNoToken() {
 
-        $event = Event::factory()->create();
+        $team = Team::factory()->create();
 
-        $url = $this->_getApiRoute() . 'events/' . $event->id;
+        $url = $this->_getApiRoute() . 'teams/' . $team->id;
 
         $response = $this->withHeaders([])->delete($url);
 
         $this->assertEquals(500, $response->status());
 
-        $url = $this->_getApiRoute() . 'events/' . $event->id;
+        $url = $this->_getApiRoute() . 'teams/' . $team->id;
 
         $response = $this->withHeaders([])->put($url);
 
         $this->assertEquals(500, $response->status());
 
-        $url = $this->_getApiRoute() . 'events/' . $event->id;
+        $url = $this->_getApiRoute() . 'teams/' . $team->id;
         
     }
 
+    /*
     public function testMainImage(){
 
         $user = User::factory()->create();
 
-        $event = Event::factory()->create();
+        $team = Team::factory()->create();
 
-        RolesFacade::eventMakeAdmin($event, $user);
+        RolesFacade::eventMakeAdmin($team, $user);
 
-        $url = $this->_getApiRoute() . 'events/' . $event->id. '/uploadMainImage';
+        $url = $this->_getApiRoute() . 'events/' . $team->id. '/uploadMainImage';
 
         $data = [
             'image' => UploadedFile::fake()->image('avatar.png')
@@ -214,11 +216,11 @@ class EventControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $event = Event::factory()->create();
+        $team = Team::factory()->create();
 
-        RolesFacade::eventMakeAdmin($event, $user);
+        RolesFacade::eventMakeAdmin($team, $user);
 
-        $url = $this->_getApiRoute() . 'events/' . $event->id. '/uploadBannerImage';
+        $url = $this->_getApiRoute() . 'events/' . $team->id. '/uploadBannerImage';
 
         $data = [
             'image' => UploadedFile::fake()->image('avatar.png')
@@ -238,42 +240,16 @@ class EventControllerTest extends TestCase
 
     }
 
-    public function testSyncAsLive(){
-
-        $user = User::factory()->create();
-
-        $event = Event::factory()->create();
-
-        RolesFacade::eventMakeAdmin($event, $user);
-
-        $this->assertEquals($event->is_live, 0);
-        $this->assertEquals($event->live_last_checkin, null);
-
-        $url = $this->_getApiRoute() . 'events/' . $event->id. '/syncAsLive';
-        
-        $response = $this->withHeaders([
-            'Authorization' => $this->getAccessToken($user),
-        ])->post($url, []);
-
-
-        $this->assertEquals(200, $response->status());
-
-        $event->refresh();
-
-        $this->assertEquals($event->is_live, 1);
-        $this->assertNotNull($event->live_last_checkin);
-
-    }
 
     public function testSendInviteCohost() {
 
         $user = User::factory()->create();
 
-        $event = Event::factory()->create();
+        $team = Team::factory()->create();
 
-        RolesFacade::eventMakeAdmin($event, $user);
+        RolesFacade::eventMakeAdmin($team, $user);
 
-        $url = $this->_getApiRoute() . 'events/' . $event->id. '/sendInvite';
+        $url = $this->_getApiRoute() . 'events/' . $team->id. '/sendInvite';
 
         $faker = \Faker\Factory::create();
 
@@ -299,14 +275,14 @@ class EventControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $event = Event::factory()->create();
+        $team = Team::factory()->create();
 
-        $invite = EventInvite::factory()->create(['email' => $user->email, 'event_id' => $event->id]);
+        $invite = TeamInvite::factory()->create(['email' => $user->email, 'event_id' => $team->id]);
 
         $data = array(
             'token' => $invite->token,
         );
-        $url = $this->_getApiRoute() . 'events/' . $event->id. '/acceptInvite'; 
+        $url = $this->_getApiRoute() . 'events/' . $team->id. '/acceptInvite'; 
 
         $response = $this->withHeaders([
             'Authorization' => $this->getAccessToken($user),
@@ -321,11 +297,11 @@ class EventControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $event = Event::factory()->create();
+        $team = Team::factory()->create();
 
-        RolesFacade::eventMakeAdmin($event, $user);
+        RolesFacade::eventMakeAdmin($team, $user);
 
-        $url = $this->_getApiRoute() . 'events/' . $event->id. '/addOverlay';
+        $url = $this->_getApiRoute() . 'events/' . $team->id. '/addOverlay';
 
         $faker = \Faker\Factory::create();
 
@@ -352,13 +328,13 @@ class EventControllerTest extends TestCase
 
         $user = User::factory()->create();
 
-        $event = Event::factory()->create();
+        $team = Team::factory()->create();
 
-        RolesFacade::eventMakeAdmin($event, $user);
+        RolesFacade::eventMakeAdmin($team, $user);
 
-        $overlay = EventOverlay::factory()->create(['event_id' => $event->id]);
+        $overlay = TeamOverlay::factory()->create(['event_id' => $team->id]);
 
-        $url = $this->_getApiRoute() . 'events/' . $event->id .'/removeOverlay/' . $overlay->id;
+        $url = $this->_getApiRoute() . 'events/' . $team->id .'/removeOverlay/' . $overlay->id;
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
@@ -368,7 +344,7 @@ class EventControllerTest extends TestCase
 
     }
 
-    
+    */
 
 
 }

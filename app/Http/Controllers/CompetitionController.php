@@ -52,7 +52,7 @@ class CompetitionController extends Controller
         $competition = Competition::create($input);
 
         if($competition) {
-            RolesFacade::eventMakeSuperAdmin($competition, $request->user());
+            RolesFacade::competitionMakeSuperAdmin($competition, $request->user());
         }
 
         return new CompetitionResource($competition);

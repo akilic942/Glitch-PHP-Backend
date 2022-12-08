@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamp('round_start_date')->nullable();
             $table->timestamp('round_end_date')->nullable();
 
-            $table->foreign('competition_id')->references('id')->on('competitions');
+            $table->foreign('competition_id')->references('id')->on('competitions')->onDelete('cascade');
             
             
             $table->timestamps();

@@ -66,8 +66,8 @@ class Competition extends BaseModel
         'max_registration_for_teams' => 'integer|nullable',
         'max_registration_for_users' => 'integer|nullable',
         
-        'team_registration_price' => 'double|nullable',
-        'individual_registration_price' => 'double|nullable',
+        'team_registration_price' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
+        'individual_registration_price' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
 
         
     );

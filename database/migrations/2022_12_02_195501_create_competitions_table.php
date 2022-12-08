@@ -75,6 +75,7 @@ return new class extends Migration
 
             $table->double('team_registration_price')->nullable()->default(0);
             $table->double('individual_registration_price')->nullable()->default(0);
+            
 
             $table->timestamps();
         });

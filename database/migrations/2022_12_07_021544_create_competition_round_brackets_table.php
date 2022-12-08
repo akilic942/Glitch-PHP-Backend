@@ -33,10 +33,10 @@ return new class extends Migration
             $table->timestamp('bracket_start_date')->nullable();
             $table->timestamp('bracket_end_date')->nullable();
 
-            $table->foreign('competition_id')->references('id')->on('competitions');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('team_id')->references('id')->on('teams');
-            $table->foreign('event_id')->references('id')->on('events');
+            $table->foreign('competition_id')->references('id')->on('competitions')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
+            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
 
 
             $table->timestamps();
