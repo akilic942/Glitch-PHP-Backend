@@ -29,7 +29,7 @@ class CompetitionRoundBracketObserver
             $user = User::where('id', $competitionRoundBracket->user_id)->first();
             $title_ending  = $user->username;
         } else if($competitionRoundBracket->team_id) {
-            $team = Team::where('team_id', $competitionRoundBracket->team_id)->first();
+            $team = Team::where('id', $competitionRoundBracket->team_id)->first();
             $title_ending  = $team->name;
         }
 
