@@ -61,8 +61,8 @@ class Competition extends BaseModel
         'allow_individual_signup' => 'boolean|nullable',
         'is_private' => 'boolean|nullable',
 
-        'competitors_per_match' => 'integer',
-        'winners_per_match' => 'integer',
+        'competitors_per_match' => 'integer|numeric|min:2',
+        'winners_per_match' => 'integer|numeric|min:1',
         'max_registration_for_teams' => 'integer|nullable',
         'max_registration_for_users' => 'integer|nullable',
         
