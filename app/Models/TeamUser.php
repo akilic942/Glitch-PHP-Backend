@@ -24,12 +24,15 @@ class TeamUser extends BaseModel
     protected $rules = array(
         'user_id' => 'required',
         'team_id'  => 'required',
+        'user_role' => 'integer|nullable',
+        'status' => 'nullable|numeric|min:0|max:7'
     );
 
     protected $fillable = [
         'user_id',
         'team_id',
-        'user_role'
+        'user_role',
+        'status'
     ];
 
     public function team()

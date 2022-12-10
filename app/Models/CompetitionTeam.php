@@ -24,12 +24,17 @@ class CompetitionTeam extends BaseModel
     protected $rules = array(
         'competition_id' => 'required|uuid',
         'team_id'  => 'required|uuid',
+        'checked_in' => 'boolean|nullable',
+        'status' => 'nullable|numeric|min:0|max:7'
     );
 
     protected $fillable = [
         'team_id',
         'competition_id',
-        'status'
+        'status',
+        'checked_in',
+        'status',
+        'checked_in_time'
     ];
 
     public function team()

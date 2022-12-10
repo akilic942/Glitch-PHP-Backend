@@ -1,6 +1,7 @@
 <?php
 namespace Tests\Facades;
 
+use App\Enums\AcceptanceStatus;
 use App\Facades\CompetitionFacade;
 use App\Facades\EventsFacade;
 use App\Facades\PermissionsFacade;
@@ -279,6 +280,48 @@ class CompetitionFacadeTest extends TestCase {
         $this->assertEquals($winners, count($sub_brackets));
 
 
+    }
+
+    public function testRegisterTeam() {
+
+        //No Approval Status
+        $competition = Competition::factory()->create();
+
+        $team = Team::factory()->create();
+
+        $registration = CompetitionFacade::registerTeam($competition, $team);
+
+        $this->assertEquals($registration->status, AcceptanceStatus::APPROVED);
+
+        //Require Approval
+        $competition = Competition::factory()->create(['team_signup_requires_approval' => true]);
+
+        $team = Team::factory()->create();
+
+        $registration = CompetitionFacade::registerTeam($competition, $team);
+
+        $this->assertEquals($registration->status, AcceptanceStatus::UNAPPROVED);
+    }
+
+    public function testRegisterUser() {
+
+        //No Approval Status
+        $competition = Competition::factory()->create();
+
+        $user = User::factory()->create();
+
+        $registration = CompetitionFacade::registerUser($competition, $user);
+
+        $this->assertEquals($registration->status, AcceptanceStatus::APPROVED);
+
+        //Require Approval
+        $competition = Competition::factory()->create(['individual_signup_requires_approval' => true]);
+
+        $user = User::factory()->create();
+
+        $registration = CompetitionFacade::registerUser($competition, $user);
+
+        $this->assertEquals($registration->status, AcceptanceStatus::UNAPPROVED);
     }
 
 }

@@ -28,6 +28,7 @@ return new class extends Migration
             $table->text('refund_policy')->nullable()->default('');
             $table->text('harassment_policy')->nullable()->default('');
             $table->text('saftey_policy')->nullable()->default('');
+            $table->string('timezone', 5)->nullable();
 
             $table->string('main_image')->nullable()->default('');
             $table->string('banner_image')->nullable()->default('');
@@ -75,6 +76,8 @@ return new class extends Migration
             $table->boolean('checkin_enabled')->nullable()->default(false);
             $table->integer('checkin_mintues_prior')->nullable()->default(false);
 
+            $table->boolean('team_signup_requires_approval')->nullable()->default(false);
+            $table->boolean('individual_signup_requires_approval')->nullable()->default(false);
 
             $table->integer('competitors_per_match')->default(2);
             $table->integer('winners_per_match')->default(1);

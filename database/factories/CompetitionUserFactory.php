@@ -26,7 +26,7 @@ class CompetitionUserFactory extends Factory
 
         return [
             'competition_id' => $competition->id,
-            'user' => $user->id
+            'user_id' => $user->id
         ];
     }
 }

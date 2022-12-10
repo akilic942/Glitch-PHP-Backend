@@ -38,6 +38,7 @@ return new class extends Migration
 
             $table->timestamp('bracket_start_date')->nullable();
             $table->timestamp('bracket_end_date')->nullable();
+            $table->string('timezone', 5)->nullable();
 
             $table->foreign('competition_id')->references('id')->on('competitions')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

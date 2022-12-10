@@ -83,7 +83,7 @@ class CompetitionRoundController extends Controller
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
 
         if(!$round){
-            return response()->json(['error' => 'The round does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         return new CompetitionRoundResource($round);
@@ -111,7 +111,7 @@ class CompetitionRoundController extends Controller
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
 
         if(!$round){
-            return response()->json(['error' => 'The round does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $input = $request->all();
@@ -154,7 +154,7 @@ class CompetitionRoundController extends Controller
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
 
         if(!$round){
-            return response()->json(['error' => 'The round does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $round->delete();

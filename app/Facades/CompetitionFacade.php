@@ -1,6 +1,7 @@
 <?php
 namespace App\Facades;
 
+use App\Enums\AcceptanceStatus;
 use App\Enums\Messages;
 use App\Enums\Roles;
 use App\Models\Competition;
@@ -329,9 +330,12 @@ class CompetitionFacade {
 
     public static function registerTeam(Competition $competition, Team $team){
 
+        $status = ($competition->team_signup_requires_approval) ? AcceptanceStatus::UNAPPROVED : AcceptanceStatus::APPROVED;
+
         $ct = CompetitionTeam::create([
             'team_id' => $team->id,
-            'competition_id' => $competition->id
+            'competition_id' => $competition->id,
+            'status' => $status
         ]);
 
         return $ct;
@@ -339,10 +343,13 @@ class CompetitionFacade {
 
     public static function registerUser(Competition $competition, User $user){
 
+        $status = ($competition->individual_signup_requires_approval) ? AcceptanceStatus::UNAPPROVED : AcceptanceStatus::APPROVED;
+
         $cu = CompetitionUser::create([
             'user_id' => $user->id,
             'competition_id' => $competition->id,
-            'user_role' => Roles::Participant
+            'user_role' => Roles::Participant,
+            'status' => $status
         ]);
 
         return $cu;

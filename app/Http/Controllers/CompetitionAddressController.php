@@ -83,7 +83,7 @@ class CompetitionAddressController extends Controller
         $address = CompetitionAddress::where('competition_id', $id)->where('id', $subid)->first();
 
         if(!$address){
-            return response()->json(['error' => 'The address does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The address does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         return new CompetitionAddressResource($address);
@@ -111,7 +111,7 @@ class CompetitionAddressController extends Controller
         $address = CompetitionAddress::where('competition_id', $id)->where('id', $subid)->first();
 
         if(!$address){
-            return response()->json(['error' => 'The address does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The address does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $input = $request->all();
@@ -154,7 +154,7 @@ class CompetitionAddressController extends Controller
         $address = CompetitionAddress::where('competition_id', $id)->where('id', $subid)->first();
 
         if(!$address){
-            return response()->json(['error' => 'The address does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The address does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $address->delete();

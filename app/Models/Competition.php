@@ -72,6 +72,9 @@ class Competition extends BaseModel
 
         'checkin_enabled' => 'boolean|nullable',
         'checkin_mintues_prior' => 'integer|nullable',
+
+        'team_signup_requires_approval' => 'boolean|nullable',
+        'individual_signup_requires_approval' => 'boolean|nullable',
         
         'team_registration_price' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
         'individual_registration_price' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
@@ -137,6 +140,9 @@ class Competition extends BaseModel
 
         'checkin_enabled',
         'checkin_mintues_prior',
+
+        'team_signup_requires_approval',
+        'individual_signup_requires_approval',
 
         'team_registration_price',
         'individual_registration_price',

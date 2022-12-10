@@ -28,7 +28,7 @@ class CompetitionRoundBracketController extends Controller
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
 
         if(!$round){
-            return response()->json(['error' => 'The round does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $brackets = CompetitionRoundBracket::query();
@@ -59,7 +59,7 @@ class CompetitionRoundBracketController extends Controller
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
 
         if(!$round){
-            return response()->json(['error' => 'The round does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $input = $request->all();
@@ -97,7 +97,7 @@ class CompetitionRoundBracketController extends Controller
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
 
         if(!$round){
-            return response()->json(['error' => 'The round does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $bracket = CompetitionRoundBracket::where('competition_id', $id)
@@ -106,7 +106,7 @@ class CompetitionRoundBracketController extends Controller
         ->first();
 
         if(!$bracket){
-            return response()->json(['error' => 'The bracket does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The bracket does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         return new CompetitionRoundBracketResource($bracket);
@@ -134,7 +134,7 @@ class CompetitionRoundBracketController extends Controller
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
 
         if(!$round){
-            return response()->json(['error' => 'The round does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $bracket = CompetitionRoundBracket::where('competition_id', $id)
@@ -143,7 +143,7 @@ class CompetitionRoundBracketController extends Controller
         ->first();
 
         if(!$bracket){
-            return response()->json(['error' => 'The bracket does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The bracket does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $input = $request->all();
@@ -188,7 +188,7 @@ class CompetitionRoundBracketController extends Controller
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
 
         if(!$round){
-            return response()->json(['error' => 'The round does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $bracket = CompetitionRoundBracket::where('competition_id', $id)
@@ -197,7 +197,7 @@ class CompetitionRoundBracketController extends Controller
         ->first();
 
         if(!$bracket){
-            return response()->json(['error' => 'The bracket does not exit.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The bracket does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $bracket->delete();

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->boolean('checkin_enabled')->nullable()->default(false);
             $table->integer('checkin_mintues_prior')->nullable();
             $table->integer('elimination_type')->nullable();
+            $table->string('timezone', 5)->nullable();
 
             $table->uuid('address_id')->nullable();
 

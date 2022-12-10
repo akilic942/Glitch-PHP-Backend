@@ -21,6 +21,9 @@ return new class extends Migration
             $table->integer('status')->nullable();
             $table->boolean('entry_fee_paid')->nullable()->default(0);
 
+            $table->boolean('checked_in')->nullable()->default(false);
+            $table->timestamp('checked_in_time')->nullable();
+
             $table->foreign('competition_id')->references('id')->on('competitions')->onDelete('cascade');
             $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
 

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\HttpStatusCodes;
+use App\Facades\PermissionsFacade;
+use App\Http\Resources\CompetitionUserResource;
+use App\Models\Competition;
 use App\Models\CompetitionUser;
 use Illuminate\Http\Request;
 
@@ -12,19 +16,19 @@ class CompetitionUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $id)
     {
-        //
-    }
+        $competition = Competition::where('id', $id)->first();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        if(!$competition){
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        $users = CompetitionUser::query();
+
+        $data = $users->orderBy('competition_users.created_at', 'desc')->paginate(25);
+
+        return CompetitionUserResource::collection($data);
     }
 
     /**
@@ -33,9 +37,33 @@ class CompetitionUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        //
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+            return response()->json(['error' => 'Access denied to competition.'], 403);
+        }
+
+        $input = $request->all();
+
+        $input['competition_id'] = $competition->id;
+
+        $user = new CompetitionUser();
+
+        $valid = $user->validate($input);
+
+        if (!$valid) {
+            return response()->json($user->getValidationErrors(), 422);
+        }
+
+        $user = CompetitionUser::create($input);
+
+        return new CompetitionUserResource($user);
     }
 
     /**
@@ -44,20 +72,23 @@ class CompetitionUserController extends Controller
      * @param  \App\Models\CompetitionUser  $competitionUser
      * @return \Illuminate\Http\Response
      */
-    public function show(CompetitionUser $competitionUser)
+    public function show(Request $request, $id, $subid)
     {
-        //
-    }
+        $competition = Competition::where('id', $id)->first();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CompetitionUser  $competitionUser
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CompetitionUser $competitionUser)
-    {
-        //
+        if(!$competition){
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        $user = CompetitionUser::where('competition_id', $id)
+        ->where('user_id', $subid)
+        ->first();
+
+        if(!$user){
+            return response()->json(['error' => 'The user does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        return new CompetitionUserResource($user);
     }
 
     /**
@@ -67,9 +98,41 @@ class CompetitionUserController extends Controller
      * @param  \App\Models\CompetitionUser  $competitionUser
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, CompetitionUser $competitionUser)
+    public function update(Request $request, $id, $subid)
     {
-        //
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+            return response()->json(['error' => 'Access denied to competition.'], 403);
+        }
+
+        $user = CompetitionUser::where('competition_id', $id)->where('user_id', $subid)->first();
+
+        if(!$user){
+            return response()->json(['error' => 'The competition/user relationship does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        $input = $request->all();
+
+        $data = $input + $competition->toArray();
+
+        $data['competition_id'] = $competition->id;
+
+        $data['user_id'] = $user->user_id;
+
+        $valid = $user->validate($data);
+
+        if (!$valid) {
+            return response()->json($user->getValidationErrors(), 422);
+        }
+
+        $user->update($data);
+
+        return new CompetitionUserResource($user);
     }
 
     /**
@@ -78,8 +141,26 @@ class CompetitionUserController extends Controller
      * @param  \App\Models\CompetitionUser  $competitionUser
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CompetitionUser $competitionUser)
+    public function destroy(Request $request, $id, $subid)
     {
-        //
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+            return response()->json(['error' => 'Access denied to competition.'], 403);
+        }
+
+        $user = CompetitionUser::where('competition_id', $id)->where('user_id', $subid)->first();
+
+        if(!$user){
+            return response()->json(['error' => 'The competition/user relationship does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        $user->delete();
+
+        return response()->json(null, 204);
     }
 }

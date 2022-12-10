@@ -158,6 +158,9 @@ class CompetitionControllerTest extends TestCase
 
             'team_registration_price' => rand(0,100),
             'individual_registration_price' => rand(0,100),
+
+            'team_signup_requires_approval' => rand(0,1),
+            'individual_signup_requires_approval' => rand(0,1),
             
         ];
 
@@ -213,10 +216,12 @@ class CompetitionControllerTest extends TestCase
         $this->assertEquals($jsonData['max_registration_for_teams'], $data['max_registration_for_teams']);
         $this->assertEquals($jsonData['max_registration_for_users'], $data['max_registration_for_users']);
         $this->assertEquals($jsonData['minimum_team_size'], $data['minimum_team_size']);
-        
 
         $this->assertEquals($jsonData['team_registration_price'], $data['team_registration_price']);
         $this->assertEquals($jsonData['individual_registration_price'], $data['individual_registration_price']);
+
+        $this->assertEquals($jsonData['team_signup_requires_approval'], $data['team_signup_requires_approval']);
+        $this->assertEquals($jsonData['individual_signup_requires_approval'], $data['individual_signup_requires_approval']);
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
