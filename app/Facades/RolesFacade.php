@@ -339,6 +339,16 @@ class RolesFacade {
 
     }
 
+    public static function teamMakeParticpant(Team $team, User $user) : TeamUser {
+
+        $teamUser = self::_getOrCreateTeamUser($team, $user);
+
+        $teamUser->update(['user_role' => Roles::Participant]);
+
+        return $teamUser;
+
+    }
+
     public static function teamMakeBlocked(Team $team, User $user) : TeamUser {
 
         $teamUser = self::_getOrCreateTeamUser($team, $user);

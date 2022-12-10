@@ -20,8 +20,11 @@ return new class extends Migration
 
             $table->string('name')->nullable()->default('');
             $table->text('description')->nullable()->default('');
+            $table->integer('type')->nullable();
             $table->text('rules')->nullable()->default('');
             $table->text('agreement')->nullable()->default('');
+            $table->text('schedule')->nullable()->default('');
+            $table->text('disqualifiers')->nullable()->default('');
 
             $table->string('main_image')->nullable()->default('');
             $table->string('banner_image')->nullable()->default('');
@@ -66,12 +69,16 @@ return new class extends Migration
             $table->boolean('allow_individual_signup')->nullable()->default(false);
             $table->boolean('is_private')->nullable()->default(false);
 
+            $table->boolean('checkin_enabled')->nullable()->default(false);
+            $table->integer('checkin_mintues_prior')->nullable()->default(false);
+
 
             $table->integer('competitors_per_match')->default(2);
             $table->integer('winners_per_match')->default(1);
             
             $table->integer('max_registration_for_teams')->nullable();
             $table->integer('max_registration_for_users')->nullable();
+            $table->integer('minimum_team_size')->nullable();
 
             $table->double('team_registration_price')->nullable()->default(0);
             $table->double('individual_registration_price')->nullable()->default(0);

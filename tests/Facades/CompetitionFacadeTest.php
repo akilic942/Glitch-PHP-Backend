@@ -95,6 +95,28 @@ class CompetitionFacadeTest extends TestCase {
         //Cannot Register Because Full
         $result = CompetitionFacade::canRegisterTeam($competition, $team4, $user4);
         $this->assertFalse($result['status']);
+
+        $competition2 = Competition::factory()->create(['minimum_team_size' => 3]);
+
+        //Team Member Size Test
+        $team_member_1 = User::factory()->create();
+        $team_member_2 = User::factory()->create();
+        $team_member_3 = User::factory()->create();
+        
+        $team5 = Team::factory()->create();
+        RolesFacade::teamMakeAdmin($team5, $team_member_1);
+
+        $result = CompetitionFacade::canRegisterTeam($competition2, $team5, $team_member_1);
+        $this->assertFalse($result['status']);
+
+        RolesFacade::teamMakeParticpant($team5, $team_member_2);
+        $result = CompetitionFacade::canRegisterTeam($competition2, $team5, $team_member_1);
+        $this->assertFalse($result['status']);
+
+        RolesFacade::teamMakeParticpant($team5, $team_member_3);
+        $result = CompetitionFacade::canRegisterTeam($competition2, $team5, $team_member_1);
+        $this->assertTrue($result['status']);
+
         
     }
 

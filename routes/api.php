@@ -32,6 +32,13 @@ Route::get('competitions/{uuid}', 'App\Http\Controllers\CompetitionController@sh
 Route::put('competitions/{uuid}', 'App\Http\Controllers\CompetitionController@update');
 Route::delete('competitions/{uuid}', 'App\Http\Controllers\CompetitionController@destroy');
 
+//Competition Rounds Routes
+Route::get('competitions/{uuid}/rounds', 'App\Http\Controllers\CompetitionRoundController@index');
+Route::post('competitions/{uuid}/rounds', 'App\Http\Controllers\CompetitionRoundController@store');
+Route::get('competitions/{uuid}/rounds/{round_id}', 'App\Http\Controllers\CompetitionRoundController@show');
+Route::put('competitions/{uuid}/rounds/{round_id}', 'App\Http\Controllers\CompetitionRoundController@update');
+Route::delete('competitions/{uuid}/rounds/{round_id}', 'App\Http\Controllers\CompetitionRoundController@destroy');
+
 //Event Routes
 Route::get('events', 'App\Http\Controllers\EventController@index');
 Route::post('events', 'App\Http\Controllers\EventController@store');

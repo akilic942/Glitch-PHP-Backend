@@ -20,6 +20,7 @@ class Competition extends BaseModel
     protected $rules = array(
         'name' => 'required|string|min:0|max:255',
         'description' => 'required',
+        'type' => 'nullable|numeric|min:1|max:9',
 
         //Image validation
         'main_image' => 'string|min:0|max:255|url|nullable',
@@ -63,8 +64,14 @@ class Competition extends BaseModel
 
         'competitors_per_match' => 'integer|numeric|min:2',
         'winners_per_match' => 'integer|numeric|min:1',
+        
         'max_registration_for_teams' => 'integer|nullable',
         'max_registration_for_users' => 'integer|nullable',
+        
+        'minimum_team_size' => 'integer|nullable',
+
+        'checkin_enabled' => 'boolean|nullable',
+        'checkin_mintues_prior' => 'integer|nullable',
         
         'team_registration_price' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
         'individual_registration_price' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
@@ -75,8 +82,11 @@ class Competition extends BaseModel
     protected $fillable = [
         'name',
         'description',
+        'type',
         'rules',
         'agreement',
+        'schedule',
+        'disqualifiers',
 
         //Social Pages
         'twitter_page',
@@ -113,6 +123,17 @@ class Competition extends BaseModel
         'allow_team_signup',
         'allow_individual_signup',
         'is_private',
+
+        'competitors_per_match',
+        'winners_per_match',
+
+        'max_registration_for_teams',
+        'max_registration_for_users',
+        
+        'minimum_team_size',
+
+        'checkin_enabled',
+        'checkin_mintues_prior',
 
         'team_registration_price',
         'individual_registration_price',

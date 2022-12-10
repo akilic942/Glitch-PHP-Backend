@@ -116,6 +116,49 @@ class CompetitionControllerTest extends TestCase
         $data = [
             'name' => $faker->title(),
             'description' => $faker->paragraphs(8, true),
+            'type' => rand(1,9),
+            
+            'rules' => $faker->paragraphs(8, true),
+            'agreement' => $faker->paragraphs(8, true),
+            'schedule' => $faker->paragraphs(8, true),
+            'disqualifiers' => $faker->paragraphs(8, true),
+
+            'twitter_page' => $faker->url(),
+            'facebook_page' => $faker->url(),
+            'instagram_page' => $faker->url(),
+            'snapchat_page' => $faker->url(),
+            'tiktok_page' => $faker->url(),
+            'twitch_page' => $faker->url(),
+            'youtube_page' => $faker->url(),
+            'paetron_page' => $faker->url(),
+
+            'contact_name' => $faker->title(),
+            'contact_email' => $faker->email,
+            'contact_phone_number' => $faker->phoneNumber(),
+            'website' => $faker->url(),
+
+            'start_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
+            'end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
+            'registration_start_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
+            'registration_end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
+
+            'allow_team_signup' => rand(0,1),
+            'allow_individual_signup' => rand(0,1),
+            'is_private' => rand(0,1),
+
+            'checkin_enabled' => rand(0,1),
+            'checkin_mintues_prior' => rand(0,300),
+
+            'competitors_per_match' => rand(2,100),
+            'winners_per_match' => rand(1,100),
+
+            'max_registration_for_teams' => rand(0,100),
+            'max_registration_for_users' => rand(0,100),
+            'minimum_team_size' => rand(0,100),
+
+            'team_registration_price' => rand(0,100),
+            'individual_registration_price' => rand(0,100),
+            
         ];
 
         $response = $this->withHeaders([
@@ -132,6 +175,48 @@ class CompetitionControllerTest extends TestCase
         $this->assertEquals($competition->id, $jsonData['id']);
         $this->assertEquals($jsonData['name'], $data['name']);
         $this->assertEquals($jsonData['description'], $data['description']);
+        $this->assertEquals($jsonData['type'], $data['type']);
+
+        $this->assertEquals($jsonData['rules'], $data['rules']);
+        $this->assertEquals($jsonData['agreement'], $data['agreement']);
+        $this->assertEquals($jsonData['schedule'], $data['schedule']);
+        $this->assertEquals($jsonData['disqualifiers'], $data['disqualifiers']);
+
+        $this->assertEquals($jsonData['twitter_page'], $data['twitter_page']);
+        $this->assertEquals($jsonData['facebook_page'], $data['facebook_page']);
+        $this->assertEquals($jsonData['instagram_page'], $data['instagram_page']);
+        $this->assertEquals($jsonData['snapchat_page'], $data['snapchat_page']);
+        $this->assertEquals($jsonData['tiktok_page'], $data['tiktok_page']);
+        $this->assertEquals($jsonData['youtube_page'], $data['youtube_page']);
+        $this->assertEquals($jsonData['paetron_page'], $data['paetron_page']);
+
+        $this->assertEquals($jsonData['contact_name'], $data['contact_name']);
+        $this->assertEquals($jsonData['contact_email'], $data['contact_email']);
+        $this->assertEquals($jsonData['contact_phone_number'], $data['contact_phone_number']);
+        $this->assertEquals($jsonData['website'], $data['website']);
+
+        $this->assertEquals($jsonData['start_date'], $data['start_date']);
+        $this->assertEquals($jsonData['end_date'], $data['end_date']);
+        $this->assertEquals($jsonData['registration_start_date'], $data['registration_start_date']);
+        $this->assertEquals($jsonData['registration_end_date'], $data['registration_end_date']);
+
+        $this->assertEquals($jsonData['allow_team_signup'], $data['allow_team_signup']);
+        $this->assertEquals($jsonData['allow_individual_signup'], $data['allow_individual_signup']);
+        $this->assertEquals($jsonData['is_private'], $data['is_private']);
+
+        $this->assertEquals($jsonData['checkin_enabled'], $data['checkin_enabled']);
+        $this->assertEquals($jsonData['checkin_mintues_prior'], $data['checkin_mintues_prior']);
+
+        $this->assertEquals($jsonData['competitors_per_match'], $data['competitors_per_match']);
+        $this->assertEquals($jsonData['winners_per_match'], $data['winners_per_match']);
+
+        $this->assertEquals($jsonData['max_registration_for_teams'], $data['max_registration_for_teams']);
+        $this->assertEquals($jsonData['max_registration_for_users'], $data['max_registration_for_users']);
+        $this->assertEquals($jsonData['minimum_team_size'], $data['minimum_team_size']);
+        
+
+        $this->assertEquals($jsonData['team_registration_price'], $data['team_registration_price']);
+        $this->assertEquals($jsonData['individual_registration_price'], $data['individual_registration_price']);
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),

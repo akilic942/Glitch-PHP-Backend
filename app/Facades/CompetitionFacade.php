@@ -9,6 +9,7 @@ use App\Models\CompetitionRoundBracket;
 use App\Models\CompetitionTeam;
 use App\Models\CompetitionUser;
 use App\Models\Team;
+use App\Models\TeamUser;
 use App\Models\User;
 use Google\Service\AndroidEnterprise\Resource\Permissions;
 
@@ -278,10 +279,19 @@ class CompetitionFacade {
 
             $registered = CompetitionTeam::where('competition_id', $competition->id)->count();
 
-
             if($registered >= $competition->max_registration_for_teams){
                 return ['status' => false, 'message' => Messages::ERROR_COMPETITION_TEAM_MAX_REGISTRATIONS, 'max' => $competition->max_registration_for_teams , 'current' => $registered];
             }
+        }
+
+        if($competition->minimum_team_size && $competition->minimum_team_size>0) {
+
+            $members = TeamUser::where('team_id', $team->id)->count();
+
+            if($members < $competition->minimum_team_size) {
+                return ['status' => false, 'message' => Messages::ERROR_COMPETITION_TEAM_TOO_SMALL, 'team_size' => $members , 'required_size' => $competition->minimum_team_size];
+            }
+
         }
 
         return['status' => true];

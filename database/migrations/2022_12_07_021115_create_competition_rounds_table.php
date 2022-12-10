@@ -24,6 +24,10 @@ return new class extends Migration
             $table->timestamp('round_start_date')->nullable();
             $table->timestamp('round_end_date')->nullable();
 
+            $table->boolean('checkin_enabled')->nullable()->default(false);
+            $table->integer('checkin_mintues_prior')->nullable();
+            $table->integer('elimination_type')->nullable();
+
             $table->foreign('competition_id')->references('id')->on('competitions')->onDelete('cascade');
             
             

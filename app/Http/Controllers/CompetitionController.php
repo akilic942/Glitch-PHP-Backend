@@ -8,7 +8,9 @@ use App\Facades\CompetitionFacade;
 use App\Facades\PermissionsFacade;
 use App\Facades\RolesFacade;
 use App\Http\Resources\CompetitionResource;
+use App\Http\Resources\CompetitionRoundResource;
 use App\Models\Competition;
+use App\Models\CompetitionRound;
 use App\Models\CompetitionTeam;
 use App\Models\CompetitionUser;
 use App\Models\Team;
@@ -83,7 +85,7 @@ class CompetitionController extends Controller
         $competition = Competition::where('id', $id)->first();
 
         if(!$competition){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
@@ -129,7 +131,7 @@ class CompetitionController extends Controller
         $competition = Competition::where('id', $id)->first();
 
         if(!$competition){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
@@ -165,7 +167,7 @@ class CompetitionController extends Controller
         $competition = Competition::where('id', $id)->first();
 
         if(!$competition){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
@@ -201,7 +203,7 @@ class CompetitionController extends Controller
         $competition = Competition::where('id', $id)->first();
 
         if(!$competition){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
@@ -236,7 +238,7 @@ class CompetitionController extends Controller
         $competition = Competition::where('id', $id)->first();
 
         if(!$competition){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
@@ -259,7 +261,7 @@ class CompetitionController extends Controller
         $competition = Competition::where('id', $id)->first();
 
         if(!$competition){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
@@ -297,7 +299,7 @@ class CompetitionController extends Controller
         $competition = Competition::where('id', $id)->first();
 
         if(!$competition){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
@@ -331,7 +333,7 @@ class CompetitionController extends Controller
         $competition = Competition::where('id', $id)->first();
 
         if(!$competition){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){

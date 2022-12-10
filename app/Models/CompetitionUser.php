@@ -25,12 +25,15 @@ class CompetitionUser extends BaseModel
     protected $rules = array(
         'competition_id' => 'required',
         'user_id'  => 'required',
+        'user_role' => 'integer|nullable',
+        'checked_in' => 'boolean|nullable',
     );
 
     protected $fillable = [
         'competition_id',
         'user_id',
         'user_role',
+        'checked_in'
     ];
 
     public function user()

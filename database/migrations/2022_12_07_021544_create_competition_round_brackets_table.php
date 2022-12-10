@@ -26,6 +26,9 @@ return new class extends Migration
             $table->uuid('team_id')->nullable();
 
             $table->uuid('event_id')->nullable();
+            
+            $table->boolean('checked_in')->nullable()->default(false);
+            $table->timestamp('checked_in_time')->nullable();
 
             $table->boolean('is_winner')->nullable();
             $table->boolean('is_finished')->nullable();
