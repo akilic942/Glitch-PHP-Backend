@@ -39,6 +39,21 @@ Route::get('competitions/{uuid}/rounds/{round_id}', 'App\Http\Controllers\Compet
 Route::put('competitions/{uuid}/rounds/{round_id}', 'App\Http\Controllers\CompetitionRoundController@update');
 Route::delete('competitions/{uuid}/rounds/{round_id}', 'App\Http\Controllers\CompetitionRoundController@destroy');
 
+//Competition Venue Routes
+Route::get('competitions/{uuid}/venues', 'App\Http\Controllers\CompetitionAddressController@index');
+Route::post('competitions/{uuid}/venues', 'App\Http\Controllers\CompetitionAddressController@store');
+Route::get('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionAddressController@show');
+Route::put('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionAddressController@update');
+Route::delete('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionAddressController@destroy');
+
+
+//Competition Brackets Routes
+Route::get('competitions/{uuid}/rounds/{round_id}/brackets', 'App\Http\Controllers\CompetitionRoundBracketController@index');
+Route::post('competitions/{uuid}/rounds/{round_id}/brackets', 'App\Http\Controllers\CompetitionRoundBracketController@store');
+Route::get('competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}', 'App\Http\Controllers\CompetitionRoundBracketController@show');
+Route::put('competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}', 'App\Http\Controllers\CompetitionRoundBracketController@update');
+Route::delete('competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}', 'App\Http\Controllers\CompetitionRoundBracketController@destroy');
+
 //Event Routes
 Route::get('events', 'App\Http\Controllers\EventController@index');
 Route::post('events', 'App\Http\Controllers\EventController@store');

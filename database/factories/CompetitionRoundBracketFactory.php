@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Competition;
+use App\Models\CompetitionRound;
 use App\Models\CompetitionRoundBracket;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,11 +22,12 @@ class CompetitionRoundBracketFactory extends Factory
 
         $competition = Competition::factory()->create();
 
-        $round = CompetitionRoundBracket::factory()->create(['competition_id' => $competition->id]);
+        $round = CompetitionRound::factory()->create(['competition_id' => $competition->id]);
 
         return [
             'competition_id' => $competition->id,
-            'round' => $round->round
+            'round' => $round->round,
+            'bracket' => rand(1, 100)
         ];
 
     }

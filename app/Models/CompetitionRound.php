@@ -29,6 +29,8 @@ class CompetitionRound extends BaseModel
         'checkin_enabled' => 'boolean|nullable',
         'checkin_mintues_prior' => 'integer|nullable',
 
+        'address_id' => 'uuid|nullable',
+
         'elimination_type' => 'nullable|numeric|min:1|max:9',
     );
 
@@ -41,7 +43,8 @@ class CompetitionRound extends BaseModel
         'round_end_date',
         'checkin_enabled',
         'checkin_mintues_prior',
-        'elimination_type'
+        'elimination_type',
+        'address_id'
     ];
 
     public function competition()

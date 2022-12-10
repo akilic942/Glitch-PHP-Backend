@@ -25,6 +25,9 @@ return new class extends Migration
             $table->text('agreement')->nullable()->default('');
             $table->text('schedule')->nullable()->default('');
             $table->text('disqualifiers')->nullable()->default('');
+            $table->text('refund_policy')->nullable()->default('');
+            $table->text('harassment_policy')->nullable()->default('');
+            $table->text('saftey_policy')->nullable()->default('');
 
             $table->string('main_image')->nullable()->default('');
             $table->string('banner_image')->nullable()->default('');

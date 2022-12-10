@@ -87,6 +87,9 @@ class Competition extends BaseModel
         'agreement',
         'schedule',
         'disqualifiers',
+        'refund_policy',
+        'harassment_policy',
+        'saftey_policy',
 
         //Social Pages
         'twitter_page',

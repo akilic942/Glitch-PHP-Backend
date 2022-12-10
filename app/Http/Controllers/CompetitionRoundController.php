@@ -46,7 +46,7 @@ class CompetitionRoundController extends Controller
         }
 
         if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $input = $request->all();
@@ -105,7 +105,7 @@ class CompetitionRoundController extends Controller
         }
 
         if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
@@ -148,7 +148,7 @@ class CompetitionRoundController extends Controller
         }
 
         if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();

@@ -24,9 +24,12 @@ class CompetitionRoundBracket extends BaseModel
         'user_id' => 'uuid|nullable',
         'team_id' => 'uuid|nullable',
         'event_id' => 'uuid|nullable',
+        'address_id' => 'uuid|nullable',
         'is_winner' => 'boolean|nullable',
         'is_finished' => 'boolean|nullable',
         'checked_in' => 'boolean|nullable',
+        'cash_awarded' => 'nullable|numeric',
+        'points_awarded' => 'nullable|numeric'
     );
 
     protected $fillable = [
@@ -40,7 +43,9 @@ class CompetitionRoundBracket extends BaseModel
         'is_finished',
         'bracket_start_date',
         'bracket_end_date',
-        'checked_in'
+        'checked_in',
+        'cash_awarded',
+        'points_awarded'
     ];
 
     public function competition()

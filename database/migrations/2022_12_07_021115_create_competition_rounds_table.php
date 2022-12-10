@@ -28,7 +28,10 @@ return new class extends Migration
             $table->integer('checkin_mintues_prior')->nullable();
             $table->integer('elimination_type')->nullable();
 
+            $table->uuid('address_id')->nullable();
+
             $table->foreign('competition_id')->references('id')->on('competitions')->onDelete('cascade');
+            $table->foreign('address_id')->references('id')->on('competition_addresses')->onDelete('cascade');
             
             
             $table->timestamps();

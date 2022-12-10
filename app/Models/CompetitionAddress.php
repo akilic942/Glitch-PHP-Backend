@@ -30,6 +30,7 @@ class CompetitionAddress extends BaseModel
     );
 
     protected $fillable = [
+        'competition_id',
         'venue_name',
         'venue_description',
         'address_line_1',
@@ -38,6 +39,9 @@ class CompetitionAddress extends BaseModel
         'locality',
         'province',
         'country',
+        'venue_direction_instructions',
+        'venue_access_instructions',
+        'additional_notes',
         'is_virtual_hybrid_remote'
     ];
  

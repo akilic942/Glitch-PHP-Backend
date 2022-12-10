@@ -34,6 +34,10 @@ return new class extends Migration
 
             $table->tinyInteger('is_virtual_hybrid_remote')->nullable()->default(0);
 
+            $table->text('venue_direction_instructions')->nullable();
+            $table->text('venue_access_instructions')->nullable();
+            $table->text('additional_notes')->nullable();
+
             $table->foreign('competition_id')->references('id')->on('competitions');
 
             $table->timestamps();
