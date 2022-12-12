@@ -51,11 +51,11 @@ Route::put('competitions/{uuid}/teams/{team_id}', 'App\Http\Controllers\Competit
 Route::delete('competitions/{uuid}/teams/{team_id}', 'App\Http\Controllers\CompetitionTeamController@destroy');
 
 //Competition Venue Routes
-Route::get('competitions/{uuid}/venues', 'App\Http\Controllers\CompetitionAddressController@index');
-Route::post('competitions/{uuid}/venues', 'App\Http\Controllers\CompetitionAddressController@store');
-Route::get('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionAddressController@show');
-Route::put('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionAddressController@update');
-Route::delete('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionAddressController@destroy');
+Route::get('competitions/{uuid}/venues', 'App\Http\Controllers\CompetitionVenueController@index');
+Route::post('competitions/{uuid}/venues', 'App\Http\Controllers\CompetitionVenueController@store');
+Route::get('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionVenueController@show');
+Route::put('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionVenueController@update');
+Route::delete('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionVenueController@destroy');
 
 //Competition User Routes
 Route::get('competitions/{uuid}/users', 'App\Http\Controllers\CompetitionUserController@index');

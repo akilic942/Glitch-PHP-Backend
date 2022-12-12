@@ -84,6 +84,8 @@ class CompetitionFullResource extends JsonResource
             'admins' => UserResource::collection($this->admins),
             'contestants' => UserResource::collection($this->contestants),
 
+            'venues' => CompetitionVenueResource::collection($this->venues),
+
             //Timestamp Info
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,

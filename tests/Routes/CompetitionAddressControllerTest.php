@@ -5,13 +5,13 @@ namespace Tests\Routes;
 use App\Facades\CompetitionInvitesFacade;
 use App\Facades\RolesFacade;
 use App\Models\Competition;
-use App\Models\CompetitionAddress;
+use App\Models\CompetitionVenue;
 use App\Models\User;
 use Database\Factories\CompetitionInviteFactory;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
-class CompetitionAddressControllerTest extends TestCase
+class CompetitionVenueControllerTest extends TestCase
 {
 
 
@@ -19,7 +19,7 @@ class CompetitionAddressControllerTest extends TestCase
 
         $competition = Competition::factory()->create();
 
-        $addresses = CompetitionAddress::factory(30)->create(['competition_id' => $competition->id]);
+        $addresses = CompetitionVenue::factory(30)->create(['competition_id' => $competition->id]);
 
         $user = User::factory()->create();
 
@@ -83,7 +83,7 @@ class CompetitionAddressControllerTest extends TestCase
 
         $competition = Competition::factory()->create();
 
-        $address = CompetitionAddress::factory()->create(['competition_id' => $competition->id]);
+        $address = CompetitionVenue::factory()->create(['competition_id' => $competition->id]);
 
         $url = $this->_getApiRoute() .  'competitions/' . $competition->id . '/venues/' . $address->id;
 
@@ -110,7 +110,7 @@ class CompetitionAddressControllerTest extends TestCase
 
         RolesFacade::competitionMakeAdmin($competition, $user);
 
-        $address = CompetitionAddress::factory()->create(['competition_id' => $competition->id]);
+        $address = CompetitionVenue::factory()->create(['competition_id' => $competition->id]);
 
         $url = $this->_getApiRoute() .  'competitions/' . $competition->id . '/venues/' . $address->id;
 
@@ -168,7 +168,7 @@ class CompetitionAddressControllerTest extends TestCase
 
         RolesFacade::competitionMakeAdmin($competition, $user);
 
-        $address = CompetitionAddress::factory()->create(['competition_id' => $competition->id]);
+        $address = CompetitionVenue::factory()->create(['competition_id' => $competition->id]);
 
         $url = $this->_getApiRoute() .  'competitions/' . $competition->id . '/venues/' . $address->id;
 

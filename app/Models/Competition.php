@@ -80,6 +80,12 @@ class Competition extends BaseModel
         'team_registration_price' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
         'individual_registration_price' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
 
+        'start_date'    => 'nullable|date',
+        'end_date'      => 'nullable|date|after_or_equal:start_date',
+
+        
+        'registration_start_date'    => 'nullable|date',
+        'registration_end_date'      => 'nullable|date|after_or_equal:start_date',
         
     );
 
@@ -166,7 +172,7 @@ class Competition extends BaseModel
         return $this->hasManyThrough(User::class, CompetitionUser::class, 'competition_id', 'id','id', 'user_id')->where('user_role', Roles::Moderator)->where('competition_id', $this->id);;
     }
 
-    public function products()
+    public function producers()
     {
         return $this->hasManyThrough(User::class, CompetitionUser::class, 'competition_id', 'id','id', 'user_id')->where('user_role', Roles::Producer)->where('competition_id', $this->id);;
     }
@@ -174,6 +180,11 @@ class Competition extends BaseModel
     public function contestants()
     {
         return $this->hasManyThrough(User::class, CompetitionUser::class, 'competition_id', 'id','id', 'user_id')->where('user_role', Roles::Participant)->where('competition_id', $this->id);;
+    }
+
+    public function venues()
+    {
+        return $this->hasMany(CompetitionVenue::class, 'competition_id', 'id');
     }
     
 

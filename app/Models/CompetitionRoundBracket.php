@@ -24,7 +24,7 @@ class CompetitionRoundBracket extends BaseModel
         'user_id' => 'uuid|nullable',
         'team_id' => 'uuid|nullable',
         'event_id' => 'uuid|nullable',
-        'address_id' => 'uuid|nullable',
+        'venue_id' => 'uuid|nullable',
         'is_winner' => 'boolean|nullable',
         'is_finished' => 'boolean|nullable',
         'checked_in' => 'boolean|nullable',

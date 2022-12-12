@@ -37,4 +37,14 @@ class CompetitionInvite extends BaseModel
         'invited_as_team_member',
         'token'
     ];
+
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = strtolower($value);
+    }
+
+    public function getEmailAttribute($value)
+    {
+        return strtolower($value);
+    }
 }

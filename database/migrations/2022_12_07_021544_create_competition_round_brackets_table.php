@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->uuid('user_id')->nullable();
             $table->uuid('team_id')->nullable();
-            $table->uuid('address_id')->nullable();
+            $table->uuid('venue_id')->nullable();
             $table->uuid('event_id')->nullable();
             
             $table->boolean('checked_in')->nullable()->default(false);
@@ -44,7 +44,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
-            $table->foreign('address_id')->references('id')->on('competition_addresses')->onDelete('cascade');
+            $table->foreign('venue_id')->references('id')->on('competition_venues')->onDelete('cascade');
 
 
             $table->timestamps();

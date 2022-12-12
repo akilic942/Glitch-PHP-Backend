@@ -2,12 +2,12 @@
 
 use App\Invirtu\InvirtuClient;
 use App\Models\Competition;
-use App\Models\CompetitionAddress;
+use App\Models\CompetitionVenue;
 use App\Models\Event;
 use App\Models\Recording;
 use Tests\TestCase;
 
-class CompetitionAddressTest extends TestCase {
+class CompetitionVenueTest extends TestCase {
 
     public function testCreation() {
 
@@ -21,7 +21,7 @@ class CompetitionAddressTest extends TestCase {
             'is_virtual_hybrid_remote' => rand(1,3),
         );
 
-        $address = new CompetitionAddress();
+        $address = new CompetitionVenue();
 
         $tmp_field = $data['venue_name'];
         unset($data['venue_name']);

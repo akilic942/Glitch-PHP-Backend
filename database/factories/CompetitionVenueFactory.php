@@ -6,9 +6,9 @@ use App\Models\Competition;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CompetitionAddress>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CompetitionVenue>
  */
-class CompetitionAddressFactory extends Factory
+class CompetitionVenueFactory extends Factory
 {
     /**
      * Define the model's default state.

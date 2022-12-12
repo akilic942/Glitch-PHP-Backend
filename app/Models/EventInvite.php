@@ -34,4 +34,14 @@ class EventInvite extends BaseModel
         'invited_as_cohost',
         'token'
     ];
+
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = strtolower($value);
+    }
+
+    public function getEmailAttribute($value)
+    {
+        return strtolower($value);
+    }
 }

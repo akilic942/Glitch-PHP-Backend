@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Enums\HttpStatusCodes;
 use App\Facades\PermissionsFacade;
-use App\Http\Resources\CompetitionAddressResource;
+use App\Http\Resources\CompetitionVenueResource;
 use App\Models\Competition;
-use App\Models\CompetitionAddress;
+use App\Models\CompetitionVenue;
 use Illuminate\Http\Request;
 
-class CompetitionAddressController extends Controller
+class CompetitionVenueController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,11 +24,11 @@ class CompetitionAddressController extends Controller
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        $addresses = CompetitionAddress::query();
+        $addresses = CompetitionVenue::query();
 
-        $data = $addresses->orderBy('competition_addresses.created_at', 'desc')->paginate(25);
+        $data = $addresses->orderBy('competition_venues.created_at', 'desc')->paginate(25);
 
-        return CompetitionAddressResource::collection($data);
+        return CompetitionVenueResource::collection($data);
     }
 
     /**
@@ -53,7 +53,7 @@ class CompetitionAddressController extends Controller
 
         $input['competition_id'] = $competition->id;
 
-        $address = new CompetitionAddress();
+        $address = new CompetitionVenue();
 
         $valid = $address->validate($input);
 
@@ -61,15 +61,15 @@ class CompetitionAddressController extends Controller
             return response()->json($address->getValidationErrors(), 422);
         }
 
-        $address = CompetitionAddress::create($input);
+        $address = CompetitionVenue::create($input);
 
-        return new CompetitionAddressResource($address);
+        return new CompetitionVenueResource($address);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CompetitionAddress  $competitionAddress
+     * @param  \App\Models\CompetitionVenue  $CompetitionVenue
      * @return \Illuminate\Http\Response
      */
     public function show(Request $request, $id, $subid)
@@ -80,20 +80,20 @@ class CompetitionAddressController extends Controller
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        $address = CompetitionAddress::where('competition_id', $id)->where('id', $subid)->first();
+        $address = CompetitionVenue::where('competition_id', $id)->where('id', $subid)->first();
 
         if(!$address){
             return response()->json(['error' => 'The address does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        return new CompetitionAddressResource($address);
+        return new CompetitionVenueResource($address);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CompetitionAddress  $competitionAddress
+     * @param  \App\Models\CompetitionVenue  $CompetitionVenue
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id, $subid)
@@ -108,7 +108,7 @@ class CompetitionAddressController extends Controller
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
-        $address = CompetitionAddress::where('competition_id', $id)->where('id', $subid)->first();
+        $address = CompetitionVenue::where('competition_id', $id)->where('id', $subid)->first();
 
         if(!$address){
             return response()->json(['error' => 'The address does not exist.'], HttpStatusCodes::HTTP_FOUND);
@@ -130,13 +130,13 @@ class CompetitionAddressController extends Controller
 
         $address->update($data);
 
-        return new CompetitionAddressResource($address);
+        return new CompetitionVenueResource($address);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CompetitionAddress  $competitionAddress
+     * @param  \App\Models\CompetitionVenue  $CompetitionVenue
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id, $subid)
@@ -151,7 +151,7 @@ class CompetitionAddressController extends Controller
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
-        $address = CompetitionAddress::where('competition_id', $id)->where('id', $subid)->first();
+        $address = CompetitionVenue::where('competition_id', $id)->where('id', $subid)->first();
 
         if(!$address){
             return response()->json(['error' => 'The address does not exist.'], HttpStatusCodes::HTTP_FOUND);

@@ -25,6 +25,7 @@ class CompetitionTeam extends BaseModel
         'competition_id' => 'required|uuid',
         'team_id'  => 'required|uuid',
         'checked_in' => 'boolean|nullable',
+        'entry_fee_paid' => 'boolean|nullable',
         'status' => 'nullable|numeric|min:0|max:7'
     );
 
@@ -34,7 +35,8 @@ class CompetitionTeam extends BaseModel
         'status',
         'checked_in',
         'status',
-        'checked_in_time'
+        'checked_in_time',
+        'entry_fee_paid'
     ];
 
     public function team()

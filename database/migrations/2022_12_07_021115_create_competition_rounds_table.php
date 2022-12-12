@@ -29,10 +29,10 @@ return new class extends Migration
             $table->integer('elimination_type')->nullable();
             $table->string('timezone', 5)->nullable();
 
-            $table->uuid('address_id')->nullable();
+            $table->uuid('venue_id')->nullable();
 
             $table->foreign('competition_id')->references('id')->on('competitions')->onDelete('cascade');
-            $table->foreign('address_id')->references('id')->on('competition_addresses')->onDelete('cascade');
+            $table->foreign('venue_id')->references('id')->on('competition_venues')->onDelete('cascade');
             
             
             $table->timestamps();

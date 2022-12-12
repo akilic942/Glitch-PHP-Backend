@@ -33,4 +33,15 @@ class TeamInvite extends BaseModel
         'team_id',
         'token'
     ];
+
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = strtolower($value);
+    }
+
+    public function getEmailAttribute($value)
+    {
+        return strtolower($value);
+    }
+
 }

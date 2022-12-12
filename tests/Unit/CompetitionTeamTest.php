@@ -2,7 +2,7 @@
 
 use App\Invirtu\InvirtuClient;
 use App\Models\Competition;
-use App\Models\CompetitionAddress;
+use App\Models\CompetitionVenue;
 use App\Models\CompetitionTeam;
 use App\Models\Event;
 use App\Models\Recording;

@@ -5,7 +5,7 @@ namespace Tests\Routes;
 use App\Facades\CompetitionInvitesFacade;
 use App\Facades\RolesFacade;
 use App\Models\Competition;
-use App\Models\CompetitionAddress;
+use App\Models\CompetitionVenue;
 use App\Models\CompetitionRound;
 use App\Models\CompetitionRoundBracket;
 use App\Models\Team;
@@ -126,12 +126,12 @@ class CompetitionRoundBracketControllerTest extends TestCase
 
         $tmp_team = Team::factory()->create();
 
-        $tmp_address = CompetitionAddress::factory()->create(['competition_id' => $competition->id]);
+        $tmp_address = CompetitionVenue::factory()->create(['competition_id' => $competition->id]);
 
         $data = [
             'user_id' => $tmp_user->id,
             'team_id' => $tmp_team->id,
-            'address_id' => $tmp_address->id,
+            'venue_id' => $tmp_address->id,
             'bracket_start_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
             'bracket_end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
             'points_awarded' => rand(0,120),

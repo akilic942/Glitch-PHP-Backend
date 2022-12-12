@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('competition_addresses', function (Blueprint $table) {
+        Schema::create('competition_venues', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');
 
@@ -43,7 +43,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::statement('ALTER TABLE competition_addresses ALTER COLUMN id SET DEFAULT uuid_generate_v4();');
+        DB::statement('ALTER TABLE competition_venues ALTER COLUMN id SET DEFAULT uuid_generate_v4();');
     }
 
     /**
@@ -53,6 +53,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('competition_addresses');
+        Schema::dropIfExists('competition_venues');
     }
 };
