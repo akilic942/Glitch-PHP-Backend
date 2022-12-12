@@ -72,6 +72,10 @@ Route::get('competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}', 'App\H
 Route::put('competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}', 'App\Http\Controllers\CompetitionRoundBracketController@update');
 Route::delete('competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}', 'App\Http\Controllers\CompetitionRoundBracketController@destroy');
 
+Route::get('competitions/{uuid}/invites', 'App\Http\Controllers\CompetitionInviteController@index');
+Route::post('competitions/{uuid}/sendInvite', 'App\Http\Controllers\CompetitionInviteController@store');
+Route::post('competitions/{uuid}/acceptInvite', 'App\Http\Controllers\CompetitionInviteController@acceptInvite');
+
 //Event Routes
 Route::get('events', 'App\Http\Controllers\EventController@index');
 Route::post('events', 'App\Http\Controllers\EventController@store');
@@ -132,6 +136,10 @@ Route::post('teams/{uuid}/users', 'App\Http\Controllers\TeamUserController@store
 Route::get('teams/{uuid}/users/{user_id}', 'App\Http\Controllers\TeamUserController@show');
 Route::put('teams/{uuid}/users/{user_id}', 'App\Http\Controllers\TeamUserController@update');
 Route::delete('teams/{uuid}/users/{user_id}', 'App\Http\Controllers\TeamUserController@destroy');
+
+Route::get('teams/{uuid}/invites', 'App\Http\Controllers\TeamInviteController@index');
+Route::post('teams/{uuid}/sendInvite', 'App\Http\Controllers\TeamInviteController@store');
+Route::post('teams/{uuid}/acceptInvite', 'App\Http\Controllers\TeamInviteController@acceptInvite');
 
 //User Routes
 Route::get('users', 'App\Http\Controllers\UserController@index');

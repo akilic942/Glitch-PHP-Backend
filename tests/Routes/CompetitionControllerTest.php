@@ -5,7 +5,7 @@ namespace Tests\Routes;
 use App\Facades\CompetitionInvitesFacade;
 use App\Facades\RolesFacade;
 use App\Models\Competition;
-
+use App\Models\CompetitionInvite;
 use App\Models\User;
 use Database\Factories\CompetitionInviteFactory;
 use Illuminate\Http\UploadedFile;
@@ -269,6 +269,88 @@ class CompetitionControllerTest extends TestCase
 
         $url = $this->_getApiRoute() . 'competitions/' . $competition->id;
         
+    }
+
+    public function testListInvites() {
+
+        $user = User::factory()->create();
+
+        $competition = Competition::factory()->create();
+
+        RolesFacade::competitionMakeAdmin($competition, $user);
+
+        $url = $this->_getApiRoute() . 'competitions/' . $competition->id. '/invites';
+
+        $invite_count = rand(5, 25);
+
+        CompetitionInvite::factory($invite_count)->create(['competition_id' => $competition->id]);
+
+        CompetitionInvite::factory($invite_count)->create();
+
+        $response = $this->withHeaders([
+            'Authorization Bearer' => $this->getAccessToken($user),
+        ])->get($url);
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+
+        $competitionData = $json['data'];
+
+        $this->assertCount($invite_count, $competitionData);
+
+    }
+
+    public function testSendInvite() {
+
+        $user = User::factory()->create();
+
+        $competition = Competition::factory()->create();
+
+        RolesFacade::competitionMakeAdmin($competition, $user);
+
+        $url = $this->_getApiRoute() . 'competitions/' . $competition->id. '/sendInvite';
+
+        $faker = \Faker\Factory::create();
+
+        $data = array(
+            'name' => $faker->firstName(),
+            'email' => $faker->email,
+        );
+
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+        $this->assertEquals(201, $response->status());
+
+        $json = $response->json();
+
+        $this->assertEquals($data['email'], $json['data']['email']);
+        $this->assertEquals($data['name'], $json['data']['name']);
+
+    }
+
+    public function testAcceptInvite() {
+
+        $user = User::factory()->create();
+
+        $competition = Competition::factory()->create();
+
+        $invite = CompetitionInvite::factory()->create(['email' => $user->email, 'competition_id' => $competition->id]);
+
+        $data = array(
+            'token' => $invite->token,
+        );
+        $url = $this->_getApiRoute() . 'competitions/' . $competition->id. '/acceptInvite'; 
+
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+        $this->assertEquals(204, $response->status());
+
+
     }
 
     /*

@@ -7,6 +7,7 @@ use App\Enums\Roles;
 use App\Facades\CompetitionFacade;
 use App\Facades\PermissionsFacade;
 use App\Facades\RolesFacade;
+use App\Http\Resources\CompetitionFullResource;
 use App\Http\Resources\CompetitionResource;
 use App\Http\Resources\CompetitionRoundResource;
 use App\Models\Competition;
@@ -70,7 +71,7 @@ class CompetitionController extends Controller
     {
         $competition = Competition::where('id', $id)->first();
 
-        return new CompetitionResource($competition);
+        return new CompetitionFullResource($competition);
     }
 
     /**

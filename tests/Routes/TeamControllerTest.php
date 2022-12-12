@@ -5,7 +5,7 @@ namespace Tests\Routes;
 use App\Facades\TeamInvitesFacade;
 use App\Facades\RolesFacade;
 use App\Models\Team;
-
+use App\Models\TeamInvite;
 use App\Models\User;
 use Database\Factories\TeamInviteFactory;
 use Illuminate\Http\UploadedFile;
@@ -181,6 +181,88 @@ class TeamControllerTest extends TestCase
 
         $url = $this->_getApiRoute() . 'teams/' . $team->id;
         
+    }
+
+    public function testListInvites() {
+
+        $user = User::factory()->create();
+
+        $team = Team::factory()->create();
+
+        RolesFacade::teamMakeAdmin($team, $user);
+
+        $url = $this->_getApiRoute() . 'teams/' . $team->id. '/invites';
+
+        $invite_count = rand(5, 25);
+
+        TeamInvite::factory($invite_count)->create(['team_id' => $team->id]);
+
+        TeamInvite::factory($invite_count)->create();
+
+        $response = $this->withHeaders([
+            'Authorization Bearer' => $this->getAccessToken($user),
+        ])->get($url);
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+
+        $teamData = $json['data'];
+
+        $this->assertCount($invite_count, $teamData);
+
+    }
+
+    public function testSendInvite() {
+
+        $user = User::factory()->create();
+
+        $team = Team::factory()->create();
+
+        RolesFacade::teamMakeAdmin($team, $user);
+
+        $url = $this->_getApiRoute() . 'teams/' . $team->id. '/sendInvite';
+
+        $faker = \Faker\Factory::create();
+
+        $data = array(
+            'name' => $faker->firstName(),
+            'email' => $faker->email,
+        );
+
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+        $this->assertEquals(201, $response->status());
+
+        $json = $response->json();
+
+        $this->assertEquals($data['email'], $json['data']['email']);
+        $this->assertEquals($data['name'], $json['data']['name']);
+
+    }
+
+    public function testAcceptInvite() {
+
+        $user = User::factory()->create();
+
+        $team = Team::factory()->create();
+
+        $invite = TeamInvite::factory()->create(['email' => $user->email, 'team_id' => $team->id]);
+
+        $data = array(
+            'token' => $invite->token,
+        );
+        $url = $this->_getApiRoute() . 'teams/' . $team->id. '/acceptInvite'; 
+
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+        $this->assertEquals(204, $response->status());
+
+
     }
 
     /*

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Roles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -147,6 +148,33 @@ class Competition extends BaseModel
         'team_registration_price',
         'individual_registration_price',
     ];
+
+    public function users()
+    {
+        return $this->hasManyThrough(User::class, CompetitionUser::class, 'competition_id', 'id','id', 'user_id');
+    }
+
+    public function admins()
+    {
+        return $this->hasManyThrough(User::class, CompetitionUser::class, 'competition_id', 'id','id', 'user_id')->where( 'competition_id', $this->id)->where(function($query) {
+            $query->where('user_role', Roles::SuperAdministrator)->orWhere('user_role', Roles::Administrator);
+        });
+    }
+
+    public function moderators()
+    {
+        return $this->hasManyThrough(User::class, CompetitionUser::class, 'competition_id', 'id','id', 'user_id')->where('user_role', Roles::Moderator)->where('competition_id', $this->id);;
+    }
+
+    public function products()
+    {
+        return $this->hasManyThrough(User::class, CompetitionUser::class, 'competition_id', 'id','id', 'user_id')->where('user_role', Roles::Producer)->where('competition_id', $this->id);;
+    }
+
+    public function contestants()
+    {
+        return $this->hasManyThrough(User::class, CompetitionUser::class, 'competition_id', 'id','id', 'user_id')->where('user_role', Roles::Participant)->where('competition_id', $this->id);;
+    }
     
 
 }
