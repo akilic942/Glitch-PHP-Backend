@@ -324,4 +324,52 @@ class CompetitionFacadeTest extends TestCase {
         $this->assertEquals($registration->status, AcceptanceStatus::UNAPPROVED);
     }
 
+    public function testSetEventDate() {
+
+        $faker = \Faker\Factory::create();
+
+        //Test With Competition Only Having Competition Set
+   
+        $competition = Competition::factory()->create(['start_date' => $faker->dateTimeBetween('now', '+7 days')->format('Y-m-d H:i:s')]);
+
+        $round = CompetitionRound::factory()->create(['competition_id' => $competition->id]);
+
+        $bracket = CompetitionRoundBracket::factory()->create(['competition_id' => $competition->id, 'round' => $round->round]);
+
+        $bracket->refresh();
+
+        $event = Event::where('id', '=', $bracket->event_id)->first();
+
+        $this->assertEquals($event->start_date, $competition->start_date);
+
+        //Test With Competition Having The Round Set
+   
+        $competition = Competition::factory()->create(['start_date' => $faker->dateTimeBetween('now', '+7 days')->format('Y-m-d H:i:s')]);
+
+        $round = CompetitionRound::factory()->create(['competition_id' => $competition->id, 'round_start_date' => $faker->dateTimeBetween('+8 days', '+14 days')->format('Y-m-d H:i:s')]);
+
+        $bracket = CompetitionRoundBracket::factory()->create(['competition_id' => $competition->id, 'round' => $round->round]);
+
+        $bracket->refresh();
+
+        $event = Event::where('id', '=', $bracket->event_id)->first();
+
+        $this->assertEquals($event->start_date, $round->round_start_date);
+
+
+        //Test With Competition Having The Bracket Set Set
+   
+        $competition = Competition::factory()->create(['start_date' => $faker->dateTimeBetween('now', '+7 days')->format('Y-m-d H:i:s')]);
+
+        $round = CompetitionRound::factory()->create(['competition_id' => $competition->id, 'round_start_date' => $faker->dateTimeBetween('+8 days', '+14 days')->format('Y-m-d H:i:s')]);
+
+        $bracket = CompetitionRoundBracket::factory()->create(['competition_id' => $competition->id, 'round' => $round->round,  'bracket_start_date' => $faker->dateTimeBetween('+15 days', '+21 days')->format('Y-m-d H:i:s')]);
+
+        $bracket->refresh();
+
+        $event = Event::where('id', '=', $bracket->event_id)->first();
+
+        $this->assertEquals($event->start_date, $bracket->bracket_start_date);
+    }
+
 }

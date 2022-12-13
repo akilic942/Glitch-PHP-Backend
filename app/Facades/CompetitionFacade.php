@@ -9,6 +9,7 @@ use App\Models\CompetitionRound;
 use App\Models\CompetitionRoundBracket;
 use App\Models\CompetitionTeam;
 use App\Models\CompetitionUser;
+use App\Models\Event;
 use App\Models\Team;
 use App\Models\TeamUser;
 use App\Models\User;
@@ -352,5 +353,41 @@ class CompetitionFacade {
         ]);
 
         return $cu;
+    }
+
+    public static function setEventDate(Competition $competition, Event $event) {
+
+        $start_date = null;
+
+        if($competition->start_date) {
+            $start_date = $competition->start_date;
+        }
+
+        $round = null;
+
+        $bracket = CompetitionRoundBracket::where('event_id', '=', $event->id)->first();
+
+        if($bracket) {
+            $round = CompetitionRound::where('round', '=', $bracket->round)
+            ->where('competition_id', '=', $bracket->competition_id)
+            ->first();
+        }
+
+        if($round && $round->round_start_date) {
+            $start_date = $round->round_start_date;
+        }
+
+        if($bracket && $bracket->bracket_start_date) {
+            $start_date = $bracket->bracket_start_date;
+        }
+
+        if($start_date) {
+            $event->forceFill(['start_date' => $start_date]);
+            $event->save();
+        }
+
+        
+
+
     }
 }

@@ -3,8 +3,10 @@
 namespace App\Observers;
 
 use App\Enums\Roles;
+use App\Facades\CompetitionFacade;
 use App\Facades\EventsFacade;
 use App\Facades\RolesFacade;
+use App\Models\Competition;
 use App\Models\CompetitionRoundBracket;
 use App\Models\Event;
 use App\Models\Team;
@@ -71,6 +73,11 @@ class CompetitionRoundBracketObserver
                 }
             }
 
+            $competition = Competition::where('id', '=', $competitionRoundBracket->competition_id)->first();
+
+            if($competition) {
+                CompetitionFacade::setEventDate($competition, $event);
+            }
         }
     }
 
@@ -82,7 +89,15 @@ class CompetitionRoundBracketObserver
      */
     public function updated(CompetitionRoundBracket $competitionRoundBracket)
     {
-        //
+        if($competitionRoundBracket->event_id) {
+            $competition = Competition::where('id', '=', $competitionRoundBracket->competition_id)->first();
+
+            $event = Event::where('id', '=', $competitionRoundBracket->event_id)->first();;
+
+            if($competition && $event) {
+                CompetitionFacade::setEventDate($competition, $event);
+            }
+        }
     }
 
     /**

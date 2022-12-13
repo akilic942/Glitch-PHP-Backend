@@ -39,7 +39,8 @@ class CompetitionUser extends BaseModel
         'checked_in',
         'status',
         'checked_in_time',
-        'entry_fee_paid'
+        'entry_fee_paid',
+        'waiver_signed'
     ];
 
     public function user()
