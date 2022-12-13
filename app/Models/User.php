@@ -156,4 +156,14 @@ class User extends BaseAuthModel implements JWTSubject
     {
         return $this->hasManyThrough(User::class, Follow::class, 'follower_id', 'id', 'id', 'following_id');
     }
+
+    public function competitions()
+    {
+        return $this->hasManyThrough(Competition::class, CompetitionUser::class, 'user_id', 'id', 'id', 'competition_id')->orderBy('created_at', 'DESC');;
+    }
+
+    public function teams()
+    {
+        return $this->hasManyThrough(Team::class, TeamUser::class, 'user_id', 'id', 'id', 'team_id')->orderBy('created_at', 'DESC');;
+    }
 }

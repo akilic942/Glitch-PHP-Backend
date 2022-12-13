@@ -8,6 +8,7 @@ use App\Http\Resources\CompetitionRoundResource;
 use App\Models\Competition;
 use App\Models\CompetitionRound;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CompetitionRoundController extends Controller
 {
@@ -55,7 +56,9 @@ class CompetitionRoundController extends Controller
 
         $round = new CompetitionRound();
 
-        $valid = $round->validate($input);
+        $unique_rule = ['round' => 'required|integer|unique:competition_rounds,round,NULL,id,competition_id,' . $competition->id];
+
+        $valid = $round->validate($input, [], $unique_rule);
 
         if (!$valid) {
             return response()->json($round->getValidationErrors(), 422);

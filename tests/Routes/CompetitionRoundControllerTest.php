@@ -118,7 +118,7 @@ class CompetitionRoundControllerTest extends TestCase
             'title' => $faker->title(),
             'overview' => $faker->paragraphs(8, true),
             'round_start_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
-            'round_end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
+            'round_end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('+8 days', '+14 days')->getTimestamp())->toString(),
             'checkin_enabled' => rand(0,1),
             'checkin_mintues_prior' => rand(0,120),
             'elimination_type' => rand(1,9)

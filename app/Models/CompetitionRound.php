@@ -32,6 +32,9 @@ class CompetitionRound extends BaseModel
         'venue_id' => 'uuid|nullable',
 
         'elimination_type' => 'nullable|numeric|min:1|max:9',
+
+        'round_start_date'    => 'nullable|date',
+        'round_end_date'      => 'nullable|date|after_or_equal:round_start_date',
     );
 
     protected $fillable = [
@@ -50,6 +53,10 @@ class CompetitionRound extends BaseModel
     public function competition()
     {
         return $this->belongsTo(Competition::class);
+    }
+
+    public function brackets() {
+        return $this->hasMany(CompetitionRoundBracket::class, 'round', 'round')->where('competition_id', '=', $this->competition_id)->orderBy('bracket', 'asc');;
     }
 
 }

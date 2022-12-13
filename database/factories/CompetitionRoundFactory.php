@@ -22,7 +22,7 @@ class CompetitionRoundFactory extends Factory
 
         return [
             'competition_id' => $competition->id,
-            'round' => rand(1,10000)
+            'round' => rand(1,1000)
         ];
     }
 }

@@ -22,6 +22,7 @@ class Competition extends BaseModel
         'name' => 'required|string|min:0|max:255',
         'description' => 'required',
         'type' => 'nullable|numeric|min:1|max:9',
+        'currency' => 'string|min:0|max:5|nullable',
 
         //Image validation
         'main_image' => 'string|min:0|max:255|url|nullable',
@@ -61,6 +62,7 @@ class Competition extends BaseModel
         
         'allow_team_signup' => 'boolean|nullable',
         'allow_individual_signup' => 'boolean|nullable',
+        'require_attendee_rsvp' => 'boolean|nullable',
         'is_private' => 'boolean|nullable',
 
         'competitors_per_match' => 'integer|numeric|min:2',
@@ -76,16 +78,18 @@ class Competition extends BaseModel
 
         'team_signup_requires_approval' => 'boolean|nullable',
         'individual_signup_requires_approval' => 'boolean|nullable',
+        'require_contestant_waiver' => 'boolean|nullable',
+        'require_attendee_waiver' => 'boolean|nullable',
         
         'team_registration_price' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
         'individual_registration_price' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
+        'grand_prize_total' => 'nullable|regex:/^\d+(\.\d{1,2})?$/',
 
         'start_date'    => 'nullable|date',
         'end_date'      => 'nullable|date|after_or_equal:start_date',
-
         
         'registration_start_date'    => 'nullable|date',
-        'registration_end_date'      => 'nullable|date|after_or_equal:start_date',
+        'registration_end_date'      => 'nullable|date|after_or_equal:registration_start_date',
         
     );
 
@@ -100,6 +104,8 @@ class Competition extends BaseModel
         'refund_policy',
         'harassment_policy',
         'saftey_policy',
+        'privacy_policy',
+        'currency',
 
         //Social Pages
         'twitter_page',
@@ -135,6 +141,7 @@ class Competition extends BaseModel
 
         'allow_team_signup',
         'allow_individual_signup',
+        'require_attendee_rsvp',
         'is_private',
 
         'competitors_per_match',
@@ -150,9 +157,12 @@ class Competition extends BaseModel
 
         'team_signup_requires_approval',
         'individual_signup_requires_approval',
+        'require_contestant_waiver',
+        'require_attendee_waiver',
 
         'team_registration_price',
         'individual_registration_price',
+        'grand_prize_total',
     ];
 
     public function users()
@@ -185,6 +195,16 @@ class Competition extends BaseModel
     public function venues()
     {
         return $this->hasMany(CompetitionVenue::class, 'competition_id', 'id');
+    }
+
+    public function rounds()
+    {
+        return $this->hasMany(CompetitionRound::class, 'competition_id', 'id')->orderBy('round', 'asc');
+    }
+
+    public function brackets()
+    {
+        return $this->hasMany(CompetitionRoundBracket::class, 'competition_id', 'id');
     }
     
 

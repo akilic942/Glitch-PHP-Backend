@@ -207,10 +207,6 @@ class CompetitionController extends Controller
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
-        }
-
         $input = $request->all();
 
         if(!isset($input['team_id']) || (isset($input['team_id']) && !$input['team_id'])) {
@@ -240,10 +236,6 @@ class CompetitionController extends Controller
 
         if(!$competition){
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
-        }
-
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
         $canRegister = CompetitionFacade::canRegisterUser($competition, $request->user());

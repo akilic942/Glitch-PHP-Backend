@@ -306,7 +306,6 @@ class CompetitionFacade {
 
         $registered = CompetitionUser::where('competition_id', $competition->id)
         ->where('user_id', $user->id)
-        ->where('user_role', Roles::Participant)
         ->first();
 
         if($registered) {

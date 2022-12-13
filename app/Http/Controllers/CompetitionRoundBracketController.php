@@ -102,7 +102,7 @@ class CompetitionRoundBracketController extends Controller
 
         $bracket = CompetitionRoundBracket::where('competition_id', $id)
         ->where('round', $subid)
-        ->where('bracket', $bid)
+        ->where('id', $bid)
         ->first();
 
         if(!$bracket){
@@ -139,7 +139,7 @@ class CompetitionRoundBracketController extends Controller
 
         $bracket = CompetitionRoundBracket::where('competition_id', $id)
         ->where('round', $subid)
-        ->where('bracket', $bid)
+        ->where('id', $bid)
         ->first();
 
         if(!$bracket){

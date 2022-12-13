@@ -22,6 +22,10 @@ return new class extends Migration
 
             $table->integer('status')->nullable();
 
+            $table->boolean('is_competitor')->nullable()->default(false);
+            
+            $table->boolean('waiver_signed')->nullable()->default(false);
+
             $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 

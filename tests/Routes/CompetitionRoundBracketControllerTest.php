@@ -45,7 +45,7 @@ class CompetitionRoundBracketControllerTest extends TestCase
 
     }
 
-    public function testCreation(){
+    public function testCreationWithUser(){
 
         $competition = Competition::factory()->create();
 
@@ -59,8 +59,11 @@ class CompetitionRoundBracketControllerTest extends TestCase
 
         $faker = \Faker\Factory::create();
 
+        $competing_user = User::factory()->create();
+
         $data = [
             'bracket' => rand(1,10),
+            'user_id' => $competing_user->id
         ];
         
         $response = $this->withHeaders([
@@ -76,6 +79,46 @@ class CompetitionRoundBracketControllerTest extends TestCase
         $this->assertEquals($response['competition_id'], $competition->id);
         $this->assertEquals($response['round'], $round->round);
         $this->assertEquals($response['bracket'], $data['bracket']);
+        $this->assertEquals($response['user_id'], $data['user_id']);
+        //$this->assertEquals($competition['user']['id'], $user->id);
+
+    }
+
+    public function testCreationWithTeam(){
+
+        $competition = Competition::factory()->create();
+
+        $user = User::factory()->create();
+
+        RolesFacade::competitionMakeSuperAdmin($competition, $user);
+
+        $round = CompetitionRound::factory()->create(['competition_id' => $competition->id]);
+
+        $url = $this->_getApiRoute() . 'competitions/' . $competition->id . '/rounds/' . $round->round . '/brackets';
+
+        $faker = \Faker\Factory::create();
+
+        $competing_team = Team::factory()->create();
+
+        $data = [
+            'bracket' => rand(1,10),
+            'team_id' => $competing_team->id
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->getAccessToken($user),
+        ])->post($url, $data);
+
+        $this->assertEquals(201, $response->status());
+
+        $json = $response->json();
+
+        $response = $json['data'];
+
+        $this->assertEquals($response['competition_id'], $competition->id);
+        $this->assertEquals($response['round'], $round->round);
+        $this->assertEquals($response['bracket'], $data['bracket']);
+        $this->assertEquals($response['team_id'], $data['team_id']);
         //$this->assertEquals($competition['user']['id'], $user->id);
 
     }
@@ -88,7 +131,7 @@ class CompetitionRoundBracketControllerTest extends TestCase
 
         $bracket = CompetitionRoundBracket::factory()->create(['competition_id' => $competition->id, 'round' => $round->round]);
 
-        $url = $this->_getApiRoute() .  'competitions/' . $competition->id . '/rounds/' . $round->round .'/brackets/' . $bracket->bracket;
+        $url = $this->_getApiRoute() .  'competitions/' . $competition->id . '/rounds/' . $round->round .'/brackets/' . $bracket->id;
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken(),
@@ -118,7 +161,7 @@ class CompetitionRoundBracketControllerTest extends TestCase
 
         $bracket = CompetitionRoundBracket::factory()->create(['competition_id' => $competition->id, 'round' => $round->round]);
 
-        $url = $this->_getApiRoute() .  'competitions/' . $competition->id . '/rounds/' . $round->round .'/brackets/' . $bracket->bracket;
+        $url = $this->_getApiRoute() .  'competitions/' . $competition->id . '/rounds/' . $round->round .'/brackets/' . $bracket->id;
 
         $faker = \Faker\Factory::create();
 
@@ -133,7 +176,7 @@ class CompetitionRoundBracketControllerTest extends TestCase
             'team_id' => $tmp_team->id,
             'venue_id' => $tmp_address->id,
             'bracket_start_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
-            'bracket_end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
+            'bracket_end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('+8 days', '+14 days')->getTimestamp())->toString(),
             'points_awarded' => rand(0,120),
             'cash_awarded' => rand(0,120),
         ];

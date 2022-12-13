@@ -117,6 +117,7 @@ class CompetitionControllerTest extends TestCase
             'name' => $faker->title(),
             'description' => $faker->paragraphs(8, true),
             'type' => rand(1,9),
+            'currency' =>$faker->text(5),
             
             'rules' => $faker->paragraphs(8, true),
             'agreement' => $faker->paragraphs(8, true),
@@ -138,12 +139,13 @@ class CompetitionControllerTest extends TestCase
             'website' => $faker->url(),
 
             'start_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
-            'end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
+            'end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('+8 days', '+14 days')->getTimestamp())->toString(),
             'registration_start_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
-            'registration_end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
+            'registration_end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('+8 days', '+14 days')->getTimestamp())->toString(),
 
             'allow_team_signup' => rand(0,1),
             'allow_individual_signup' => rand(0,1),
+            'require_attendee_rsvp' => rand(0,1),
             'is_private' => rand(0,1),
 
             'checkin_enabled' => rand(0,1),
@@ -158,16 +160,19 @@ class CompetitionControllerTest extends TestCase
 
             'team_registration_price' => rand(0,100),
             'individual_registration_price' => rand(0,100),
+            'grand_prize_total' => rand(0,100),
 
             'team_signup_requires_approval' => rand(0,1),
             'individual_signup_requires_approval' => rand(0,1),
+            'require_contestant_waiver' => rand(0,1),
+            'require_attendee_waiver' => rand(0,1),
             
         ];
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
         ])->put($url, $data);
-
+        
         //print_r($response->json());
         $this->assertEquals(200, $response->status());
 
@@ -179,6 +184,7 @@ class CompetitionControllerTest extends TestCase
         $this->assertEquals($jsonData['name'], $data['name']);
         $this->assertEquals($jsonData['description'], $data['description']);
         $this->assertEquals($jsonData['type'], $data['type']);
+        $this->assertEquals($jsonData['currency'], $data['currency']);
 
         $this->assertEquals($jsonData['rules'], $data['rules']);
         $this->assertEquals($jsonData['agreement'], $data['agreement']);
@@ -205,6 +211,7 @@ class CompetitionControllerTest extends TestCase
 
         $this->assertEquals($jsonData['allow_team_signup'], $data['allow_team_signup']);
         $this->assertEquals($jsonData['allow_individual_signup'], $data['allow_individual_signup']);
+        $this->assertEquals($jsonData['require_attendee_rsvp'], $data['require_attendee_rsvp']);
         $this->assertEquals($jsonData['is_private'], $data['is_private']);
 
         $this->assertEquals($jsonData['checkin_enabled'], $data['checkin_enabled']);
@@ -219,9 +226,12 @@ class CompetitionControllerTest extends TestCase
 
         $this->assertEquals($jsonData['team_registration_price'], $data['team_registration_price']);
         $this->assertEquals($jsonData['individual_registration_price'], $data['individual_registration_price']);
+        $this->assertEquals($jsonData['grand_prize_total'], $data['grand_prize_total']);
 
         $this->assertEquals($jsonData['team_signup_requires_approval'], $data['team_signup_requires_approval']);
         $this->assertEquals($jsonData['individual_signup_requires_approval'], $data['individual_signup_requires_approval']);
+        $this->assertEquals($jsonData['require_contestant_waiver'], $data['require_contestant_waiver']);
+        $this->assertEquals($jsonData['require_attendee_waiver'], $data['require_attendee_waiver']);
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),

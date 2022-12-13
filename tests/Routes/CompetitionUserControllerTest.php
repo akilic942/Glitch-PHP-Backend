@@ -120,6 +120,7 @@ class CompetitionUserControllerTest extends TestCase
             'status' => rand(1,4),
             'entry_fee_paid' => rand(0,1),
             'checked_in' => rand(0,1),
+            'waiver_signed' => rand(0,1),
             'checked_in_time' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
         ];
 
@@ -140,6 +141,7 @@ class CompetitionUserControllerTest extends TestCase
         $this->assertEquals($jsonData['entry_fee_paid'], $data['entry_fee_paid']);
         $this->assertEquals($jsonData['checked_in'], $data['checked_in']);
         $this->assertEquals($jsonData['checked_in_time'], $data['checked_in_time']);
+        $this->assertEquals($jsonData['waiver_signed'], $data['waiver_signed']);
 
     }
 

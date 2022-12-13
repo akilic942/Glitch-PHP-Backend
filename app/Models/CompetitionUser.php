@@ -27,6 +27,8 @@ class CompetitionUser extends BaseModel
         'user_id'  => 'required',
         'user_role' => 'integer|nullable',
         'checked_in' => 'boolean|nullable',
+        'waiver_signed' => 'boolean|nullable',
+        'entry_fee_paid' => 'boolean|nullable',
         'status' => 'nullable|numeric|min:0|max:7'
     );
 
@@ -36,7 +38,8 @@ class CompetitionUser extends BaseModel
         'user_role',
         'checked_in',
         'status',
-        'checked_in_time'
+        'checked_in_time',
+        'entry_fee_paid'
     ];
 
     public function user()

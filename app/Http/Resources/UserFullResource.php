@@ -54,7 +54,9 @@ class UserFullResource extends JsonResource
 
             'followers' => UserResource::collection($this->followers),
             'following' => UserResource::collection($this->following),
-            'events' => EventResource::collection($this->events)
+            'events' => EventResource::collection($this->events),
+            'teams' => EventResource::collection($this->teams),
+            'competitions' => EventResource::collection($this->competitions),
         ];
 
         $loggedin_user = Auth::user();

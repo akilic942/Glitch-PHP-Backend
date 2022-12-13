@@ -25,6 +25,8 @@ return new class extends Migration
 
             $table->boolean('checked_in')->nullable()->default(false);
             $table->timestamp('checked_in_time')->nullable();
+
+            $table->boolean('waiver_signed')->nullable()->default(false);
             
             $table->foreign('competition_id')->references('id')->on('competitions')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

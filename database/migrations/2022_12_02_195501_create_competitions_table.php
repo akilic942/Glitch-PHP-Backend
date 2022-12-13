@@ -28,6 +28,7 @@ return new class extends Migration
             $table->text('refund_policy')->nullable()->default('');
             $table->text('harassment_policy')->nullable()->default('');
             $table->text('saftey_policy')->nullable()->default('');
+            $table->text('privacy_policy')->nullable()->default('');
             $table->string('timezone', 5)->nullable();
 
             $table->string('main_image')->nullable()->default('');
@@ -78,6 +79,9 @@ return new class extends Migration
 
             $table->boolean('team_signup_requires_approval')->nullable()->default(false);
             $table->boolean('individual_signup_requires_approval')->nullable()->default(false);
+            $table->boolean('require_attendee_rsvp')->nullable()->default(false);
+            $table->boolean('require_contestant_waiver')->nullable()->default(false);
+            $table->boolean('require_attendee_waiver')->nullable()->default(false);
 
             $table->integer('competitors_per_match')->default(2);
             $table->integer('winners_per_match')->default(1);
@@ -88,6 +92,8 @@ return new class extends Migration
 
             $table->double('team_registration_price')->nullable()->default(0);
             $table->double('individual_registration_price')->nullable()->default(0);
+            $table->double('grand_prize_total')->nullable()->default(0);
+            $table->string('currency', 5)->nullable();
             
 
             $table->timestamps();

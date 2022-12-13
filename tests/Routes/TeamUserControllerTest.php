@@ -118,6 +118,7 @@ class TeamUserControllerTest extends TestCase
         $data = [
             'user_role' => rand(1,9),
             'status' => rand(1,4),
+            'waiver_signed' => rand(0,1),
         ];
 
         $response = $this->withHeaders([
@@ -134,6 +135,7 @@ class TeamUserControllerTest extends TestCase
         $this->assertEquals($update_user->user_id, $jsonData['user_id']);
         $this->assertEquals($jsonData['user_role'], $data['user_role']);
         $this->assertEquals($jsonData['status'], $data['status']);
+        $this->assertEquals($jsonData['waiver_signed'], $data['waiver_signed']);
 
     }
 
