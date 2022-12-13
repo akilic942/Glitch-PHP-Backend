@@ -13,5 +13,7 @@ final class Roles extends Enum {
     const Speaker = 4;
     const Subscriber = 5;
     const Blocked = 6;
+    const Producer = 7;
+    const Participant = 8;
     
 }

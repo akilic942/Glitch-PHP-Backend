@@ -33,7 +33,7 @@ class BaseModel extends Model {
         }
 
         if($addRules) {
-            $rules += $addRules;
+            $rules = $addRules + $rules;
         }
         
        // make a new validator object

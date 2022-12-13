@@ -25,6 +25,57 @@ Route::post('auth/oneTimeLoginWithToken', 'App\Http\Controllers\AuthController@o
 Route::post('auth/forgotpassword', 'App\Http\Controllers\ForgotPasswordController@requestNewPassword');
 Route::post('auth/resetpassword', 'App\Http\Controllers\ForgotPasswordController@changePassword');
 
+//Competition Routes
+Route::get('competitions', 'App\Http\Controllers\CompetitionController@index');
+Route::post('competitions', 'App\Http\Controllers\CompetitionController@store');
+Route::get('competitions/{uuid}', 'App\Http\Controllers\CompetitionController@show');
+Route::put('competitions/{uuid}', 'App\Http\Controllers\CompetitionController@update');
+Route::delete('competitions/{uuid}', 'App\Http\Controllers\CompetitionController@destroy');
+
+Route::post('competitions/{uuid}/registerUser', 'App\Http\Controllers\CompetitionController@registerParticipant');
+Route::post('competitions/{uuid}/registerTeam', 'App\Http\Controllers\CompetitionController@registerTeam');
+
+
+//Competition Rounds Routes
+Route::get('competitions/{uuid}/rounds', 'App\Http\Controllers\CompetitionRoundController@index');
+Route::post('competitions/{uuid}/rounds', 'App\Http\Controllers\CompetitionRoundController@store');
+Route::get('competitions/{uuid}/rounds/{round_id}', 'App\Http\Controllers\CompetitionRoundController@show');
+Route::put('competitions/{uuid}/rounds/{round_id}', 'App\Http\Controllers\CompetitionRoundController@update');
+Route::delete('competitions/{uuid}/rounds/{round_id}', 'App\Http\Controllers\CompetitionRoundController@destroy');
+
+//Competition Teams Routes
+Route::get('competitions/{uuid}/teams', 'App\Http\Controllers\CompetitionTeamController@index');
+Route::post('competitions/{uuid}/teams', 'App\Http\Controllers\CompetitionTeamController@store');
+Route::get('competitions/{uuid}/teams/{team_id}', 'App\Http\Controllers\CompetitionTeamController@show');
+Route::put('competitions/{uuid}/teams/{team_id}', 'App\Http\Controllers\CompetitionTeamController@update');
+Route::delete('competitions/{uuid}/teams/{team_id}', 'App\Http\Controllers\CompetitionTeamController@destroy');
+
+//Competition Venue Routes
+Route::get('competitions/{uuid}/venues', 'App\Http\Controllers\CompetitionVenueController@index');
+Route::post('competitions/{uuid}/venues', 'App\Http\Controllers\CompetitionVenueController@store');
+Route::get('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionVenueController@show');
+Route::put('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionVenueController@update');
+Route::delete('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionVenueController@destroy');
+
+//Competition User Routes
+Route::get('competitions/{uuid}/users', 'App\Http\Controllers\CompetitionUserController@index');
+Route::post('competitions/{uuid}/users', 'App\Http\Controllers\CompetitionUserController@store');
+Route::get('competitions/{uuid}/users/{user_id}', 'App\Http\Controllers\CompetitionUserController@show');
+Route::put('competitions/{uuid}/users/{user_id}', 'App\Http\Controllers\CompetitionUserController@update');
+Route::delete('competitions/{uuid}/users/{user_id}', 'App\Http\Controllers\CompetitionUserController@destroy');
+
+
+//Competition Brackets Routes
+Route::get('competitions/{uuid}/rounds/{round_id}/brackets', 'App\Http\Controllers\CompetitionRoundBracketController@index');
+Route::post('competitions/{uuid}/rounds/{round_id}/brackets', 'App\Http\Controllers\CompetitionRoundBracketController@store');
+Route::get('competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}', 'App\Http\Controllers\CompetitionRoundBracketController@show');
+Route::put('competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}', 'App\Http\Controllers\CompetitionRoundBracketController@update');
+Route::delete('competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}', 'App\Http\Controllers\CompetitionRoundBracketController@destroy');
+
+Route::get('competitions/{uuid}/invites', 'App\Http\Controllers\CompetitionInviteController@index');
+Route::post('competitions/{uuid}/sendInvite', 'App\Http\Controllers\CompetitionInviteController@store');
+Route::post('competitions/{uuid}/acceptInvite', 'App\Http\Controllers\CompetitionInviteController@acceptInvite');
+
 //Event Routes
 Route::get('events', 'App\Http\Controllers\EventController@index');
 Route::post('events', 'App\Http\Controllers\EventController@store');
@@ -56,8 +107,6 @@ Route::post('events/{uuid}/disableOverlay', 'App\Http\Controllers\EventControlle
 Route::post('events/{uuid}/enableDonations', 'App\Http\Controllers\EventController@enableDonations');
 Route::post('events/{uuid}/disableDonations', 'App\Http\Controllers\EventController@disableDonations');
 
-
-
 Route::post('events/{uuid}/sendInvite', 'App\Http\Controllers\EventInviteController@store');
 Route::post('events/{uuid}/acceptInvite', 'App\Http\Controllers\EventInviteController@acceptInvite');
 
@@ -73,6 +122,24 @@ Route::post('messages/makeThread', 'App\Http\Controllers\MessageController@conve
 Route::post('messages', 'App\Http\Controllers\MessageController@store');
 Route::put('messages/{uuid}', 'App\Http\Controllers\MessageController@update');
 Route::delete('messages/{uuid}', 'App\Http\Controllers\MessageController@destroy');
+
+//Teams Routes
+Route::get('teams', 'App\Http\Controllers\TeamController@index');
+Route::post('teams', 'App\Http\Controllers\TeamController@store');
+Route::get('teams/{uuid}', 'App\Http\Controllers\TeamController@show');
+Route::put('teams/{uuid}', 'App\Http\Controllers\TeamController@update');
+Route::delete('teams/{uuid}', 'App\Http\Controllers\TeamController@destroy');
+
+//Team User Routes
+Route::get('teams/{uuid}/users', 'App\Http\Controllers\TeamUserController@index');
+Route::post('teams/{uuid}/users', 'App\Http\Controllers\TeamUserController@store');
+Route::get('teams/{uuid}/users/{user_id}', 'App\Http\Controllers\TeamUserController@show');
+Route::put('teams/{uuid}/users/{user_id}', 'App\Http\Controllers\TeamUserController@update');
+Route::delete('teams/{uuid}/users/{user_id}', 'App\Http\Controllers\TeamUserController@destroy');
+
+Route::get('teams/{uuid}/invites', 'App\Http\Controllers\TeamInviteController@index');
+Route::post('teams/{uuid}/sendInvite', 'App\Http\Controllers\TeamInviteController@store');
+Route::post('teams/{uuid}/acceptInvite', 'App\Http\Controllers\TeamInviteController@acceptInvite');
 
 //User Routes
 Route::get('users', 'App\Http\Controllers\UserController@index');

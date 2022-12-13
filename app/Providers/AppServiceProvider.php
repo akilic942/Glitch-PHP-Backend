@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\CompetitionRoundBracket;
 use App\Models\Event;
 use App\Models\User;
+use App\Observers\CompetitionRoundBracketObserver;
 use App\Observers\EventObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
@@ -30,5 +32,6 @@ class AppServiceProvider extends ServiceProvider
         //The observers to listen too
         User::observe(UserObserver::class);
         Event::observe(EventObserver::class);
+        CompetitionRoundBracket::observe(CompetitionRoundBracketObserver::class);
     }
 }

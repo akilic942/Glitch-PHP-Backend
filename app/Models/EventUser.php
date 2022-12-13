@@ -6,7 +6,7 @@ use App\Traits\HasCompositePrimaryKeyTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class EventUser extends Model
+class EventUser extends BaseModel
 {
     use HasFactory, HasCompositePrimaryKeyTrait;
 

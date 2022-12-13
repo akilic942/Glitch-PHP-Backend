@@ -41,16 +41,6 @@ class EventController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreEventRequest  $request
@@ -90,16 +80,6 @@ class EventController extends Controller
         return new EventFullResource($event);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Event  $event
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Event $event)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -116,10 +96,9 @@ class EventController extends Controller
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        // check if currently authenticated user is the owner of the book
-        //if ($request->user()->id !== $event->user_id) {
-        //    return response()->json(['error' => 'You can only edit your own Forum.'], 403);
-        //}
+        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+            return response()->json(['error' => 'Access denied to live stream.' , 'message' => 'Access denied to live stream.'], 403);
+        }
 
         $input = $request->all();
 
@@ -146,7 +125,7 @@ class EventController extends Controller
 
         if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
             return response()->json(['error' => 'Access denied to live stream.' , 'message' => 'Access denied to live stream.'], 403);
-         }
+        }
 
         // check if currently authenticated user is the owner of the book
         //if ($request->user()->id !== $event->user_id) {

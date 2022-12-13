@@ -110,6 +110,8 @@ class EventControllerTest extends TestCase
 
         $url = $this->_getApiRoute() . 'events/' . $event->id;
 
+        RolesFacade::eventMakeAdmin($event, $user);
+
         $faker = \Faker\Factory::create();
 
         $data = [
