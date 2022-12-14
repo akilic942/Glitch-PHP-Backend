@@ -31,7 +31,7 @@ class CompetitionRoundBracketController extends Controller
             return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        $brackets = CompetitionRoundBracket::query();
+        $brackets = CompetitionRoundBracket::where('competition_id', $id)->where('round', $subid);
 
         $data = $brackets->orderBy('competition_round_brackets.created_at', 'desc')->paginate(25);
 

@@ -24,7 +24,7 @@ class CompetitionVenueController extends Controller
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        $addresses = CompetitionVenue::query();
+        $addresses = CompetitionVenue::where('competition_id', '=', $competition->id);
 
         $data = $addresses->orderBy('competition_venues.created_at', 'desc')->paginate(25);
 

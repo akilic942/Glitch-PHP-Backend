@@ -25,7 +25,7 @@ class CompetitionRoundController extends Controller
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        $rounds = CompetitionRound::query();
+        $rounds = CompetitionRound::where('competition_id', '=', $competition->id);
 
         $data = $rounds->orderBy('competition_rounds.created_at', 'desc')->paginate(25);
 

@@ -24,7 +24,7 @@ class CompetitionUserController extends Controller
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        $users = CompetitionUser::query();
+        $users = CompetitionUser::where('competition_id', '=', $competition->id);
 
         $data = $users->orderBy('competition_users.created_at', 'desc')->paginate(25);
 

@@ -24,7 +24,7 @@ class CompetitionTeamController extends Controller
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        $teams = CompetitionTeam::query();
+        $teams = CompetitionTeam::where('competition_id', '=', $competition->id);
 
         $data = $teams->orderBy('competition_teams.created_at', 'desc')->paginate(25);
 
