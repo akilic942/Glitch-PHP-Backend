@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class CompetitionFullResource extends JsonResource
 {
@@ -79,6 +80,11 @@ class CompetitionFullResource extends JsonResource
 
             'team_registration_price' => $this->team_registration_price,
             'individual_registration_price' => $this->individual_registration_price,
+            'currency' => $this->currency,
+
+            //Media
+            'main_image' => !empty($this->main_image) ? Storage::disk('s3')->url($this->main_image) : null,
+            'banner_image' => !empty($this->banner_image) ? Storage::disk('s3')->url($this->banner_image) : null,
 
             //Users
             'admins' => UserResource::collection($this->admins),

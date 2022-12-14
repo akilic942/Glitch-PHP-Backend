@@ -35,6 +35,9 @@ Route::delete('competitions/{uuid}', 'App\Http\Controllers\CompetitionController
 Route::post('competitions/{uuid}/registerUser', 'App\Http\Controllers\CompetitionController@registerParticipant');
 Route::post('competitions/{uuid}/registerTeam', 'App\Http\Controllers\CompetitionController@registerTeam');
 
+Route::post('competitions/{uuid}/uploadMainImage', 'App\Http\Controllers\CompetitionController@uploadMainImage');
+Route::post('competitions/{uuid}/uploadBannerImage', 'App\Http\Controllers\CompetitionController@uploadBannerImage');
+
 
 //Competition Rounds Routes
 Route::get('competitions/{uuid}/rounds', 'App\Http\Controllers\CompetitionRoundController@index');

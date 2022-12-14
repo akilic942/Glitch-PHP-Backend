@@ -359,7 +359,61 @@ class CompetitionControllerTest extends TestCase
         ])->post($url, $data);
 
         $this->assertEquals(204, $response->status());
+    }
 
+    public function testMainImage(){
+
+        $user = User::factory()->create();
+
+        $competition = Competition::factory()->create();
+
+        RolesFacade::competitionMakeAdmin($competition, $user);
+
+        $url = $this->_getApiRoute() . 'competitions/' . $competition->id. '/uploadMainImage';
+
+        $data = [
+            'image' => UploadedFile::fake()->image('avatar.png')
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+
+        $this->assertNotNull($json['data']['main_image']);
+        $this->assertNotEmpty($json['data']['main_image']);
+
+    }
+
+    public function testBannerImage(){
+
+        $user = User::factory()->create();
+
+        $competition = Competition::factory()->create();
+
+        RolesFacade::competitionMakeAdmin($competition, $user);
+
+        $url = $this->_getApiRoute() . 'competitions/' . $competition->id. '/uploadBannerImage';
+
+        $data = [
+            'image' => UploadedFile::fake()->image('avatar.png')
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+
+        $this->assertNotNull($json['data']['banner_image']);
+        $this->assertNotEmpty($json['data']['banner_image']);
 
     }
 

@@ -354,4 +354,80 @@ class CompetitionController extends Controller
         return new CompetitionResource($competition);
 
     }
+
+    public function uploadMainImage(Request $request, $id)
+    {
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+            return response()->json(['error' => 'Access denied to competition.'], 403);
+        }
+
+        $base_location = 'images';
+
+        // Handle File Upload
+        if($request->hasFile('image')) {              
+            //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
+            //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
+            //or you can specify the visibility of the file in the second parameter of the store() method like:
+            //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
+            
+            $imagePath = $request->file('image')->store($base_location, 's3');
+          
+        } else {
+            return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
+        }
+        
+        //We save new path
+        $competition->forceFill([
+            'main_image' => $imagePath
+        ]);
+
+        $competition->save();
+       
+        return CompetitionFullResource::make($competition);
+    }
+
+    public function uploadBannerImage(Request $request, $id)
+    {
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        // check if currently authenticated user is the owner of the book
+        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+            return response()->json(['error' => 'Access denied to the competitionee.'], 403);
+        }
+
+        $base_location = 'images';
+
+        // Handle File Upload
+        if($request->hasFile('image')) {              
+            //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
+            //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
+            //or you can specify the visibility of the file in the second parameter of the store() method like:
+            //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
+            
+            $imagePath = $request->file('image')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
+          
+        } else {
+            return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
+        }
+    
+        //We save new path
+        $competition->forceFill([
+            'banner_image' => $imagePath
+        ]);
+
+        $competition->save();
+       
+        return CompetitionFullResource::make($competition);
+    }
 }
