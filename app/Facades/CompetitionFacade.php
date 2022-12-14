@@ -14,6 +14,7 @@ use App\Models\Team;
 use App\Models\TeamUser;
 use App\Models\User;
 use Google\Service\AndroidEnterprise\Resource\Permissions;
+use Illuminate\Support\Facades\Mail;
 
 class CompetitionFacade {
 
@@ -386,8 +387,29 @@ class CompetitionFacade {
             $event->save();
         }
 
+    }
+
+    public static function sendEmailSchedulingConfirmation(Competition $competition, Event $event, User $user) {
+
+        $watch_url = env('EVENT_WATCH_URL', 'https://localhost:3000/streams/:event_id/watch');
+
+        $admin_url = env('EVENT_ADMIN_URL', 'https://localhost:3000/streams/:event_id/broadcast');
+
+        $watch_url = str_replace(':event_id', $event->id, $watch_url);
         
+        $watch_url = str_replace(':competition_id', $event->id, $watch_url);
 
+        $admin_url = str_replace(':event_id', $event->id, $admin_url);
+        
+        $admin_url = str_replace(':competition_id', $event->id, $admin_url);
 
+        $result = Mail::send('email.eventCompetitionAdmin', ['event' => $event, 'competition' => $competition, 'user' => $user, 'event_admin_link' => $admin_url, 'event_watch_link' => $watch_url], function($message) use($user, $event){
+
+            $message->to($user->email);
+            $message->subject('Scheduling For ' . $event->title);
+            $message->from(env('MAIL_FROM_ADDRESS', 'noreply@glitch.fun'),env('MAIL_FROM_NAME', 'Glitch Gaming'));
+        });
+
+        return $result;
     }
 }

@@ -180,5 +180,35 @@ class CompetitionVenueControllerTest extends TestCase
 
     }
 
+    public function testMainImage(){
+
+        $user = User::factory()->create();
+
+        $competition = Competition::factory()->create();
+
+        RolesFacade::competitionMakeAdmin($competition, $user);
+
+        $address = CompetitionVenue::factory()->create(['competition_id' => $competition->id]);
+
+        $url = $this->_getApiRoute() .  'competitions/' . $competition->id . '/venues/' . $address->id . '/uploadMainImage';;
+
+        $data = [
+            'image' => UploadedFile::fake()->image('avatar.png')
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+
+        $this->assertNotNull($json['data']['venue_image']);
+        $this->assertNotEmpty($json['data']['venue_image']);
+
+    }
+
 
 }

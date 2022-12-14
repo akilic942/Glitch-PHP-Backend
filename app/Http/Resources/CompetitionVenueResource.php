@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class CompetitionVenueResource extends JsonResource
 {
@@ -14,6 +15,10 @@ class CompetitionVenueResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $data = parent::toArray($request);
+
+        $data['venue_image'] = !empty($this->venue_image) ? Storage::disk('s3')->url($this->venue_image) : null;
+
+        return $data;
     }
 }

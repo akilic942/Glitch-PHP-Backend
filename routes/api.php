@@ -59,6 +59,8 @@ Route::post('competitions/{uuid}/venues', 'App\Http\Controllers\CompetitionVenue
 Route::get('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionVenueController@show');
 Route::put('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionVenueController@update');
 Route::delete('competitions/{uuid}/venues/{venue_id}', 'App\Http\Controllers\CompetitionVenueController@destroy');
+Route::post('competitions/{uuid}/venues/{venue_id}/uploadMainImage', 'App\Http\Controllers\CompetitionVenueController@uploadMainImage');
+
 
 //Competition User Routes
 Route::get('competitions/{uuid}/users', 'App\Http\Controllers\CompetitionUserController@index');

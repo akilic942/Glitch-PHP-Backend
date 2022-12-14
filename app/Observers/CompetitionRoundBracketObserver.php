@@ -50,6 +50,13 @@ class CompetitionRoundBracketObserver
 
         if($event) {
 
+            $competition = Competition::where('id', '=', $competitionRoundBracket->competition_id)->first();
+            
+            if($competition) {
+                CompetitionFacade::setEventDate($competition, $event);
+                $event->refresh();
+            }
+
             $competitionRoundBracket->forceFill([
                 'event_id' => $event->id
             ]);
@@ -59,6 +66,10 @@ class CompetitionRoundBracketObserver
             if($competitionRoundBracket->user_id) {
                 $user = User::where('id', $competitionRoundBracket->user_id)->first();
                 RolesFacade::eventMakeSuperAdmin($event, $user);
+
+                if($competition) {
+                    CompetitionFacade::sendEmailSchedulingConfirmation($competition, $event, $user);
+                }
             }
 
             if($competitionRoundBracket->team_id) {
@@ -70,14 +81,14 @@ class CompetitionRoundBracketObserver
 
                 foreach($users as $user){
                     RolesFacade::eventMakeSuperAdmin($event, $user);
+
+                    if($competition) {
+                        CompetitionFacade::sendEmailSchedulingConfirmation($competition, $event, $user);
+                    }
                 }
             }
 
-            $competition = Competition::where('id', '=', $competitionRoundBracket->competition_id)->first();
-
-            if($competition) {
-                CompetitionFacade::setEventDate($competition, $event);
-            }
+            
         }
     }
 

@@ -372,4 +372,19 @@ class CompetitionFacadeTest extends TestCase {
         $this->assertEquals($event->start_date, $bracket->bracket_start_date);
     }
 
+    public function testSendEmailSchedulingConfirmation() {
+
+        $bracket = CompetitionRoundBracket::factory()->create();
+
+        $competition = Competition::where('id', '=', $bracket->competition_id)->first();
+
+        $event = Event::where('id', '=', $bracket->event_id)->first();
+
+        $user = User::factory()->create();
+
+        $result = CompetitionFacade::sendEmailSchedulingConfirmation($competition, $event, $user);
+
+        $this->assertTrue(true);
+    }
+
 }
