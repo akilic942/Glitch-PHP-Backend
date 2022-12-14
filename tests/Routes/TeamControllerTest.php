@@ -265,6 +265,62 @@ class TeamControllerTest extends TestCase
 
     }
 
+    public function testMainImage(){
+
+        $user = User::factory()->create();
+
+        $team = Team::factory()->create();
+
+        RolesFacade::teamMakeAdmin($team, $user);
+
+        $url = $this->_getApiRoute() . 'teams/' . $team->id. '/uploadMainImage';
+
+        $data = [
+            'image' => UploadedFile::fake()->image('avatar.png')
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+
+        $this->assertNotNull($json['data']['main_image']);
+        $this->assertNotEmpty($json['data']['main_image']);
+
+    }
+
+    public function testBannerImage(){
+
+        $user = User::factory()->create();
+
+        $team = Team::factory()->create();
+
+        RolesFacade::teamMakeAdmin($team, $user);
+
+        $url = $this->_getApiRoute() . 'teams/' . $team->id. '/uploadBannerImage';
+
+        $data = [
+            'image' => UploadedFile::fake()->image('avatar.png')
+        ];
+        
+        $response = $this->withHeaders([
+            'Authorization' => $this->getAccessToken($user),
+        ])->post($url, $data);
+
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+
+        $this->assertNotNull($json['data']['banner_image']);
+        $this->assertNotEmpty($json['data']['banner_image']);
+
+    }
+
     /*
     public function testMainImage(){
 

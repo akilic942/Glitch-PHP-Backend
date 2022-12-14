@@ -133,6 +133,9 @@ Route::get('teams/{uuid}', 'App\Http\Controllers\TeamController@show');
 Route::put('teams/{uuid}', 'App\Http\Controllers\TeamController@update');
 Route::delete('teams/{uuid}', 'App\Http\Controllers\TeamController@destroy');
 
+Route::post('teams/{uuid}/uploadMainImage', 'App\Http\Controllers\TeamController@uploadMainImage');
+Route::post('teams/{uuid}/uploadBannerImage', 'App\Http\Controllers\TeamController@uploadBannerImage');
+
 //Team User Routes
 Route::get('teams/{uuid}/users', 'App\Http\Controllers\TeamUserController@index');
 Route::post('teams/{uuid}/users', 'App\Http\Controllers\TeamUserController@store');
