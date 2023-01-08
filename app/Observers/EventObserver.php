@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Facades\EventsFacade;
 use App\Invirtu\InvirtuClient;
 use App\Models\Event;
+use Exception;
 use Illuminate\Support\Facades\Log;
 
 class EventObserver
@@ -54,6 +55,22 @@ class EventObserver
                 $event->save();
 
                 $result = $client->events->setPreference($result->data->id, ['key' => 'glitch_stream_id', 'value' => $event->id]);
+
+                try {
+                    
+                    $webhook_data = [
+                        'url' => env('WEBHOOK_INVIRTU_URL'),
+                        'method' => 'POST',
+                        'auth_method' => 1,
+                        'auth_key' => env('WEBHOOK_INVIRTU_SIGNATURE_KEY'),
+                        'auth_value' => env('WEBHOOK_INVIRTU_SIGNATURE_SECRET')
+                    ];
+
+                    $client->events->addWebhook($result->data->id, $webhook_data);
+
+                } catch(Exception $e) {
+
+                }
 
             } else {
                 Log::error('Unable to create Invirtu Event', (array)$result->errors);

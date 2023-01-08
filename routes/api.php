@@ -165,3 +165,6 @@ Route::post('users/createDonationPage', 'App\Http\Controllers\UserController@cre
 
 Route::post('images/upload', 'App\Http\Controllers\ImageController@store');
 Route::delete('images/{uuid}', 'App\Http\Controllers\ImageController@destroy');
+
+
+Route::post('webhooks/invirtu', 'App\Http\Controllers\WebhookController@invirtuWebhook');

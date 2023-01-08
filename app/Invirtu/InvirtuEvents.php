@@ -487,6 +487,72 @@ class InvirtuEvents extends InvirtuResource
     }
 
 
+    /**
+     * Add a webhook to the live event.
+     *
+     * @see    https://developers.bingewave.com/docs/eventrestreams#restreamadd
+     * @param  string $id
+     * @return stdClass
+     * @throws Exception
+     */
+    public function addWebhook(string $event_id, array $data, array $query = [])
+    {
+        return $this->client->post('/events/' . $event_id .'/webhooks' , $data, $query);
+    }
+
+    /**
+     * Update a restream.
+     *
+     * @see    https://developers.bingewave.com/docs/eventwebhooks#update
+     * @param  string $id
+     * @return stdClass
+     * @throws Exception
+     */
+    public function updateWebhook(string $event_id, string $webhook_id, array $data, array $query = [])
+    {
+        return $this->client->put('/events/' . $event_id .'/webhooks/' . $webhook_id, $data, $query);
+    }
+
+    /**
+     * Remove a webhook associated with a live event.
+     *
+     * @see    https://developers.bingewave.com/docs/eventwebhooks#delete
+     * @param  string $id
+     * @return stdClass
+     * @throws Exception
+     */
+    public function removeWebhook(string $event_id, string $webhook_id, array $data, array $query = [])
+    {
+        return $this->client->delete('/events/' . $event_id .'/webhooks/' . $webhook_id , $data, $query);
+    }
+
+    /**
+     * Get all the webhooks associated with a live event.
+     *
+     * @see    https://developers.bingewave.com/docs/eventwebhooks#list
+     * @param  string $id
+     * @return stdClass
+     * @throws Exception
+     */
+    public function getWebhooks(string $event_id, array $query = [])
+    {
+        return $this->client->get('/events/' . $event_id .'/webhooks', $query);
+    }
+
+    /**
+     * Get the information on a single webhook.
+     *
+     * @see    https://developers.bingewave.com/docs/eventwebhooks#view
+     * @param  string $id
+     * @return stdClass
+     * @throws Exception
+     */
+    public function getSingleWebhook(string $event_id, string $webhook_id, array $query = [])
+    {
+        return $this->client->get('/events/' . $event_id .'/webhooks/' . $webhook_id, $query);
+    }
+
+
 
 
 
