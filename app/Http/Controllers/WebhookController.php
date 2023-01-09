@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\WebhookInvirtuFacade;
 use App\Models\Webhook;
+use Exception;
 use Illuminate\Http\Request;
 
 class WebhookController extends Controller
@@ -18,7 +20,6 @@ class WebhookController extends Controller
 
         $input = $request->all();
 
-
         if(isset($input['action']) && $input['action']) {
 
             $data = (isset($input['data'])) ? $input['data'] : null;
@@ -33,6 +34,12 @@ class WebhookController extends Controller
                 'action' => $input['action'],
                 'data' => $data
             ]);
+
+            try {
+                WebhookInvirtuFacade::process($input['action'], $input['data']);
+            } catch(Exception $e) {
+
+            }
 
         }
         

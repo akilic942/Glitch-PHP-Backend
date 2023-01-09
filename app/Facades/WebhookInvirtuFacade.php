@@ -19,7 +19,7 @@ class WebhookInvirtuFacade {
     private static function _broadcastEnded(array $data = []) {
 
 
-        $event_id  = (isset($data['event_id'])) ? $data['event_id'] : null;
+        $event_id  = (isset($data['id'])) ? $data['id'] : null;
 
         if($event_id) {
 
