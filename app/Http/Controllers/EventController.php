@@ -102,7 +102,7 @@ class EventController extends Controller
 
         $input = $request->all();
 
-        if(!isset($input['is_live']) || ($input['is_live']) && !$input['is_live'] ) {
+        if(!isset($input['is_live']) || (isset($input['is_live'])) && !$input['is_live'] ) {
             $input['is_live'] = false;
         }
 
