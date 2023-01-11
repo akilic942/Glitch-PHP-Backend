@@ -102,6 +102,10 @@ class EventController extends Controller
 
         $input = $request->all();
 
+        if(!isset($input['is_live']) || ($input['is_live']) && !$input['is_live'] ) {
+            $input['is_live'] = false;
+        }
+
         $data = $input + $event->toArray();
 
         $valid = $event->validate($data);
@@ -110,7 +114,7 @@ class EventController extends Controller
             return response()->json($event->getValidationErrors(), 422);
         }
 
-        $event->update($data);
+        $event->update($input);
 
         return new EventFullResource($event);
     }

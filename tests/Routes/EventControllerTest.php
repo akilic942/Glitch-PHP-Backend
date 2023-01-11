@@ -117,6 +117,7 @@ class EventControllerTest extends TestCase
         $data = [
             'title' => $faker->title(),
             'description' => $faker->paragraphs(8, true),
+            'is_live' => 1
         ];
 
         $response = $this->withHeaders([
@@ -133,6 +134,7 @@ class EventControllerTest extends TestCase
         $this->assertEquals($event->id, $jsonData['id']);
         $this->assertEquals($jsonData['title'], $data['title']);
         $this->assertEquals($jsonData['description'], $data['description']);
+        $this->assertEquals($jsonData['is_live'], $data['is_live']);
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
@@ -141,6 +143,15 @@ class EventControllerTest extends TestCase
         //print_r($response);
 
         $this->assertEquals(422, $response->status());
+
+        $response = $this->withHeaders([
+            'Authorization Bearer' => $this->getAccessToken($user),
+        ])->put($url, ['is_live' => 0]);
+
+        $this->assertEquals(200, $response->status());
+
+        $this->assertEquals($jsonData['is_live'], 0);
+
 
     }
 
