@@ -15,6 +15,9 @@ class CompetitionInvite extends BaseModel
 
     protected $casts = [
         'id' => 'string',
+        'invited_as_participant' => 'boolean',
+        'invited_as_team_member' => 'boolean',
+        'accepted_invite'  => 'boolean',
     ];
 
     protected $rules = array(

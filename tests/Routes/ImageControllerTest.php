@@ -15,14 +15,6 @@ class ImageControllerTest extends TestCase
 
         $url = $this->_getApiRoute() . 'images/upload';
 
-        /*$response = $this->withHeaders([
-            'Authorization' => $this->getAccessToken(),
-        ])->post($url);
-
-        print_r($response->getContent());
-
-        $this->assertEquals(400, $response->status());*/
-
         $data = [
             'image' => UploadedFile::fake()->image('avatar.png')
         ];
@@ -30,8 +22,6 @@ class ImageControllerTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => $this->getAccessToken(),
         ])->post($url, $data);
-
-        //print_r($response->getContent());
 
         $this->assertEquals(201, $response->status());
 

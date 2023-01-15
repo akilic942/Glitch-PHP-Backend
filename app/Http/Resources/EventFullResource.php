@@ -23,6 +23,7 @@ class EventFullResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'is_live' => $this->is_live,
+            'is_public' => $this->is_public,
             'live_last_checkin' => $this->live_last_checkin,
             'mode' => $this->mode,
 

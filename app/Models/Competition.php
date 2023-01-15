@@ -16,6 +16,16 @@ class Competition extends BaseModel
 
     protected $casts = [
         'id' => 'string',
+        'is_private' => 'boolean',
+        'allow_team_signup' => 'boolean',
+        'allow_individual_signup' => 'boolean',
+        'require_attendee_rsvp' => 'boolean',
+        'is_private' => 'boolean',
+        'checkin_enabled' => 'boolean',
+        'team_signup_requires_approval' => 'boolean',
+        'individual_signup_requires_approval' => 'boolean',
+        'require_contestant_waiver' => 'boolean',
+        'require_attendee_waiver' => 'boolean',
     ];
 
     protected $rules = array(

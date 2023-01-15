@@ -36,6 +36,8 @@ class Event extends BaseModel
 
     protected $casts = [
         'id' => 'string',
+        'is_public' => 'boolean',
+        'is_live' => 'boolean',
     ];
 
     public function users()

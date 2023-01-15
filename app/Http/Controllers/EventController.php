@@ -102,10 +102,6 @@ class EventController extends Controller
 
         $input = $request->all();
 
-        if(!isset($input['is_live']) || (isset($input['is_live'])) && !$input['is_live'] ) {
-            $input['is_live'] = false;
-        }
-
         $data = $input + $event->toArray();
 
         $valid = $event->validate($data);

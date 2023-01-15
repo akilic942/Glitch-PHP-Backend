@@ -117,14 +117,14 @@ class EventControllerTest extends TestCase
         $data = [
             'title' => $faker->title(),
             'description' => $faker->paragraphs(8, true),
-            'is_live' => 1
+            'is_live' => 1,
+            'is_public' => 1,
         ];
 
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
         ])->put($url, $data);
 
-        //print_r($response->json());
         $this->assertEquals(200, $response->status());
 
         $json = $response->json();
@@ -136,21 +136,39 @@ class EventControllerTest extends TestCase
         $this->assertEquals($jsonData['description'], $data['description']);
         $this->assertEquals($jsonData['is_live'], $data['is_live']);
 
+        //Test updating with empty fiels
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
         ])->put($url, ['title' => 'Butt', 'description' => '']);
 
-        //print_r($response);
-
         $this->assertEquals(422, $response->status());
 
+        //Test updating live
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
         ])->put($url, ['is_live' => 0]);
 
         $this->assertEquals(200, $response->status());
 
+        $json = $response->json();
+
+        $jsonData = $json['data'];
+
         $this->assertEquals($jsonData['is_live'], 0);
+
+        //Test Update is_public
+
+        $response = $this->withHeaders([
+            'Authorization Bearer' => $this->getAccessToken($user),
+        ])->put($url, ['is_public' => 0]);
+
+        $this->assertEquals(200, $response->status());
+
+        $json = $response->json();
+
+        $jsonData = $json['data'];
+
+        $this->assertEquals($jsonData['is_public'], 0);
 
 
     }

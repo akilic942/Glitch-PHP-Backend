@@ -81,6 +81,13 @@ Route::get('competitions/{uuid}/invites', 'App\Http\Controllers\CompetitionInvit
 Route::post('competitions/{uuid}/sendInvite', 'App\Http\Controllers\CompetitionInviteController@store');
 Route::post('competitions/{uuid}/acceptInvite', 'App\Http\Controllers\CompetitionInviteController@acceptInvite');
 
+//Ticket Types
+Route::get('competitions/{uuid}/tickettypes', 'App\Http\Controllers\CompetitionTicketTypeController@index');
+Route::post('competitions/{uuid}/tickettypes', 'App\Http\Controllers\CompetitionTicketTypeController@store');
+Route::get('competitions/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\CompetitionTicketTypeController@show');
+Route::put('competitions/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\CompetitionTicketTypeController@update');
+Route::delete('competitions/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\CompetitionTicketTypeController@destroy');
+
 //Event Routes
 Route::get('events', 'App\Http\Controllers\EventController@index');
 Route::post('events', 'App\Http\Controllers\EventController@store');
@@ -115,6 +122,12 @@ Route::post('events/{uuid}/disableDonations', 'App\Http\Controllers\EventControl
 Route::post('events/{uuid}/sendInvite', 'App\Http\Controllers\EventInviteController@store');
 Route::post('events/{uuid}/acceptInvite', 'App\Http\Controllers\EventInviteController@acceptInvite');
 
+//Ticket Types
+Route::get('events/{uuid}/tickettypes', 'App\Http\Controllers\EventTicketTypeController@index');
+Route::post('events/{uuid}/tickettypes', 'App\Http\Controllers\EventTicketTypeController@store');
+Route::get('events/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\EventTicketTypeController@show');
+Route::put('events/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\EventTicketTypeController@update');
+Route::delete('events/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\EventTicketTypeController@destroy');
 
 //Recording Routes
 Route::put('events/{uuid}/recording/{subid}', 'App\Http\Controllers\RecordingController@update');
