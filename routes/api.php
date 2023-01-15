@@ -88,6 +88,20 @@ Route::get('competitions/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\Co
 Route::put('competitions/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\CompetitionTicketTypeController@update');
 Route::delete('competitions/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\CompetitionTicketTypeController@destroy');
 
+//Ticket Type Sections
+Route::get('competitions/{uuid}/tickettypes/{type_id}/sections', 'App\Http\Controllers\CompetitionTicketTypeSectionController@index');
+Route::post('competitions/{uuid}/tickettypes/{type_id}/sections', 'App\Http\Controllers\CompetitionTicketTypeSectionController@store');
+Route::get('competitions/{uuid}/tickettypes/{type_id}/sections/{section_id}', 'App\Http\Controllers\CompetitionTicketTypeSectionController@show');
+Route::put('competitions/{uuid}/tickettypes/{type_id}/sections/{section_id}', 'App\Http\Controllers\CompetitionTicketTypeSectionController@update');
+Route::delete('competitions/{uuid}/tickettypes/{type_id}/sections/{section_id}', 'App\Http\Controllers\CompetitionTicketTypeSectionController.@destroy');
+
+//Ticket Type Fields
+Route::get('competitions/{uuid}/tickettypes/{type_id}/fields', 'App\Http\Controllers\CompetitionTicketTypeFieldController@index');
+Route::post('competitions/{uuid}/tickettypes/{type_id}/fields', 'App\Http\Controllers\CompetitionTicketTypeFieldController@store');
+Route::get('competitions/{uuid}/tickettypes/{type_id}/fields/{section_id}', 'App\Http\Controllers\CompetitionTicketTypeFieldController@show');
+Route::put('competitions/{uuid}/tickettypes/{type_id}/fields/{section_id}', 'App\Http\Controllers\CompetitionTicketTypeFieldController@update');
+Route::delete('competitions/{uuid}/tickettypes/{type_id}/fields/{section_id}', 'App\Http\Controllers\CompetitionTicketTypeFieldController@destroy');
+
 //Event Routes
 Route::get('events', 'App\Http\Controllers\EventController@index');
 Route::post('events', 'App\Http\Controllers\EventController@store');
