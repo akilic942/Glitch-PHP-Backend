@@ -2,6 +2,7 @@
 namespace App\Facades;
 use App\Enums\Roles;
 use App\Models\Competition;
+use App\Models\CompetitionTicketPurchase;
 use App\Models\CompetitionUser;
 use App\Models\Event;
 use App\Models\EventUser;
@@ -90,6 +91,19 @@ class PermissionsFacade {
         return false;
     }
 
+    public static function competitionCanAccessTicketPurchase(CompetitionTicketPurchase $purchase, string $token = null, User $user = null) {
+
+        $can_access = false;
+
+
+        return $can_access;
+        
+    }
+
+    public static function competitionCanModifyTicketPurchase() {
+        
+    }
+
 
     public static function competitionCanEngage(Competition $competition, User $user) {
 
@@ -155,6 +169,7 @@ class PermissionsFacade {
         return true;
 
     }
+
 
     protected static function _retrieveEventUser(Event $event, User $user) {
 

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->uuid('ticket_type_id');
 
             $table->string('title');
-            $table->string('instructions')->default('');
+            $table->text('instructions')->default('');
             $table->integer('section_order')->default(0);
 
             $table->foreign('ticket_type_id')->references('id')->on('competition_ticket_types')->onDelete('cascade');

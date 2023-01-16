@@ -2,84 +2,144 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\HttpStatusCodes;
+use App\Enums\Messages;
+use App\Facades\CompetitionTicketFacade;
+use App\Http\Resources\CompetitionTicketPurchaseResource;
+use App\Models\Competition;
 use App\Models\CompetitionTicketPurchase;
+use App\Models\CompetitionTicketType;
+use Exception;
 use Illuminate\Http\Request;
 
 class CompetitionTicketPurchaseController extends Controller
 {
+
+    public function index(Request $request, $id, $type_id)
+    {
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        $type = CompetitionTicketType::where('competition_id', '=', $competition->id)
+        ->where('id', '=', $type_id)
+        ->first();
+
+        if(!$type){
+            return response()->json(['error' => 'The ticket type does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        $purchases = CompetitionTicketPurchase::where('ticket_type_id', $type->id);
+
+        $data = $purchases->orderBy('competition_ticket_purchases.created_at', 'desc')->paginate(25);
+
+        return CompetitionTicketPurchaseResource::collection($data);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function purchase(Request $request, $id, $type_id)
     {
-        //
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => Messages::ERROR_NOT_EXIST_COMPETITION], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        $type = CompetitionTicketType::where('competition_id', '=', $competition->id)
+        ->where('id', '=', $type_id)
+        ->first();
+
+        if(!$type){
+            return response()->json(['error' => Messages::ERROR_NOT_EXIST_TICKET_TYPE], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        $purchase = new CompetitionTicketPurchase();
+
+        $input = $request->all();
+
+        $input['ticket_type_id'] = $type->id;
+
+        $valid = $purchase->validate($input);
+
+        if (!$valid) {
+            return response()->json($purchase->getValidationErrors(), 422);
+        }
+
+        $quantity = $input['quantity'];
+
+        if(!CompetitionTicketFacade::isOverMinPurchasable($type, $quantity)){
+            return response()->json(['error' => Messages::ERROR_TICKET_QUANTITY_NOT_OVER_MIN], HttpStatusCodes::HTTP_NOT_ACCEPTABLE);
+        }
+
+        if(!CompetitionTicketFacade::isUnderMaxAvailable($type, $quantity)){
+            return response()->json(['error' => Messages::ERROR_TICKET_QUANTITY_NONE_AVAILABLE], HttpStatusCodes::HTTP_NOT_ACCEPTABLE);
+        }
+
+        if(!CompetitionTicketFacade::isUnderMaxPurchasable($type, $quantity)){
+            return response()->json(['error' => Messages::ERROR_TICKET_QUANTITY_OVER_MAX], HttpStatusCodes::HTTP_NOT_ACCEPTABLE);
+        }
+
+        $result = CompetitionTicketFacade::validateFields($type, $input);
+
+        if(!$result['status']) {
+            return response()->json(['error' => $result['errors']], HttpStatusCodes::HTTP_NOT_ACCEPTABLE);
+        }
+
+        $purchase = new CompetitionTicketPurchase();
+
+        $purchase->forceFill([
+            'quantity' => $quantity,
+            'ticket_type_id' => $type->id
+        ]);
+
+        $purchase->save();
+
+        $purchase = CompetitionTicketFacade::saveInput($type, $purchase, $input);
+
+        try {
+
+            $purchase = CompetitionTicketFacade::processPayment($type, $purchase, $quantity);
+
+        } catch(Exception $e) {
+            return response()->json(['error' => $e->getMessage()], HttpStatusCodes::HTTP_NOT_ACCEPTABLE);
+        }
+
+
+        return new CompetitionTicketPurchaseResource($purchase);
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function show(Request $request, $id, $type_id, $field_id)
     {
-        //
+        $competition = Competition::where('id', $id)->first();
+
+        if(!$competition){
+            return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        $type = CompetitionTicketType::where('competition_id', '=', $competition->id)
+        ->where('id', '=', $type_id)
+        ->first();
+
+        if(!$type){
+            return response()->json(['error' => 'The ticket type does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        $field = CompetitionTicketPurchase::where('ticket_type_id', '=', $type->id)
+        ->where('id', '=', $field_id)
+        ->first();
+
+        if(!$field){
+            return response()->json(['error' => 'The field does not exist.'], HttpStatusCodes::HTTP_FOUND);
+        }
+
+        return new CompetitionTicketPurchaseResource($field);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\CompetitionTicketPurchase  $competitionTicketPurchase
-     * @return \Illuminate\Http\Response
-     */
-    public function show(CompetitionTicketPurchase $competitionTicketPurchase)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CompetitionTicketPurchase  $competitionTicketPurchase
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CompetitionTicketPurchase $competitionTicketPurchase)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CompetitionTicketPurchase  $competitionTicketPurchase
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, CompetitionTicketPurchase $competitionTicketPurchase)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\CompetitionTicketPurchase  $competitionTicketPurchase
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(CompetitionTicketPurchase $competitionTicketPurchase)
-    {
-        //
-    }
 }

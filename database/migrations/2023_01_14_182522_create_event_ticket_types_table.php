@@ -33,6 +33,7 @@ return new class extends Migration
             $table->tinyInteger('visibility')->default(1);
 
             $table->boolean('disabled')->default(false)->nullable();
+            $table->boolean('requires_account')->default(0);
 
             $table->timestamp('sales_start_date')->nullable();
             $table->timestamp('sales_end_date')->nullable();
