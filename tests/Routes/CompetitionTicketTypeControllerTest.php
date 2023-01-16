@@ -129,6 +129,7 @@ class CompetitionTicketTypeControllerTest extends TestCase
 
             'price' => $faker->randomFloat(2),
             'disabled' => rand(0,1),
+            'requires_account' => rand(0,1),
 
             'sales_start_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('now', '+7 days')->getTimestamp())->toString(),
             'sales_end_date' => \Carbon\Carbon::createFromTimeStamp($faker->dateTimeBetween('+8 days', '+14 days')->getTimestamp())->toString(),
@@ -162,6 +163,7 @@ class CompetitionTicketTypeControllerTest extends TestCase
         $this->assertEquals($jsonData['max_purchasable'], $data['max_purchasable']);
         $this->assertEquals($jsonData['price'], $data['price']);
         $this->assertEquals($jsonData['disabled'], $data['disabled']);
+        $this->assertEquals($jsonData['requires_account'], $data['requires_account']);
         $this->assertEquals($jsonData['sales_start_date'], $data['sales_start_date']);
         $this->assertEquals($jsonData['sales_end_date'], $data['sales_end_date']);
         $this->assertEquals($jsonData['visibility_start_date'], $data['visibility_start_date']);

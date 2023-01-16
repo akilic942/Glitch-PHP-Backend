@@ -2,18 +2,18 @@
 namespace App\Facades;
 
 use App\Enums\TicketTypes;
-use App\Models\CompetitionTicketPurchase;
-use App\Models\CompetitionTicketType;
-use App\Models\CompetitionTicketTypeField;
+use App\Models\EventTicketPurchase;
+use App\Models\EventTicketType;
+use App\Models\EventTicketTypeField;
 use App\Models\User;
 
-class CompetitionTicketFacade {
+class EventTicketFacade {
 
-    public static function isUnderMaxAvailable(CompetitionTicketType $type, int $quantity) {
+    public static function isUnderMaxAvailable(EventTicketType $type, int $quantity) {
 
         if($type->max_available && $type->max_available >0) {
 
-            $purchases = CompetitionTicketPurchase::where('ticket_type_id', '=', $type->id)
+            $purchases = EventTicketPurchase::where('ticket_type_id', '=', $type->id)
             ->where('fully_paid', '=', 1)
             ->where('is_voided', '=', 0)
             ->count();
@@ -28,7 +28,7 @@ class CompetitionTicketFacade {
         return true;
     }
 
-    public static function isUnderMaxPurchasable(CompetitionTicketType $type, int $quantity) {
+    public static function isUnderMaxPurchasable(EventTicketType $type, int $quantity) {
 
         if($type->max_purchasable && $type->max_purchasable>0) {
 
@@ -38,7 +38,7 @@ class CompetitionTicketFacade {
         return true;
     }
 
-    public static function isOverMinPurchasable(CompetitionTicketType $type, int $quantity) {
+    public static function isOverMinPurchasable(EventTicketType $type, int $quantity) {
 
         if($type->min_purchasable && $type->min_purchasable>0) {
 
@@ -49,14 +49,14 @@ class CompetitionTicketFacade {
 
     }
 
-    public static function validateFields(CompetitionTicketType $type, array $input = []) {
+    public static function validateFields(EventTicketType $type, array $input = []) {
 
         $result = [
             'status' => true,
             'errors' => []
         ];
 
-        $required_fields = CompetitionTicketTypeField:: where('ticket_type_id', '=', $type->id)
+        $required_fields = EventTicketTypeField:: where('ticket_type_id', '=', $type->id)
         ->where('is_required', '=', 1)
         ->where('is_disabled', '=', 0)
         ->get();
@@ -78,9 +78,9 @@ class CompetitionTicketFacade {
         return $result;
     }
 
-    public static function saveInput(CompetitionTicketType $type, CompetitionTicketPurchase $purchase, array $input = []) {
+    public static function saveInput(EventTicketType $type, EventTicketPurchase $purchase, array $input = []) {
 
-        $fields = CompetitionTicketTypeField:: where('ticket_type_id', '=', $type->id)
+        $fields = EventTicketTypeField:: where('ticket_type_id', '=', $type->id)
         ->get();
 
         $filtered = [];
@@ -100,7 +100,7 @@ class CompetitionTicketFacade {
         return $purchase;
     }
 
-    public static function processPayment(CompetitionTicketType $type, CompetitionTicketPurchase $purchase, int $quantity, $processor = null, array $payment = []) {
+    public static function processPayment(EventTicketType $type, EventTicketPurchase $purchase, int $quantity, $processor = null, array $payment = []) {
 
         if($type->ticket_type == TicketTypes::FREE) {
             $purchase->forceFill([

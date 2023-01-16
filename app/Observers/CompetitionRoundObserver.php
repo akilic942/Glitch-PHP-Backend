@@ -7,6 +7,7 @@ use App\Models\Competition;
 use App\Models\CompetitionRound;
 use App\Models\Event;
 
+
 class CompetitionRoundObserver
 {
     /**

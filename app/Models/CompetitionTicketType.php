@@ -16,6 +16,7 @@ class CompetitionTicketType extends BaseModel
     protected $casts = [
         'id' => 'string',
         'disabled' => 'boolean',
+        'requires_account' => 'boolean'
     ];
 
     protected $rules = array(
@@ -32,6 +33,7 @@ class CompetitionTicketType extends BaseModel
         
         'price' => 'numeric',
         'disabled' => 'boolean',
+        'requires_account'  => 'boolean',
 
         'sales_start_date'    => 'nullable|date',
         'sales_end_date'    => 'nullable|date|after_or_equal:sales_end_date',
@@ -57,6 +59,7 @@ class CompetitionTicketType extends BaseModel
         
         'price',
         'disabled',
+        'requires_account',
 
         'sales_start_date',
         'sales_end_date',
@@ -66,4 +69,9 @@ class CompetitionTicketType extends BaseModel
 
         'ticket_usage_date',
     );
+
+    public function competition()
+    {
+        return $this->belongsTo(Competition::class);
+    }
 }

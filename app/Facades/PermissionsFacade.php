@@ -2,8 +2,10 @@
 namespace App\Facades;
 use App\Enums\Roles;
 use App\Models\Competition;
+use App\Models\CompetitionTicketPurchase;
 use App\Models\CompetitionUser;
 use App\Models\Event;
+use App\Models\EventTicketPurchase;
 use App\Models\EventUser;
 use App\Models\Team;
 use App\Models\TeamUser;
@@ -59,6 +61,48 @@ class PermissionsFacade {
 
     }
 
+    public static function eventCanAccessTicketPurchase(EventTicketPurchase $purchase, string $token = null, User $user = null) {
+
+        $can_access = false;
+
+        if($token && ($purchase->access_token == $token || $purchase->admin_token == $token)) {
+            $can_access = true;
+        }
+
+        if(!$can_access && $user && $user->id == $purchase->user_id) {
+            $can_access = true;
+        }
+
+        if(!$can_access && $user) {
+
+            $event = $purchase->ticketType->event;
+
+            $can_access = self::eventCanUpdate($event, $user);
+        }
+
+        return $can_access;
+        
+    }
+
+    public static function eventCanAdminTicketPurchase(EventTicketPurchase $purchase, string $token = null, User $user = null) {
+
+        $can_access = false;
+
+        if($token && $purchase->admin_token == $token) {
+            $can_access = true;
+        }
+        
+        if(!$can_access && $user) {
+
+            $event = $purchase->ticketType->event;
+
+            $can_access = self::eventCanUpdate($event, $user);
+        }
+
+        return $can_access;
+        
+    }
+
     //Competition Permission
     public static function competitionCanUpdate(Competition $competition, User $user) {
 
@@ -88,6 +132,48 @@ class PermissionsFacade {
         }
 
         return false;
+    }
+
+    public static function competitionCanAccessTicketPurchase(CompetitionTicketPurchase $purchase, string $token = null, User $user = null) {
+
+        $can_access = false;
+
+        if($token && ($purchase->access_token == $token || $purchase->admin_token == $token)) {
+            $can_access = true;
+        }
+
+        if(!$can_access && $user && $user->id == $purchase->user_id) {
+            $can_access = true;
+        }
+
+        if(!$can_access && $user) {
+
+            $competition = $purchase->ticketType->competition;
+
+            $can_access = self::competitionCanUpdate($competition, $user);
+        }
+
+        return $can_access;
+        
+    }
+
+    public static function competitionCanAdminTicketPurchase(CompetitionTicketPurchase $purchase, string $token = null, User $user = null) {
+
+        $can_access = false;
+
+        if($token && $purchase->admin_token == $token) {
+            $can_access = true;
+        }
+        
+        if(!$can_access && $user) {
+
+            $competition = $purchase->ticketType->competition;
+
+            $can_access = self::competitionCanUpdate($competition, $user);
+        }
+
+        return $can_access;
+        
     }
 
 
@@ -155,6 +241,7 @@ class PermissionsFacade {
         return true;
 
     }
+
 
     protected static function _retrieveEventUser(Event $event, User $user) {
 
