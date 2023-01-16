@@ -148,6 +148,25 @@ Route::get('events/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\EventTic
 Route::put('events/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\EventTicketTypeController@update');
 Route::delete('events/{uuid}/tickettypes/{type_id}', 'App\Http\Controllers\EventTicketTypeController@destroy');
 
+//Ticket Type Sections
+Route::get('events/{uuid}/tickettypes/{type_id}/sections', 'App\Http\Controllers\EventTicketTypeSectionController@index');
+Route::post('events/{uuid}/tickettypes/{type_id}/sections', 'App\Http\Controllers\EventTicketTypeSectionController@store');
+Route::get('events/{uuid}/tickettypes/{type_id}/sections/{section_id}', 'App\Http\Controllers\EventTicketTypeSectionController@show');
+Route::put('events/{uuid}/tickettypes/{type_id}/sections/{section_id}', 'App\Http\Controllers\EventTicketTypeSectionController@update');
+Route::delete('events/{uuid}/tickettypes/{type_id}/sections/{section_id}', 'App\Http\Controllers\EventTicketTypeSectionController@destroy');
+
+//Ticket Type Fields
+Route::get('events/{uuid}/tickettypes/{type_id}/fields', 'App\Http\Controllers\EventTicketTypeFieldController@index');
+Route::post('events/{uuid}/tickettypes/{type_id}/fields', 'App\Http\Controllers\EventTicketTypeFieldController@store');
+Route::get('events/{uuid}/tickettypes/{type_id}/fields/{section_id}', 'App\Http\Controllers\EventTicketTypeFieldController@show');
+Route::put('events/{uuid}/tickettypes/{type_id}/fields/{section_id}', 'App\Http\Controllers\EventTicketTypeFieldController@update');
+Route::delete('events/{uuid}/tickettypes/{type_id}/fields/{section_id}', 'App\Http\Controllers\EventTicketTypeFieldController@destroy');
+
+//Payment
+Route::get('events/{uuid}/tickettypes/{type_id}/purchases', 'App\Http\Controllers\EventTicketPurchaseController@index');
+Route::post('events/{uuid}/tickettypes/{type_id}/purchases', 'App\Http\Controllers\EventTicketPurchaseController@purchase');
+Route::get('events/{uuid}/tickettypes/{type_id}/purchases/{purchase_id}', 'App\Http\Controllers\EventTicketPurchaseController@show');
+
 //Recording Routes
 Route::put('events/{uuid}/recording/{subid}', 'App\Http\Controllers\RecordingController@update');
 

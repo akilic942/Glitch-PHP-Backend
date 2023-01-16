@@ -9,6 +9,8 @@ use App\Models\Competition;
 use App\Models\CompetitionTicketPurchase;
 use App\Models\CompetitionTicketType;
 use App\Models\Event;
+use App\Models\EventTicketPurchase;
+use App\Models\EventTicketType;
 use App\Models\Team;
 use App\Models\User;
 use Tests\TestCase;
@@ -321,6 +323,97 @@ class PermissionFacadeTest extends TestCase {
         $this->assertFalse($result);
 
         $result = PermissionsFacade::competitionCanAdminTicketPurchase($purchase, null, null);
+
+        $this->assertFalse($result);
+
+        
+    }
+
+
+    public function testEventCanAccessTicketPurchase() {
+
+        $user_admin = User::factory()->create();
+
+        $user_purchaser = User::factory()->create();
+
+        $user_denied = User::factory()->create();
+
+        $event = Event::factory()->create();
+
+        RolesFacade::eventMakeAdmin($event, $user_admin);
+
+        $type = EventTicketType::factory()->create(['event_id' => $event->id]);
+
+        $purchase = EventTicketPurchase::factory()->create(['ticket_type_id' => $type->id, 'user_id' => $user_purchaser->id]);
+
+        $purchase->refresh();
+
+        $result = PermissionsFacade::eventCanAccessTicketPurchase($purchase, $purchase->access_token);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::eventCanAccessTicketPurchase($purchase, $purchase->admin_token);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::eventCanAccessTicketPurchase($purchase, null, $user_admin);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::eventCanAccessTicketPurchase($purchase, null, $user_purchaser);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::eventCanAccessTicketPurchase($purchase, null, $user_denied);
+
+        $this->assertFalse($result);
+
+        $result = PermissionsFacade::eventCanAccessTicketPurchase($purchase, null, null);
+
+        $this->assertFalse($result);
+
+        
+    }
+
+    public function testEventCanAdminTicketPurchase() {
+
+        $user_admin = User::factory()->create();
+
+        $user_purchaser = User::factory()->create();
+
+        $user_denied = User::factory()->create();
+
+        $event = Event::factory()->create();
+
+        RolesFacade::eventMakeAdmin($event, $user_admin);
+
+        $type = EventTicketType::factory()->create(['event_id' => $event->id]);
+
+        $purchase = EventTicketPurchase::factory()->create(['ticket_type_id' => $type->id, 'user_id' => $user_purchaser->id]);
+
+        $purchase->refresh();
+
+        $result = PermissionsFacade::eventCanAdminTicketPurchase($purchase, $purchase->access_token);
+
+        $this->assertFalse($result);
+
+        $result = PermissionsFacade::eventCanAdminTicketPurchase($purchase, $purchase->admin_token);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::eventCanAdminTicketPurchase($purchase, null, $user_admin);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::eventCanAdminTicketPurchase($purchase, null, $user_purchaser);
+
+        $this->assertFalse($result);
+
+        $result = PermissionsFacade::eventCanAdminTicketPurchase($purchase, null, $user_denied);
+
+        $this->assertFalse($result);
+
+        $result = PermissionsFacade::eventCanAdminTicketPurchase($purchase, null, null);
 
         $this->assertFalse($result);
 

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\EventTicketType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,11 @@ class EventTicketPurchaseFactory extends Factory
      */
     public function definition()
     {
+        $type = EventTicketType::factory()->create();
+
         return [
-            //
+            'ticket_type_id' => $type->id,
+            'quantity' => rand(1, 100),
         ];
     }
 }

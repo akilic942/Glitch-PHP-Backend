@@ -67,4 +67,9 @@ class EventTicketType extends BaseModel
 
         'ticket_usage_date',
     );
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }
