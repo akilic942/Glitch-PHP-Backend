@@ -92,12 +92,22 @@ class CompetitionTicketPurchaseController extends Controller
             return response()->json(['error' => $result['errors']], HttpStatusCodes::HTTP_NOT_ACCEPTABLE);
         }
 
-        $purchase = new CompetitionTicketPurchase();
+        $current_user = $request->user();
 
-        $purchase->forceFill([
+        $forceFillData = [
             'quantity' => $quantity,
             'ticket_type_id' => $type->id
-        ]);
+        ];
+
+        if($type->requires_account && !$current_user) {
+            return response()->json(['error' => Messages::ERROR_REQUIRES_SESSION], HttpStatusCodes::HTTP_NOT_ACCEPTABLE);
+        }  else if($type->requires_account && $current_user) {
+            $forceFillData['user_id'] = $current_user->id;
+        }
+
+        $purchase = new CompetitionTicketPurchase();
+
+        $purchase->forceFill($forceFillData);
 
         $purchase->save();
 

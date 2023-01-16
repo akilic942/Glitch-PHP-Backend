@@ -86,18 +86,28 @@ class EventTicketPurchaseController extends Controller
             return response()->json(['error' => Messages::ERROR_TICKET_QUANTITY_OVER_MAX], HttpStatusCodes::HTTP_NOT_ACCEPTABLE);
         }
 
+        $current_user = $request->user();
+
         $result = EventTicketFacade::validateFields($type, $input);
 
         if(!$result['status']) {
             return response()->json(['error' => $result['errors']], HttpStatusCodes::HTTP_NOT_ACCEPTABLE);
         }
 
-        $purchase = new EventTicketPurchase();
-
-        $purchase->forceFill([
+        $forceFillData = [
             'quantity' => $quantity,
             'ticket_type_id' => $type->id
-        ]);
+        ];
+
+        if($type->requires_account && !$current_user) {
+            return response()->json(['error' => Messages::ERROR_REQUIRES_SESSION], HttpStatusCodes::HTTP_NOT_ACCEPTABLE);
+        }  else if($type->requires_account && $current_user) {
+            $forceFillData['user_id'] = $current_user->id;
+        }
+
+        $purchase = new EventTicketPurchase();
+
+        $purchase->forceFill($forceFillData);
 
         $purchase->save();
 

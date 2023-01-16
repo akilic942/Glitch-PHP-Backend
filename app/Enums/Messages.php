@@ -8,6 +8,8 @@ final class Messages extends Enum {
 
 
     const ERROR_ACCESS_DENIED_TICKET_PURCHASE = 'Access denied to ticket purchase.';
+    const ERROR_ACCESS_DENIED_EVENT = 'Access denied to event.';
+    const ERROR_ACCESS_DENIED_COMPETITION = 'Access denied to competition.';
     
     const ERROR_COMPETITION_BANNED = "You have been banned from registering.";
     const ERROR_COMPETITION_TEAM_MAX_REGISTRATIONS = "The maximun amount of teams have registered.";
@@ -25,6 +27,8 @@ final class Messages extends Enum {
     const ERROR_TICKET_QUANTITY_NOT_OVER_MIN = 'The ticket quantity must be over the minimum';
     const ERROR_TICKET_QUANTITY_OVER_MAX = 'The ticket quantity is over the maximum allowed';
     const ERROR_TICKET_QUANTITY_NONE_AVAILABLE = 'There are no more tickets available.';
+
+    const ERROR_REQUIRES_SESSION = 'Session required.';
     
     
 }
