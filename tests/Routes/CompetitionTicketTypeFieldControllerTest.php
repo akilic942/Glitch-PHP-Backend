@@ -29,6 +29,8 @@ class CompetitionTicketTypeFieldControllerTest extends TestCase
 
         $url = $this->_getApiRoute() . 'competitions/' . $competition->id . '/tickettypes/' . $type->id . '/fields';
 
+        RolesFacade::competitionMakeAdmin($competition, $user);
+
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
         ])->get($url);
@@ -147,7 +149,6 @@ class CompetitionTicketTypeFieldControllerTest extends TestCase
         $response = $this->withHeaders([
             'Authorization Bearer' => $this->getAccessToken($user),
         ])->put($url, $data);
-        
         $this->assertEquals(200, $response->status());
 
         $json = $response->json();

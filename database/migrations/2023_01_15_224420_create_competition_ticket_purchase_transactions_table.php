@@ -23,7 +23,7 @@ return new class extends Migration
             $table->tinyInteger('payment_processor');
 
             $table->tinyInteger('payment_or_refund'); //1 for payment, 2 for refund
-            $table->tinyInteger('transaction_state'); 
+            $table->tinyInteger('transaction_state')->default(0); 
 
             $table->string('transaction_id')->nullable();
             $table->string('transaction_to_currency')->default('')->nullable();

@@ -95,12 +95,41 @@ class PermissionsFacade {
 
         $can_access = false;
 
+        if($token && ($purchase->access_token == $token || $purchase->admin_token == $token)) {
+            $can_access = true;
+        }
+
+        if(!$can_access && $user && $user->id == $purchase->user_id) {
+            $can_access = true;
+        }
+
+        if(!$can_access && $user) {
+
+            $competition = $purchase->ticketType->competition;
+
+            $can_access = self::competitionCanUpdate($competition, $user);
+        }
 
         return $can_access;
         
     }
 
-    public static function competitionCanModifyTicketPurchase() {
+    public static function competitionCanAdminTicketPurchase(CompetitionTicketPurchase $purchase, string $token = null, User $user = null) {
+
+        $can_access = false;
+
+        if($token && $purchase->admin_token == $token) {
+            $can_access = true;
+        }
+        
+        if(!$can_access && $user) {
+
+            $competition = $purchase->ticketType->competition;
+
+            $can_access = self::competitionCanUpdate($competition, $user);
+        }
+
+        return $can_access;
         
     }
 

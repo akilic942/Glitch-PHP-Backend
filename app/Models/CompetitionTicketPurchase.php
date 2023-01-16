@@ -57,4 +57,9 @@ class CompetitionTicketPurchase extends BaseModel
         );
     } 
 
+    public function ticketType()
+    {
+        return $this->belongsTo(CompetitionTicketType::class);
+    }
+
 }

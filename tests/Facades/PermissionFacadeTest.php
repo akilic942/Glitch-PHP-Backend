@@ -6,6 +6,8 @@ use App\Facades\PermissionsFacade;
 use App\Facades\RolesFacade;
 use App\Http\Resources\EventResource;
 use App\Models\Competition;
+use App\Models\CompetitionTicketPurchase;
+use App\Models\CompetitionTicketType;
 use App\Models\Event;
 use App\Models\Team;
 use App\Models\User;
@@ -233,6 +235,96 @@ class PermissionFacadeTest extends TestCase {
         $this->assertTrue(PermissionsFacade::teamCanEngage($team, $none));
         $this->assertTrue(PermissionsFacade::teamCanEngage($team, $non_affiliated_user));
         $this->assertFalse(PermissionsFacade::teamCanEngage($team, $blocked));
+    }
+
+    public function testCompetitionCanAccessTicketPurchase() {
+
+        $user_admin = User::factory()->create();
+
+        $user_purchaser = User::factory()->create();
+
+        $user_denied = User::factory()->create();
+
+        $competition = Competition::factory()->create();
+
+        RolesFacade::competitionMakeAdmin($competition, $user_admin);
+
+        $type = CompetitionTicketType::factory()->create(['competition_id' => $competition->id]);
+
+        $purchase = CompetitionTicketPurchase::factory()->create(['ticket_type_id' => $type->id, 'user_id' => $user_purchaser->id]);
+
+        $purchase->refresh();
+
+        $result = PermissionsFacade::competitionCanAccessTicketPurchase($purchase, $purchase->access_token);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::competitionCanAccessTicketPurchase($purchase, $purchase->admin_token);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::competitionCanAccessTicketPurchase($purchase, null, $user_admin);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::competitionCanAccessTicketPurchase($purchase, null, $user_purchaser);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::competitionCanAccessTicketPurchase($purchase, null, $user_denied);
+
+        $this->assertFalse($result);
+
+        $result = PermissionsFacade::competitionCanAccessTicketPurchase($purchase, null, null);
+
+        $this->assertFalse($result);
+
+        
+    }
+
+    public function testCompetitionCanAdminTicketPurchase() {
+
+        $user_admin = User::factory()->create();
+
+        $user_purchaser = User::factory()->create();
+
+        $user_denied = User::factory()->create();
+
+        $competition = Competition::factory()->create();
+
+        RolesFacade::competitionMakeAdmin($competition, $user_admin);
+
+        $type = CompetitionTicketType::factory()->create(['competition_id' => $competition->id]);
+
+        $purchase = CompetitionTicketPurchase::factory()->create(['ticket_type_id' => $type->id, 'user_id' => $user_purchaser->id]);
+
+        $purchase->refresh();
+
+        $result = PermissionsFacade::competitionCanAdminTicketPurchase($purchase, $purchase->access_token);
+
+        $this->assertFalse($result);
+
+        $result = PermissionsFacade::competitionCanAdminTicketPurchase($purchase, $purchase->admin_token);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::competitionCanAdminTicketPurchase($purchase, null, $user_admin);
+
+        $this->assertTrue($result);
+
+        $result = PermissionsFacade::competitionCanAdminTicketPurchase($purchase, null, $user_purchaser);
+
+        $this->assertFalse($result);
+
+        $result = PermissionsFacade::competitionCanAdminTicketPurchase($purchase, null, $user_denied);
+
+        $this->assertFalse($result);
+
+        $result = PermissionsFacade::competitionCanAdminTicketPurchase($purchase, null, null);
+
+        $this->assertFalse($result);
+
+        
     }
 
 

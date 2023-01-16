@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\HttpStatusCodes;
 use App\Enums\Messages;
 use App\Facades\CompetitionTicketFacade;
+use App\Facades\PermissionsFacade;
 use App\Http\Resources\CompetitionTicketPurchaseResource;
 use App\Models\Competition;
 use App\Models\CompetitionTicketPurchase;
@@ -115,7 +116,7 @@ class CompetitionTicketPurchaseController extends Controller
 
     }
 
-    public function show(Request $request, $id, $type_id, $field_id)
+    public function show(Request $request, $id, $type_id, $purchase_id)
     {
         $competition = Competition::where('id', $id)->first();
 
@@ -131,15 +132,33 @@ class CompetitionTicketPurchaseController extends Controller
             return response()->json(['error' => 'The ticket type does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        $field = CompetitionTicketPurchase::where('ticket_type_id', '=', $type->id)
-        ->where('id', '=', $field_id)
+        $purchase = CompetitionTicketPurchase::where('ticket_type_id', '=', $type->id)
+        ->where('id', '=', $purchase_id)
         ->first();
 
-        if(!$field){
+        if(!$purchase){
             return response()->json(['error' => 'The field does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        return new CompetitionTicketPurchaseResource($field);
+        $input = $request->all();
+
+        $user = ($request->user()) ? $request->user() : null;
+
+        $token = null;
+
+        if(isset($input['admin_token'])) {
+            $token = $input['admin_token'];
+        }
+
+        if(!$token && isset($input['access_token'])) {
+            $token = $input['access_token'];
+        }
+
+        if(!PermissionsFacade::competitionCanAccessTicketPurchase($purchase, $token, $user)) {
+            return response()->json(['error' => Messages::ERROR_ACCESS_DENIED_TICKET_PURCHASE], HttpStatusCodes::HTTP_UNAUTHORIZED);
+        }
+
+        return new CompetitionTicketPurchaseResource($purchase);
     }
 
 }

@@ -69,4 +69,9 @@ class CompetitionTicketType extends BaseModel
 
         'ticket_usage_date',
     );
+
+    public function competition()
+    {
+        return $this->belongsTo(Competition::class);
+    }
 }

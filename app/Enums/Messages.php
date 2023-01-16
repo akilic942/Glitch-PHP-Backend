@@ -5,6 +5,9 @@ namespace App\Enums;
 use BenSampo\Enum\Enum;
 
 final class Messages extends Enum {
+
+
+    const ERROR_ACCESS_DENIED_TICKET_PURCHASE = 'Access denied to ticket purchase.';
     
     const ERROR_COMPETITION_BANNED = "You have been banned from registering.";
     const ERROR_COMPETITION_TEAM_MAX_REGISTRATIONS = "The maximun amount of teams have registered.";

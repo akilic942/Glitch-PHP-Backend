@@ -105,6 +105,7 @@ Route::delete('competitions/{uuid}/tickettypes/{type_id}/fields/{section_id}', '
 //Payment
 Route::get('competitions/{uuid}/tickettypes/{type_id}/purchases', 'App\Http\Controllers\CompetitionTicketPurchaseController@index');
 Route::post('competitions/{uuid}/tickettypes/{type_id}/purchases', 'App\Http\Controllers\CompetitionTicketPurchaseController@purchase');
+Route::get('competitions/{uuid}/tickettypes/{type_id}/purchases/{purchase_id}', 'App\Http\Controllers\CompetitionTicketPurchaseController@show');
 
 //Event Routes
 Route::get('events', 'App\Http\Controllers\EventController@index');
