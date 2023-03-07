@@ -1,4 +1,5 @@
 <?php
+namespace App\Facades;
 
 class ThemesFacade {
 

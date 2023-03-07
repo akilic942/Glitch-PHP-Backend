@@ -3,7 +3,7 @@
 namespace App\Services\Payment;
 
 
-class StripeInterface implements PaymentInterface {
+class FlutterWave implements PaymentInterface {
 
     public function charge(array $data = []) {
 

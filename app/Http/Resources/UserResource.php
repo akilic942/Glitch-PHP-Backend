@@ -13,6 +13,38 @@ class UserResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+
+     /**
+     * Class User.
+     *
+     * @OA\Schema(
+     *     schema="UserModel",
+     *     title="User model",
+     *     description="User model",
+     *     @OA\Property(
+     *          property="first_name",
+     *          description="The users first name",
+     *          title="first_name",
+     *          type="string"
+     *     ),
+     *     @OA\Property(
+     *          property="last_name",
+     *          description="The users last name",
+     *          title="last_name",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="username",
+     *          description="The username associated with the user",
+     *          title="username",
+     *          type="string"
+     *     )
+     * )
+     * 
+     * 
+     *
+     * 
+     */
     public function toArray($request)
     {
 
