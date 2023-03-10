@@ -16,6 +16,35 @@ class CompetitionTeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * Competition team index 
+      *
+      * @OA\Get(
+      *     path="competitions/{uuid}/teams",
+      *     summary="Displays a listing of the resource.",
+      *     description="Displays a listing of the resource.",
+      *     operationId="resourceTeamList",
+      *     tags={"compTeamController"},
+      *     security={ {"bearer": {} }},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *         @OA\JsonContent(
+      *             required={"id"},
+      *             @OA\Property(property="id", type="string"),
+      *         )
+      *     ),
+      *     @OA\Response(
+      *         response=403,
+      *         description="No rounds listed",
+      *         @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot list this team.")
+      *              )
+      *          )
+      * )
+      *     
+      */
     public function index(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
@@ -37,6 +66,35 @@ class CompetitionTeamController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * Storage of teams
+      *
+      * @OA\Post(
+      *     path="competitions/{uuid}/teams",
+      *     summary="Store a newly created resource in storage.",
+      *     description="Store a newly created resource in storage.",
+      *     operationId="resourceTeamStorage",
+      *     tags={"compTeamController"},
+      *     security={ {"bearer": {} }},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *         @OA\JsonContent(
+      *             required={"id"},
+      *             @OA\Property(property="id", type="string"),
+      *         )
+      *     ),
+      *     @OA\Response(
+      *         response=403,
+      *         description="No rounds listed",
+      *         @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot store this team.")
+      *              )
+      *          )
+      * )
+      *     
+      */
     public function store(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
@@ -72,6 +130,34 @@ class CompetitionTeamController extends Controller
      * @param  \App\Models\CompetitionTeam  $competitionTeam
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * Display the specified resource.
+      *
+      * @OA\Get(
+      *     path="competitions/{uuid}/teams/{team_id}",
+      *     summary="Display the specified resource.",
+      *     description="Display the specified resource.",
+      *     operationId="resourceTeamShow",
+      *     tags={"compTeamController"},
+      *     security={ {"bearer": {} }},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *         @OA\JsonContent(
+      *             ref="app/Http/Resource/CompetitionTeamResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *         response=403,
+      *         description="No teams showed",
+      *         @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot show this team.")
+      *              )
+      *          )
+      * )
+      *     
+      */
     public function show(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
@@ -96,6 +182,37 @@ class CompetitionTeamController extends Controller
      * @param  \App\Models\CompetitionTeam  $competitionTeam
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      *  Update
+      *
+      * @OA\Put(
+      *     path="competitions/{uuid}/teams/{team_id}",
+      *     summary="Updating resource in storage.",
+      *     description="Updating resource in storage with new information.",
+      *     operationId="updateTeam",
+      *     tags={"compTeamController"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *         @OA\Property(
+      *            property="data",
+      *            ref="app/Http/Resource/CompetitionTeamResource"
+      *                 ),
+      *             )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Access denied to team.",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Access denined to team.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function update(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
@@ -139,6 +256,36 @@ class CompetitionTeamController extends Controller
      * @param  \App\Models\CompetitionTeam  $competitionTeam
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * Delete
+      *
+      * @OA\Delete(
+      *     path="competitions/{uuid}/teams/{team_id}",
+      *     summary="Removes a specific resource from storage.",
+      *     description="Removes a specific resource from storage.",
+      *     operationId="destoryTeam",
+      *     tags={"compTeamController"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *         @OA\Property(
+      *            ref="#/app/Http/Resource/CompetitionTeamResource"
+      *                 ),
+      *             )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Access denied to competition.",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Access denied to competition.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function destroy(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();

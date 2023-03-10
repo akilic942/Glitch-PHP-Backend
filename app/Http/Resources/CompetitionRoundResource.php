@@ -12,6 +12,26 @@ class CompetitionRoundResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+     /**
+     * Class CompetitionRoundResource for CompetitionRoundController.
+     *
+     * @OA\Schema(
+     *     schema="CompetitionRoundController",
+     *     title="Competition Round Controller Model",
+     *     description="Competition round controller model",
+     *     @OA\Property(
+     *          property="id",
+     *          title="id",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="subid",
+     *          title="subid",
+     *          type="string"
+     *      )
+     * )
+     */
     public function toArray($request)
     {
 

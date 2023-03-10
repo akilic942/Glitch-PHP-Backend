@@ -13,6 +13,21 @@ class CompetitionResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+     /**
+     * Class CompetitionResource for CompetitionController.
+     *
+     * @OA\Schema(
+     *     schema="CompetitionController",
+     *     title="Competition Model",
+     *     description="Competition Model",
+     *     @OA\Property(
+     *          property="id",
+     *          title="id",
+     *          type="string"
+     *     )
+     * )
+     */
     public function toArray($request)
     {
         $data = [

@@ -17,6 +17,32 @@ class CompetitionRoundController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * Competition round bracket index 
+      *
+      * @OA\Get(
+      *     path="competitions/{uuid}/rounds",
+      *     summary="Displays a listing of the resource.",
+      *     description="Displays a listing of the resource.",
+      *     operationId="resourceRoundList",
+      *     tags={"compRoundController"},
+      *     security={ {"bearer": {} }},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *         @OA\JsonContent(ref="app/Http/Resource/CompetitionResource")
+      *     ),
+      *     @OA\Response(
+      *         response=403,
+      *         description="No rounds listed",
+      *         @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot list rounds.")
+      *              )
+      *          )
+      * )
+      *     
+      */
     public function index(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
@@ -38,6 +64,37 @@ class CompetitionRoundController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * Storage of competitions
+      *
+      * @OA\Post(
+      *     path="competitions/{uuid}/rounds",
+      *     summary="Store a newly created resource in storage.",
+      *     description="Store a newly created resource in storage.",
+      *     operationId="resourceRoundStorage",
+      *     tags={"compRoundController"},
+      *     security={ {"bearer": {} }},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *         @OA\JsonContent(
+      *         @OA\Property(
+      *            property="data",
+      *            ref="app/Http/Resource/CompetitionResource"
+      *                 ),
+      *             )
+      *     ),
+      *     @OA\Response(
+      *         response=403,
+      *         description="No rounds listed",
+      *         @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot store round.")
+      *              )
+      *          )
+      * )
+      *     
+      */
     public function store(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
@@ -75,6 +132,37 @@ class CompetitionRoundController extends Controller
      * @param  \App\Models\CompetitionRound  $competitionRound
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * Show round brackets
+      *
+      * @OA\Get(
+      *     path="competitions/{uuid}/rounds/{round_id}",
+      *     summary="Display the specific resource.",
+      *     description="Display the specific resource.",
+      *     operationId="resourceRoundShow",
+      *     tags={"compRoundController"},
+      *     security={ {"bearer": {} }},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *         @OA\JsonContent(
+      *         @OA\Property(
+      *            property="data",
+      *            ref="app/Http/Resource/CompetitionRoundResource"
+      *                 ),
+      *             )
+      *     ),
+      *     @OA\Response(
+      *         response=405,
+      *         description="No rounds displayed",
+      *         @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot display rounds.")
+      *              )
+      *          )
+      * )
+      *     
+      */
     public function show(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
@@ -99,6 +187,37 @@ class CompetitionRoundController extends Controller
      * @param  \App\Models\CompetitionRound  $competitionRound
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      *  Update
+      *
+      * @OA\Put(
+      *     path="competitions/{uuid}/rounds/{round_id}",
+      *     summary="Updating resource in storage.",
+      *     description="Updating resource in storage with new information.",
+      *     operationId="updateRound",
+      *     tags={"compRoundController"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *         @OA\Property(
+      *            property="data",
+      *            ref="app/Http/Resource/CompetitionRoundResource"
+      *                 ),
+      *             )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Access denied to competition.",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Access denined to competition.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function update(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
@@ -142,6 +261,36 @@ class CompetitionRoundController extends Controller
      * @param  \App\Models\CompetitionRound  $competitionRound
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * Delete
+      *
+      * @OA\Delete(
+      *     path="competitions/{uuid}/rounds/{round_id}",
+      *     summary="Removes a specific resource from storage.",
+      *     description="Removes a specific resource from storage.",
+      *     operationId="destoryRound",
+      *     tags={"compRoundController"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *         @OA\Property(
+      *            ref="app/Http/Resource/CompetitionRoundResource"
+      *                 ),
+      *             )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Access denied to competition.",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Access denied to competition.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function destroy(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();

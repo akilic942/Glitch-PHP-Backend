@@ -12,6 +12,21 @@ class CompetitionInviteResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+     /**
+     * Class CompetitionInviteResource for CompetitionInviteController.
+     *
+     * @OA\Schema(
+     *     schema="CompetitionInvite",
+     *     title="Competition Invite Model",
+     *     description="Competition Invite Model",
+     *     @OA\Property(
+     *          property="id",
+     *          title="id",
+     *          type="string"
+     *     )
+     * )
+     */
     public function toArray($request)
     {
         return parent::toArray($request);

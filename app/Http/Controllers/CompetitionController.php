@@ -25,6 +25,31 @@ class CompetitionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * Index 
+      *
+      * @OA\Get(
+      *     path="/competitions",
+      *     summary="Displays a listing of the resource.",
+      *     description="Displays a listing of the resource.",
+      *     operationId="resourceList",
+      *     tags={"competitions"},
+      *     security={ {"bearer": {} }},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success"
+      *     ),
+      *     @OA\Response(
+      *         response=405,
+      *         description="No competitions listed",
+      *         @OA\JsonContent(
+      *              @OA\Property(property="message", type="No competitions listed")
+      *              )
+      *          )
+      * )
+      *     
+      */
     public function index()
     {
         $competitions = Competition::query();
@@ -40,6 +65,26 @@ class CompetitionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * @OA\Post(
+      *     path="/competitions",
+      *     summary="Creating new resource in storage.",
+      *     description="Creating new resource in storage.",
+      *     operationId="newResourceStorage",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success"
+      *     ),
+      *     @OA\Response(
+      *      response=422,
+      *      description="New storage not created",
+      *      ) 
+      * )
+      *  )
+      */
     public function store(Request $request)
     {
         $input = $request->all();
@@ -67,6 +112,31 @@ class CompetitionController extends Controller
      * @param  \App\Models\Competition  $competition
      * @return \Illuminate\Http\Response
      */
+
+    /**
+      * Show 
+      * @OA\Get(
+      *     path="/competitions/{uuid}",
+      *     summary="Displays specified resource.",
+      *     description="Displays specified resource.",
+      *     operationId="showStorage",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *         @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         ),
+      *     @OA\Response(
+      *      response=405,
+      *      description="Storage is not being displayed"
+      *      ) 
+      *     )
+      *)
+      *     
+      */
+
     public function show($id)
     {
         $competition = Competition::where('id', $id)->first();
@@ -81,6 +151,34 @@ class CompetitionController extends Controller
      * @param  \App\Models\Competition  $competition
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      *  Update
+      *
+      * @OA\Put(
+      *     path="/competitions/{uuid}",
+      *     summary="Updating resource in storage.",
+      *     description="Updating resource in storage with new information.",
+      *     operationId="updateStorage",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Access denied to live stream.",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Access denined to live stream.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function update(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
@@ -114,6 +212,34 @@ class CompetitionController extends Controller
      * @param  \App\Models\Competition  $competition
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * Delete
+      *
+      * @OA\Delete(
+      *     path="/competitions/{uuid}",
+      *     summary="Removes a specific resource from storage.",
+      *     description="Removes a specific resource from storage.",
+      *     operationId="destoryStorage",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Access denied to live stream.",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Access denied to live stream.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function destroy(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
@@ -127,6 +253,39 @@ class CompetitionController extends Controller
         return response()->json(null, 204);
     }
 
+
+    /**
+     * Add team to competition.
+     *
+     * @param  \App\Models\Competition  $competition
+     * @return \Illuminate\Http\Response
+     */
+
+    /**
+      * @OA\Post(
+      *     path="/addTeam",
+      *     summary="adds a team to storage.",
+      *     description="adds a team to storage.",
+      *     operationId="addTeam",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Cannot add this team",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot add this team.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function addTeam(Request $request, $id) {
 
         $competition = Competition::where('id', $id)->first();
@@ -163,6 +322,38 @@ class CompetitionController extends Controller
 
     }
 
+    /**
+     * Add addParticipant to competition.
+     *
+     * @param  \App\Models\Competition  $competition
+     * @return \Illuminate\Http\Response
+     */
+
+    /**
+      * @OA\Post(
+      *     path="/addParticipant",
+      *     summary="Adds a participant to storage.",
+      *     description="Adds a participant to storage.",
+      *     operationId="addParticipant",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Cannot add this participant",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot add this participant.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function addParticipant(Request $request, $id) {
 
         $competition = Competition::where('id', $id)->first();
@@ -199,6 +390,41 @@ class CompetitionController extends Controller
 
     }
 
+
+    /**
+     * Registers team for competition.
+     *
+     * @param  \App\Models\Competition  $competition
+     * @return \Illuminate\Http\Response
+     */
+
+     /**
+      * Register team
+      * 
+      * @OA\Post(
+      *     path="/competitions/{uuid}/registerTeam",
+      *     summary="Registers a team in storage.",
+      *     description="Registers a team for competition.",
+      *     operationId="registerTeam",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Cannot register this team for competition",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannotresigert this team for competition.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function registerTeam(Request $request, $id) {
 
         $competition = Competition::where('id', $id)->first();
@@ -230,6 +456,40 @@ class CompetitionController extends Controller
         return new CompetitionResource($competition);
     }
 
+    /**
+     * Registers participant to team.
+     *
+     * @param  \App\Models\Competition  $competition
+     * @return \Illuminate\Http\Response
+     */
+
+     /**
+      * Register participant
+      * 
+      * @OA\Post(
+      *     path="/competitions/{uuid}/registerUser",
+      *     summary="Registers a participant in storage.",
+      *     description="Registers a participant to a team.",
+      *     operationId="registerParticipant",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Cannot register this participant for a team",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot register this participant for a team.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function registerParticipant(Request $request, $id) {
 
         $competition = Competition::where('id', $id)->first();
@@ -249,6 +509,40 @@ class CompetitionController extends Controller
         return new CompetitionResource($competition);
     }
 
+    /**
+     * Syncs rounds for competitions.
+     *
+     * @param  \App\Models\Competition  $competition
+     * @return \Illuminate\Http\Response
+     */
+
+     /**
+      * Sync rounds
+      * 
+      * @OA\Get(
+      *     path="/competitions/{uuid}/rounds",
+      *     summary="Syncs rounds for competitions.",
+      *     description="Syncs rounds for competitions.",
+      *     operationId="syncRounds",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Cannot sync these rounds",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot sync these rounds.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function syncRounds(Request $request, $id) {
 
         $competition = Competition::where('id', $id)->first();
@@ -287,6 +581,40 @@ class CompetitionController extends Controller
         return new CompetitionResource($competition);
     }
 
+    /**
+     * Auto generates brackets for teams.
+     *
+     * @param  \App\Models\Competition  $competition
+     * @return \Illuminate\Http\Response
+     */
+
+     /**
+      * Auto generate brackets
+      * 
+      * @OA\Get(
+      *     path="/competitions/{uuid}/rounds/{round_id}/brackets",
+      *     summary="Generates team brackets.",
+      *     description="Generates team brackets.",
+      *     operationId="autoGenerateTeamBrackets",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Cannot generate team brackets",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot generate team brackets.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function autoGenerateTeamBrackets(Request $request, $id) {
 
         $competition = Competition::where('id', $id)->first();
@@ -321,6 +649,40 @@ class CompetitionController extends Controller
 
     }
 
+    /**
+     * Auto generates brackets for users.
+     *
+     * @param  \App\Models\Competition  $competition
+     * @return \Illuminate\Http\Response
+     */
+
+     /**
+      * Auto generate user brackets
+      * 
+      * @OA\Get(
+      *     path="/autoGenerateUserBrackets",
+      *     summary="Generates user brackets.",
+      *     description="Generates user brackets.",
+      *     operationId="autoGenerateUserBrackets",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *      response=403,
+      *      description="Cannot generate brackets for this user",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot generate brackets for this user.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function autoGenerateUserBrackets(Request $request, $id) {
 
         $competition = Competition::where('id', $id)->first();
@@ -355,6 +717,40 @@ class CompetitionController extends Controller
 
     }
 
+    /**
+     * Upload main image to storage.
+     *
+     * @param  \App\Models\Competition  $competition
+     * @return \Illuminate\Http\Response
+     */
+
+     /**
+      * Upload main image
+      * 
+      * @OA\Post(
+      *     path="/competitions/{uuid}/uploadMainImage",
+      *     summary="Upload main image to storage.",
+      *     description="Upload main image to storage.",
+      *     operationId="uploadMainImage",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *      response=400,
+      *      description="File was not uploaded",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="File was not uploaded.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function uploadMainImage(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
@@ -393,6 +789,40 @@ class CompetitionController extends Controller
         return CompetitionFullResource::make($competition);
     }
 
+    /**
+     * Upload main image to storage.
+     *
+     * @param  \App\Models\Competition  $competition
+     * @return \Illuminate\Http\Response
+     */
+
+     /**
+      * Upload banner image
+      * 
+      * @OA\Post(
+      *     path="/competitions/{uuid}/uploadBannerImage",
+      *     summary="Upload banner image to storage.",
+      *     description="Upload banner image to storage.",
+      *     operationId="uploadBannerImage",
+      *     tags={"competitions"},
+      *     security={{"bearer": {}}},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *     @OA\JsonContent(
+      *             ref="app/Http/Resources/CompetitionResource"
+      *         )
+      *     ),
+      *     @OA\Response(
+      *      response=400,
+      *      description="File was not uploaded",
+      *      @OA\JsonContent(
+      *              @OA\Property(property="message", type="File was not uploaded.")
+      *              )
+      *      ) 
+      * )
+      *     
+      */
     public function uploadBannerImage(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();

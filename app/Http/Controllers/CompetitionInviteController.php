@@ -18,6 +18,36 @@ class CompetitionInviteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * Invites 
+      *
+      * @OA\Get(
+      *     path="competitions/{uuid}/invites",
+      *     summary="Displays a listing of the resource.",
+      *     description="Displays a listing of the resource.",
+      *     operationId="resourceInviteList",
+      *     tags={"compInvite"},
+      *     security={ {"bearer": {} }},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *         @OA\JsonContent(
+      *         @OA\Property(
+      *            ref="app/Http/Resources/CompetitionInviteResource"
+      *                 ),
+      *             )
+      *     ),
+      *     @OA\Response(
+      *         response=403,
+      *         description="No invites listed",
+      *         @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot invite this user.")
+      *              )
+      *          )
+      * )
+      *     
+      */
     public function index(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
@@ -52,6 +82,36 @@ class CompetitionInviteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     /**
+      * SendInvite 
+      *
+      * @OA\Post(
+      *     path="/index",
+      *     summary="Store a newly created resource in storage.",
+      *     description="Store a newly created resource in storage.",
+      *     operationId="sendInvite",
+      *     tags={"compInvite"},
+      *     security={ {"bearer": {} }},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *         @OA\JsonContent(
+      *         @OA\Property(
+      *            ref="app/Http/Resources/CompetitionInviteResource"
+      *                 ),
+      *             )
+      *     ),
+      *     @OA\Response(
+      *         response=403,
+      *         description="No invites listed",
+      *         @OA\JsonContent(
+      *              @OA\Property(property="message", type="Cannot send invite to user.")
+      *              )
+      *          )
+      * )
+      *     
+      */
     public function store(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
@@ -132,6 +192,35 @@ class CompetitionInviteController extends Controller
         //
     }
 
+    /**
+      * Accept invite 
+      *
+      * @OA\Post(
+      *     path="/acceptInvite",
+      *     summary="Invite was accepted.",
+      *     description="Invite was accepted.",
+      *     operationId="acceptInvite",
+      *     tags={"compInvite"},
+      *     security={ {"bearer": {} }},
+      *     @OA\Response(
+      *         response=200,
+      *         description="Success",
+      *         @OA\JsonContent(
+      *         @OA\Property(
+      *            ref="app/Http/Resources/CompetitionInviteResource"
+      *                 ),
+      *             )
+      *     ),
+      *     @OA\Response(
+      *         response=403,
+      *         description="No invites listed",
+      *         @OA\JsonContent(
+      *              @OA\Property(property="message", type="Invite is not associated with the current user.")
+      *              )
+      *          )
+      * )
+      *     
+      */
     public function acceptInvite(Request $request, $id){
 
         $competition = Competition::where('id', $id)->first();

@@ -12,6 +12,26 @@ class CompetitionRoundBracketResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+     /**
+     * Class CompetitionRoundBracketResource for CompetitionRoundBracketController.
+     *
+     * @OA\Schema(
+     *     schema="CompetitionRoundBracket",
+     *     title="Competition Round Bracket Model",
+     *     description="Competition Round Bracket Model",
+     *     @OA\Property(
+     *          property="id",
+     *          title="id",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="subid",
+     *          title="subid",
+     *          type="string"
+     *      )
+     * )
+     */
     public function toArray($request)
     {
         $data = [

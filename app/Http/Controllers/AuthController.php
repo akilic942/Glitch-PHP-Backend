@@ -140,6 +140,26 @@ class AuthController extends Controller
         return $resource;
     }
 
+    /**
+     * oneTimeLoginToken
+     *
+     * @OA\Post(
+     *     path="/oneTimeLoginToken",
+     *     summary="One time login token.",
+     *     description="One time token to login",
+     *     operationId="oneTimeLoginToken",
+     *     tags={"auth"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success"
+     *     ),
+     *     @OA\Response(
+     *      response=405,
+     *      description="Login with one time login token not given",
+     *      )  
+     * )
+     */
     public function oneTimeLoginToken(Request $request) {
 
         $input = $request->all();
@@ -167,6 +187,29 @@ class AuthController extends Controller
 
     }
 
+    /**
+     * respondWithToken
+     *
+     * @OA\Post(
+     *     path="/respondWithToken",
+     *     summary="Responds with a token.",
+     *     description="Responds with a token.",
+     *     operationId="respondWithToken",
+     *     tags={"auth"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success"
+     *     ),
+     *     @OA\Response(
+     *      response=401,
+     *      description="Resonds with a temporary token",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="string", example="Not authorized"),
+     *          )
+     *      )  
+     * )
+     */
     protected function respondWithToken($token)
     {
         return [
