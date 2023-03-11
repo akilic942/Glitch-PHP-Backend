@@ -272,7 +272,7 @@ class CompetitionTeamController extends Controller
       *         description="Success",
       *     @OA\JsonContent(
       *         @OA\Property(
-      *            ref="#/app/Http/Resource/CompetitionTeamResource"
+      *            ref="app/Http/Resource/CompetitionTeamResource"
       *                 ),
       *             )
       *     ),

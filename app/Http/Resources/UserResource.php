@@ -18,9 +18,9 @@ class UserResource extends JsonResource
      * Class User.
      *
      * @OA\Schema(
-     *     schema="UserModel",
+     *     schema="User",
      *     title="User model",
-     *     description="User model",
+     *     description="The model describes the user.",
      *     @OA\Property(
      *          property="first_name",
      *          description="The users first name",
@@ -38,7 +38,145 @@ class UserResource extends JsonResource
      *          description="The username associated with the user",
      *          title="username",
      *          type="string"
-     *     )
+     *     ),
+     *      @OA\Property(
+     *          property="display_name",
+     *          description="The name to show to others for the users",
+     *          title="username",
+     *          type="string"
+     *     ),
+     *     @OA\Property(
+     *          property="bio",
+     *          description="Text information about the user.",
+     *          title="bio",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="avatar",
+     *          description="The users avatar image. This property is read-only and the avatar must be updated via image route.",
+     *          title="avatar",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="banner_image",
+     *          description="The users banner image. This property is read-only and must be updated via the image route.",
+     *          title="banner_image",
+     *          type="string"
+     *     ),
+     * 
+     *      @OA\Property(
+     *          property="twitter_page",
+     *          description="The URL to the users Twitter Page.",
+     *          title="twitter_page",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="facebook_page",
+     *          description="The URL to the users Facebook Page.",
+     *          title="facebook_page",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="instagram_page",
+     *          description="The URL to the users Instagram Page.",
+     *          title="instagram_page",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="snapchat_page",
+     *          description="The URL to the users Snapchat Page.",
+     *          title="snapchat_page",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="tiktok_page",
+     *          description="The URL to the users Tiktok Page.",
+     *          title="tiktok_page",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="twitch_page",
+     *          description="The URL to the users Twitch Page.",
+     *          title="twitch_page",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="youtube_page",
+     *          description="The URL to the users Youtube Page.",
+     *          title="youtube_page",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="paetron_page",
+     *          description="The URL to the users Paetron Page.",
+     *          title="paetron_page",
+     *          type="string"
+     *     ),
+     * 
+     * 
+     *      @OA\Property(
+     *          property="twitter_handle",
+     *          description="The URL to the users Twitter Handle.",
+     *          title="twitter_handle",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="facebook_handle",
+     *          description="The URL to the users Facebook Handle.",
+     *          title="facebook_handle",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="instagram_handle",
+     *          description="The URL to the users Instagram Handle.",
+     *          title="instagram_handle",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="snapchat_handle",
+     *          description="The URL to the users Snapchat Handle.",
+     *          title="snapchat_handle",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="tiktok_handle",
+     *          description="The URL to the users Tiktok Handle.",
+     *          title="tiktok_handle",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="twitch_handle",
+     *          description="The URL to the users Twitch Handle.",
+     *          title="twitch_handle",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="youtube_handle",
+     *          description="The URL to the users Youtube Handle.",
+     *          title="youtube_handle",
+     *          type="string"
+     *     ),
+     *      @OA\Property(
+     *          property="paetron_handle",
+     *          description="The URL to the users Paetron Handle.",
+     *          title="paetron_handle",
+     *          type="string"
+     *     ),
+     * 
+     *      @OA\Property(
+     *          property="created_at",
+     *          description="The date the user account was created.",
+     *          title="created_at",
+     *          type="string"
+     *     ),
+     *     @OA\Property(
+     *          property="updated_at",
+     *          description="The date the user account was last updated.",
+     *          title="updated_at",
+     *          type="string"
+     *     ),
+     * 
+     * 
      * )
      * 
      * 

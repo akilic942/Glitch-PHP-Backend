@@ -14,6 +14,51 @@ class UserFullResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
+
+    /**
+     * Class User.
+     *
+     * @OA\Schema(
+     *     schema="UserFull",
+     *     title="User Extended Model",
+     *     description="The user model with complete information",
+     *     allOf={
+     *         @OA\Schema(ref="#/components/schemas/User"),
+     *         @OA\Schema(
+     *            @OA\Property(
+     *              property="followers",
+     *              description="A list of users who are following the current user.",
+     *              @OA\Items(ref="#/components/schemas/User"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
+     *              property="following",
+     *              description="A list of users who the current user is following.",
+     *              @OA\Items(ref="#/components/schemas/User"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
+     *              property="events",
+     *              description="A list of events the user is associated with.",
+     *              @OA\Items(ref="#/components/schemas/Event"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
+     *              property="competitions",
+     *              description="A list of competitions the user is associated with.",
+     *              @OA\Items(ref="#/components/schemas/Competition"),
+     *              type="array"
+     *          ),
+     *             
+     *        ),
+     *     },
+     * 
+     * )
+     * 
+     * 
+     *
+     * 
+     */
     public function toArray($request)
     {
 
@@ -23,7 +68,7 @@ class UserFullResource extends JsonResource
             'last_name' => $this->last_name,
             'username' => $this->username,
             'bio' => $this->bio,
-            
+
             //Media
             'avatar' => !empty($this->avatar) ? Storage::disk('s3')->url($this->avatar) : null,
             'banner_image' => !empty($this->banner_image) ? Storage::disk('s3')->url($this->banner_image) : null,
@@ -61,13 +106,13 @@ class UserFullResource extends JsonResource
 
         $loggedin_user = Auth::user();
 
-        if($loggedin_user && $loggedin_user->id == $this->id) {
+        if ($loggedin_user && $loggedin_user->id == $this->id) {
             $data['stripe_express_account_id'] = $this->stripe_express_account_id;
             $data['stripe_donation_purhcase_link_url'] = $this->stripe_donation_purhcase_link_url;
         }
 
         //If its the current user, we can return confidential information
-        if($loggedin_user && $loggedin_user->id == $this->id) {
+        if ($loggedin_user && $loggedin_user->id == $this->id) {
 
             $confidential = [
                 'email' => $this->email,
@@ -93,7 +138,6 @@ class UserFullResource extends JsonResource
             ];
 
             $data += $confidential;
-
         }
 
 

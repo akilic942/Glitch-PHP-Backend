@@ -17,11 +17,11 @@ class AuthController extends Controller
      * Add a new pet to the store.
      *
      * @OA\Post(
-     *     path="/register",
-     *     tags={"auth"},
+     *     path="/auth/register",
+     *     tags={"Authentication Route"},
      *     operationId="register",
      *     @OA\Response(
-     *         response=405,
+     *         response=422,
      *         description="Invalid input"
      *     ),
      *     security={
@@ -62,29 +62,44 @@ class AuthController extends Controller
 
     /**
      * @OA\Post(
-     * path="/login",
-     * summary="Sign in",
-     * description="Login by email, password",
-     * operationId="authLogin",
-     * tags={"auth"},
-     * @OA\RequestBody(
-     *    required=true,
-     *    description="Pass user credentials",
-     *    @OA\JsonContent(
-     *       required={"email","password"},
-     *       @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
-     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
-     *       @OA\Property(property="persistent", type="boolean", example="true"),
-     *    ),
+     *      path="/auth/login",
+     *      summary="Sign in",
+     *      description="Login by email, password",
+     *      operationId="authLogin",
+     *      tags={"Authentication Route"},
+     *      @OA\RequestBody(
+     *          required=true,
+     *          description="Pass user credentials",
+     *          @OA\JsonContent(
+     *              required={"email","password"},
+     *              @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *              @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
+     *              @OA\Property(property="persistent", type="boolean", example="true"),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Succesfuly Login",
+     *          @OA\JsonContent(
+      *             ref="#/components/schemas/User"
+      *         )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Wrong credentials response",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Sorry, wrong email address or password. Please try again")
+     *          )
+     *      ),
+     *       @OA\Response(
+     *          response=401,
+     *          description="Invalid Login Credentials",
+     *      )
      * ),
-     * @OA\Response(
-     *    response=422,
-     *    description="Wrong credentials response",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="Sorry, wrong email address or password. Please try again")
-     *        )
-     *     )
-     * )
+     * 
+
+     * 
+
      */
     public function login(Request $request)
     {
@@ -144,11 +159,11 @@ class AuthController extends Controller
      * oneTimeLoginToken
      *
      * @OA\Post(
-     *     path="/oneTimeLoginToken",
+     *     path="/auth/oneTimeLoginToken",
      *     summary="One time login token.",
      *     description="One time token to login",
      *     operationId="oneTimeLoginToken",
-     *     tags={"auth"},
+     *     tags={"Authentication Route"},
      *     security={ {"bearer": {} }},
      *     @OA\Response(
      *         response=200,
@@ -191,11 +206,11 @@ class AuthController extends Controller
      * respondWithToken
      *
      * @OA\Post(
-     *     path="/respondWithToken",
+     *     path="/auth/respondWithToken",
      *     summary="Responds with a token.",
      *     description="Responds with a token.",
      *     operationId="respondWithToken",
-     *     tags={"auth"},
+     *     tags={"Authentication Route"},
      *     security={ {"bearer": {} }},
      *     @OA\Response(
      *         response=200,
