@@ -22,11 +22,11 @@ class CompetitionRoundController extends Controller
       * Competition round bracket index 
       *
       * @OA\Get(
-      *     path="competitions/{uuid}/rounds",
+      *     path="/competitions/{uuid}/rounds1",
       *     summary="Displays a listing of the resource.",
       *     description="Displays a listing of the resource.",
       *     operationId="resourceRoundList",
-      *     tags={"compRoundController"},
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,
@@ -69,11 +69,11 @@ class CompetitionRoundController extends Controller
       * Storage of competitions
       *
       * @OA\Post(
-      *     path="competitions/{uuid}/rounds",
+      *     path="/competitions/{uuid}/rounds",
       *     summary="Store a newly created resource in storage.",
       *     description="Store a newly created resource in storage.",
       *     operationId="resourceRoundStorage",
-      *     tags={"compRoundController"},
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,
@@ -137,11 +137,11 @@ class CompetitionRoundController extends Controller
       * Show round brackets
       *
       * @OA\Get(
-      *     path="competitions/{uuid}/rounds/{round_id}",
+      *     path="/competitions/{uuid}/rounds/{round_id}",
       *     summary="Display the specific resource.",
       *     description="Display the specific resource.",
       *     operationId="resourceRoundShow",
-      *     tags={"compRoundController"},
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,
@@ -192,11 +192,11 @@ class CompetitionRoundController extends Controller
       *  Update
       *
       * @OA\Put(
-      *     path="competitions/{uuid}/rounds/{round_id}",
+      *     path="/competitions/{uuid}/rounds/{round_id}",
       *     summary="Updating resource in storage.",
       *     description="Updating resource in storage with new information.",
       *     operationId="updateRound",
-      *     tags={"compRoundController"},
+      *     tags={"Competitions Route"},
       *     security={{"bearer": {}}},
       *     @OA\Response(
       *         response=200,
@@ -266,11 +266,11 @@ class CompetitionRoundController extends Controller
       * Delete
       *
       * @OA\Delete(
-      *     path="competitions/{uuid}/rounds/{round_id}",
+      *     path="/competitions/{uuid}/rounds/{round_id}",
       *     summary="Removes a specific resource from storage.",
       *     description="Removes a specific resource from storage.",
       *     operationId="destoryRound",
-      *     tags={"compRoundController"},
+      *     tags={"Competitions Route"},
       *     security={{"bearer": {}}},
       *     @OA\Response(
       *         response=200,

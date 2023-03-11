@@ -169,14 +169,21 @@
         "/competitions": {
             "get": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Displays a listing of the resource.",
                 "description": "Displays a listing of the resource.",
                 "operationId": "resourceList",
                 "responses": {
                     "200": {
-                        "description": "Success"
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Competition"
+                                }
+                            }
+                        }
                     },
                     "405": {
                         "description": "No competitions listed",
@@ -202,14 +209,31 @@
             },
             "post": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Creating new resource in storage.",
                 "description": "Creating new resource in storage.",
                 "operationId": "newResourceStorage",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Competition"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Success"
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Competition"
+                                }
+                            }
+                        }
                     },
                     "422": {
                         "description": "New storage not created"
@@ -225,18 +249,30 @@
         "/competitions/{uuid}": {
             "get": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Displays specified resource.",
                 "description": "Displays specified resource.",
                 "operationId": "showStorage",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
+                                    "$ref": "#/components/schemas/Competition"
                                 }
                             }
                         }
@@ -250,18 +286,30 @@
             },
             "put": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Updating resource in storage.",
                 "description": "Updating resource in storage with new information.",
                 "operationId": "updateStorage",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
+                                    "$ref": "#/components/schemas/Competition"
                                 }
                             }
                         }
@@ -290,21 +338,26 @@
             },
             "delete": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Removes a specific resource from storage.",
                 "description": "Removes a specific resource from storage.",
                 "operationId": "destoryStorage",
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
-                                }
-                            }
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
                         }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Competition successfully deleted"
                     },
                     "403": {
                         "description": "Access denied to live stream.",
@@ -329,21 +382,33 @@
                 ]
             }
         },
-        "/addTeam": {
+        "/competitions/{uuid}/addTeam": {
             "post": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "adds a team to storage.",
                 "description": "adds a team to storage.",
                 "operationId": "addTeam",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
+                                    "$ref": "#/components/schemas/Competition"
                                 }
                             }
                         }
@@ -371,21 +436,33 @@
                 ]
             }
         },
-        "/addParticipant": {
+        "/competitions/{uuid}/addParticipant": {
             "post": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Adds a participant to storage.",
                 "description": "Adds a participant to storage.",
                 "operationId": "addParticipant",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
+                                    "$ref": "#/components/schemas/Competition"
                                 }
                             }
                         }
@@ -416,18 +493,30 @@
         "/competitions/{uuid}/registerTeam": {
             "post": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Registers a team in storage.",
                 "description": "Registers a team for competition.",
                 "operationId": "registerTeam",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
+                                    "$ref": "#/components/schemas/Competition"
                                 }
                             }
                         }
@@ -458,18 +547,30 @@
         "/competitions/{uuid}/registerUser": {
             "post": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Registers a participant in storage.",
                 "description": "Registers a participant to a team.",
                 "operationId": "registerParticipant",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
+                                    "$ref": "#/components/schemas/Competition"
                                 }
                             }
                         }
@@ -500,7 +601,7 @@
         "/competitions/{uuid}/rounds": {
             "get": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Syncs rounds for competitions.",
                 "description": "Syncs rounds for competitions.",
@@ -511,7 +612,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
+                                    "$ref": "#/components/schemas/Competition"
                                 }
                             }
                         }
@@ -537,12 +638,57 @@
                         "bearer": []
                     }
                 ]
+            },
+            "post": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Store a newly created resource in storage.",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "resourceRoundStorage",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "app/Http/Resource/CompetitionResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "No rounds listed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Cannot store round."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
-        "/competitions/{uuid}/rounds/{round_id}/brackets": {
+        "/competitions/{uuid}/rounds/{round_id}/brackets/autoGenerate": {
             "get": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Generates team brackets.",
                 "description": "Generates team brackets.",
@@ -553,7 +699,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
+                                    "$ref": "#/components/schemas/Competition"
                                 }
                             }
                         }
@@ -584,7 +730,7 @@
         "/autoGenerateUserBrackets": {
             "get": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Generates user brackets.",
                 "description": "Generates user brackets.",
@@ -595,7 +741,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
+                                    "$ref": "#/components/schemas/Competition"
                                 }
                             }
                         }
@@ -626,7 +772,7 @@
         "/competitions/{uuid}/uploadMainImage": {
             "post": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Upload main image to storage.",
                 "description": "Upload main image to storage.",
@@ -637,7 +783,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
+                                    "$ref": "#/components/schemas/Competition"
                                 }
                             }
                         }
@@ -668,7 +814,7 @@
         "/competitions/{uuid}/uploadBannerImage": {
             "post": {
                 "tags": [
-                    "competitions"
+                    "Competitions Route"
                 ],
                 "summary": "Upload banner image to storage.",
                 "description": "Upload banner image to storage.",
@@ -679,7 +825,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resources/CompetitionResource"
+                                    "$ref": "#/components/schemas/Competition"
                                 }
                             }
                         }
@@ -707,10 +853,10 @@
                 ]
             }
         },
-        "competitions/{uuid}/invites": {
+        "/competitions/{uuid}/invites": {
             "get": {
                 "tags": [
-                    "compInvite"
+                    "Competitions Route"
                 ],
                 "summary": "Displays a listing of the resource.",
                 "description": "Displays a listing of the resource.",
@@ -757,7 +903,7 @@
         "/index": {
             "post": {
                 "tags": [
-                    "compInvite"
+                    "Competitions Route"
                 ],
                 "summary": "Store a newly created resource in storage.",
                 "description": "Store a newly created resource in storage.",
@@ -804,7 +950,7 @@
         "/acceptInvite": {
             "post": {
                 "tags": [
-                    "compInvite"
+                    "Competitions Route"
                 ],
                 "summary": "Invite was accepted.",
                 "description": "Invite was accepted.",
@@ -848,14 +994,14 @@
                 ]
             }
         },
-        "competitions/{uuid}/rounds/{round_id}/brackets": {
+        "/competitions/{uuid}/rounds/{round_id}/brackets": {
             "get": {
                 "tags": [
-                    "compRoundBracket"
+                    "Competitions Route"
                 ],
                 "summary": "Displays a listing of the resource.",
                 "description": "Displays a listing of the resource.",
-                "operationId": "resourceRoundBracketList",
+                "operationId": "resourceRoundBracketList1",
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -896,7 +1042,7 @@
             },
             "post": {
                 "tags": [
-                    "compRoundBracket"
+                    "Competitions Route"
                 ],
                 "summary": "Store a newly created resource in storage.",
                 "description": "Store a newly created resource in storage.",
@@ -940,10 +1086,10 @@
                 ]
             }
         },
-        "competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}": {
+        "/competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}": {
             "get": {
                 "tags": [
-                    "compRoundBracket"
+                    "Competitions Route"
                 ],
                 "summary": "Display the specific resource.",
                 "description": "Display the specific resource.",
@@ -986,9 +1132,54 @@
                     }
                 ]
             },
+            "put": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Updating resource in storage.",
+                "description": "Updating resource in storage with new information.",
+                "operationId": "updateRoundBracket",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "": {
+                                            "$ref": "app/Http/Resource/CompetitionRoundBracketResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to live stream.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to live stream."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
             "delete": {
                 "tags": [
-                    "compRoundBracket"
+                    "Competitions Route"
                 ],
                 "summary": "Removes a specific resource from storage.",
                 "description": "Removes a specific resource from storage.",
@@ -1032,57 +1223,10 @@
                 ]
             }
         },
-        "competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id": {
-            "put": {
-                "tags": [
-                    "compRoundBracket"
-                ],
-                "summary": "Updating resource in storage.",
-                "description": "Updating resource in storage with new information.",
-                "operationId": "updateRoundBracket",
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "": {
-                                            "$ref": "app/Http/Resource/CompetitionRoundBracketResource"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "Access denied to live stream.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "Access denined to live stream."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearer": []
-                    }
-                ]
-            }
-        },
-        "competitions/{uuid}/rounds": {
+        "/competitions/{uuid}/rounds1": {
             "get": {
                 "tags": [
-                    "compRoundController"
+                    "Competitions Route"
                 ],
                 "summary": "Displays a listing of the resource.",
                 "description": "Displays a listing of the resource.",
@@ -1119,57 +1263,12 @@
                         "bearer": []
                     }
                 ]
-            },
-            "post": {
-                "tags": [
-                    "compRoundController"
-                ],
-                "summary": "Store a newly created resource in storage.",
-                "description": "Store a newly created resource in storage.",
-                "operationId": "resourceRoundStorage",
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "app/Http/Resource/CompetitionResource"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "No rounds listed",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "Cannot store round."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearer": []
-                    }
-                ]
             }
         },
-        "competitions/{uuid}/rounds/{round_id}": {
+        "/competitions/{uuid}/rounds/{round_id}": {
             "get": {
                 "tags": [
-                    "compRoundController"
+                    "Competitions Route"
                 ],
                 "summary": "Display the specific resource.",
                 "description": "Display the specific resource.",
@@ -1214,7 +1313,7 @@
             },
             "put": {
                 "tags": [
-                    "compRoundController"
+                    "Competitions Route"
                 ],
                 "summary": "Updating resource in storage.",
                 "description": "Updating resource in storage with new information.",
@@ -1259,7 +1358,7 @@
             },
             "delete": {
                 "tags": [
-                    "compRoundController"
+                    "Competitions Route"
                 ],
                 "summary": "Removes a specific resource from storage.",
                 "description": "Removes a specific resource from storage.",
@@ -1303,10 +1402,10 @@
                 ]
             }
         },
-        "competitions/{uuid}/teams": {
+        "/competitions/{uuid}/teams": {
             "get": {
                 "tags": [
-                    "compTeamController"
+                    "Competitions Route"
                 ],
                 "summary": "Displays a listing of the resource.",
                 "description": "Displays a listing of the resource.",
@@ -1354,7 +1453,7 @@
             },
             "post": {
                 "tags": [
-                    "compTeamController"
+                    "Competitions Route"
                 ],
                 "summary": "Store a newly created resource in storage.",
                 "description": "Store a newly created resource in storage.",
@@ -1401,10 +1500,10 @@
                 ]
             }
         },
-        "competitions/{uuid}/teams/{team_id}": {
+        "/competitions/{uuid}/teams/{team_id}": {
             "get": {
                 "tags": [
-                    "compTeamController"
+                    "Competitions Route"
                 ],
                 "summary": "Display the specified resource.",
                 "description": "Display the specified resource.",
@@ -1444,7 +1543,7 @@
             },
             "put": {
                 "tags": [
-                    "compTeamController"
+                    "Competitions Route"
                 ],
                 "summary": "Updating resource in storage.",
                 "description": "Updating resource in storage with new information.",
@@ -1489,7 +1588,7 @@
             },
             "delete": {
                 "tags": [
-                    "compTeamController"
+                    "Competitions Route"
                 ],
                 "summary": "Removes a specific resource from storage.",
                 "description": "Removes a specific resource from storage.",
@@ -1836,6 +1935,67 @@
                 },
                 "type": "object"
             },
+            "Team": {
+                "title": "Team Model",
+                "description": "The model that describes the attributes for a team.",
+                "allOf": [
+                    {
+                        "properties": {
+                            "followers": {
+                                "description": "A list of users who are following the current user.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            },
+                            "name": {
+                                "description": "The name of the team.",
+                                "type": "string"
+                            },
+                            "description": {
+                                "description": "A description of the team",
+                                "type": "string"
+                            },
+                            "main_image": {
+                                "description": "The main image for the team. Is a read-only field.",
+                                "type": "string"
+                            },
+                            "banner_image": {
+                                "description": "The banner image for the team. Is a read-only field.",
+                                "type": "string"
+                            },
+                            "logo": {
+                                "description": "The logo image for the team. Is a read-only field.",
+                                "type": "string"
+                            },
+                            "contact_name": {
+                                "description": "The name of the contact person to contact about the team.",
+                                "type": "string"
+                            },
+                            "contact_email": {
+                                "description": "The contact email to send inquires too about the team.",
+                                "type": "string"
+                            },
+                            "contact_phone_number": {
+                                "description": "The phone number to call for inquires about the team.",
+                                "type": "string"
+                            },
+                            "website": {
+                                "description": "The phone number to call for inquires about the team.",
+                                "type": "string"
+                            },
+                            "join_process": {
+                                "description": "The process for another user joing a team.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    {
+                        "$ref": "#/components/schemas/BaseSocialFields"
+                    }
+                ]
+            },
             "UserFull": {
                 "title": "User Extended Model",
                 "description": "The user model with complete information",
@@ -2010,25 +2170,89 @@
                 },
                 "type": "object"
             },
-            "BaseModel": {
+            "BaseSocialFields": {
+                "title": "Basie Social Model Model",
+                "description": "The base model for social that is used on several models.",
                 "properties": {
-                    "created_at": {
-                        "description": "Initial creation timestamp",
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": "true"
+                    "twitter_page": {
+                        "title": "twitter_page",
+                        "description": "The URL to the users Twitter Page.",
+                        "type": "string"
                     },
-                    "updated_at": {
-                        "description": "Last update timestamp",
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": "true"
+                    "facebook_page": {
+                        "title": "facebook_page",
+                        "description": "The URL to the users Facebook Page.",
+                        "type": "string"
                     },
-                    "deleted_at": {
-                        "description": "Soft delete timestamp",
-                        "type": "string",
-                        "format": "date-time",
-                        "readOnly": "true"
+                    "instagram_page": {
+                        "title": "instagram_page",
+                        "description": "The URL to the users Instagram Page.",
+                        "type": "string"
+                    },
+                    "snapchat_page": {
+                        "title": "snapchat_page",
+                        "description": "The URL to the users Snapchat Page.",
+                        "type": "string"
+                    },
+                    "tiktok_page": {
+                        "title": "tiktok_page",
+                        "description": "The URL to the users Tiktok Page.",
+                        "type": "string"
+                    },
+                    "twitch_page": {
+                        "title": "twitch_page",
+                        "description": "The URL to the users Twitch Page.",
+                        "type": "string"
+                    },
+                    "youtube_page": {
+                        "title": "youtube_page",
+                        "description": "The URL to the users Youtube Page.",
+                        "type": "string"
+                    },
+                    "paetron_page": {
+                        "title": "paetron_page",
+                        "description": "The URL to the users Paetron Page.",
+                        "type": "string"
+                    },
+                    "twitter_handle": {
+                        "title": "twitter_handle",
+                        "description": "The URL to the users Twitter Handle.",
+                        "type": "string"
+                    },
+                    "facebook_handle": {
+                        "title": "facebook_handle",
+                        "description": "The URL to the users Facebook Handle.",
+                        "type": "string"
+                    },
+                    "instagram_handle": {
+                        "title": "instagram_handle",
+                        "description": "The URL to the users Instagram Handle.",
+                        "type": "string"
+                    },
+                    "snapchat_handle": {
+                        "title": "snapchat_handle",
+                        "description": "The URL to the users Snapchat Handle.",
+                        "type": "string"
+                    },
+                    "tiktok_handle": {
+                        "title": "tiktok_handle",
+                        "description": "The URL to the users Tiktok Handle.",
+                        "type": "string"
+                    },
+                    "twitch_handle": {
+                        "title": "twitch_handle",
+                        "description": "The URL to the users Twitch Handle.",
+                        "type": "string"
+                    },
+                    "youtube_handle": {
+                        "title": "youtube_handle",
+                        "description": "The URL to the users Youtube Handle.",
+                        "type": "string"
+                    },
+                    "paetron_handle": {
+                        "title": "paetron_handle",
+                        "description": "The URL to the users Paetron Handle.",
+                        "type": "string"
                     }
                 },
                 "type": "object"

@@ -21,11 +21,11 @@ class CompetitionTeamController extends Controller
       * Competition team index 
       *
       * @OA\Get(
-      *     path="competitions/{uuid}/teams",
+      *     path="/competitions/{uuid}/teams",
       *     summary="Displays a listing of the resource.",
       *     description="Displays a listing of the resource.",
       *     operationId="resourceTeamList",
-      *     tags={"compTeamController"},
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,
@@ -71,11 +71,11 @@ class CompetitionTeamController extends Controller
       * Storage of teams
       *
       * @OA\Post(
-      *     path="competitions/{uuid}/teams",
+      *     path="/competitions/{uuid}/teams",
       *     summary="Store a newly created resource in storage.",
       *     description="Store a newly created resource in storage.",
       *     operationId="resourceTeamStorage",
-      *     tags={"compTeamController"},
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,
@@ -135,11 +135,11 @@ class CompetitionTeamController extends Controller
       * Display the specified resource.
       *
       * @OA\Get(
-      *     path="competitions/{uuid}/teams/{team_id}",
+      *     path="/competitions/{uuid}/teams/{team_id}",
       *     summary="Display the specified resource.",
       *     description="Display the specified resource.",
       *     operationId="resourceTeamShow",
-      *     tags={"compTeamController"},
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,
@@ -187,11 +187,11 @@ class CompetitionTeamController extends Controller
       *  Update
       *
       * @OA\Put(
-      *     path="competitions/{uuid}/teams/{team_id}",
+      *     path="/competitions/{uuid}/teams/{team_id}",
       *     summary="Updating resource in storage.",
       *     description="Updating resource in storage with new information.",
       *     operationId="updateTeam",
-      *     tags={"compTeamController"},
+      *     tags={"Competitions Route"},
       *     security={{"bearer": {}}},
       *     @OA\Response(
       *         response=200,
@@ -261,11 +261,11 @@ class CompetitionTeamController extends Controller
       * Delete
       *
       * @OA\Delete(
-      *     path="competitions/{uuid}/teams/{team_id}",
+      *     path="/competitions/{uuid}/teams/{team_id}",
       *     summary="Removes a specific resource from storage.",
       *     description="Removes a specific resource from storage.",
       *     operationId="destoryTeam",
-      *     tags={"compTeamController"},
+      *     tags={"Competitions Route"},
       *     security={{"bearer": {}}},
       *     @OA\Response(
       *         response=200,

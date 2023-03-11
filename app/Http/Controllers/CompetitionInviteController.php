@@ -23,11 +23,11 @@ class CompetitionInviteController extends Controller
       * Invites 
       *
       * @OA\Get(
-      *     path="competitions/{uuid}/invites",
+      *     path="/competitions/{uuid}/invites",
       *     summary="Displays a listing of the resource.",
       *     description="Displays a listing of the resource.",
       *     operationId="resourceInviteList",
-      *     tags={"compInvite"},
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,
@@ -91,7 +91,7 @@ class CompetitionInviteController extends Controller
       *     summary="Store a newly created resource in storage.",
       *     description="Store a newly created resource in storage.",
       *     operationId="sendInvite",
-      *     tags={"compInvite"},
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,
@@ -200,7 +200,7 @@ class CompetitionInviteController extends Controller
       *     summary="Invite was accepted.",
       *     description="Invite was accepted.",
       *     operationId="acceptInvite",
-      *     tags={"compInvite"},
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,

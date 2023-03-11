@@ -22,11 +22,11 @@ class CompetitionRoundBracketController extends Controller
       * Competition round bracket index 
       *
       * @OA\Get(
-      *     path="competitions/{uuid}/rounds/{round_id}/brackets",
+      *     path="/competitions/{uuid}/rounds/{round_id}/brackets",
       *     summary="Displays a listing of the resource.",
       *     description="Displays a listing of the resource.",
-      *     operationId="resourceRoundBracketList",
-      *     tags={"compRoundBracket"},
+      *     operationId="resourceRoundBracketList1",
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,
@@ -79,11 +79,11 @@ class CompetitionRoundBracketController extends Controller
       * Storage of competitions
       *
       * @OA\Post(
-      *     path="competitions/{uuid}/rounds/{round_id}/brackets",
+      *     path="/competitions/{uuid}/rounds/{round_id}/brackets",
       *     summary="Store a newly created resource in storage.",
       *     description="Store a newly created resource in storage.",
       *     operationId="resourceRoundBracketStorage",
-      *     tags={"compRoundBracket"},
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,
@@ -151,11 +151,11 @@ class CompetitionRoundBracketController extends Controller
       * Show round brackets
       *
       * @OA\Get(
-      *     path="competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}",
+      *     path="/competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}",
       *     summary="Display the specific resource.",
       *     description="Display the specific resource.",
       *     operationId="resourceRoundBracketShow",
-      *     tags={"compRoundBracket"},
+      *     tags={"Competitions Route"},
       *     security={ {"bearer": {} }},
       *     @OA\Response(
       *         response=200,
@@ -215,11 +215,11 @@ class CompetitionRoundBracketController extends Controller
       *  Update
       *
       * @OA\Put(
-      *     path="competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id",
+      *     path="/competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}",
       *     summary="Updating resource in storage.",
       *     description="Updating resource in storage with new information.",
       *     operationId="updateRoundBracket",
-      *     tags={"compRoundBracket"},
+      *     tags={"Competitions Route"},
       *     security={{"bearer": {}}},
       *     @OA\Response(
       *         response=200,
@@ -300,11 +300,11 @@ class CompetitionRoundBracketController extends Controller
       * Delete
       *
       * @OA\Delete(
-      *     path="competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}",
+      *     path="/competitions/{uuid}/rounds/{round_id}/brackets/{bracket_id}",
       *     summary="Removes a specific resource from storage.",
       *     description="Removes a specific resource from storage.",
       *     operationId="destoryRoundBracket",
-      *     tags={"compRoundBracket"},
+      *     tags={"Competitions Route"},
       *     security={{"bearer": {}}},
       *     @OA\Response(
       *         response=200,
