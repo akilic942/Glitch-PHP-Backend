@@ -122,7 +122,6 @@ class CompetitionController extends Controller
      */
 
     /**
-     * Show 
      * 
      * @OA\Get(
      *     path="/competitions/{uuid}",
@@ -134,7 +133,7 @@ class CompetitionController extends Controller
      *     @OA\Parameter(
      *         name="uuid",
      *         in="path",
-     *         description="UUID of the competition to retrieve",
+     *         description="UUID of the competition",
      *         required=true,
      *         @OA\Schema(
      *             type="string",
@@ -172,8 +171,6 @@ class CompetitionController extends Controller
      */
 
     /**
-     *  Update
-     *
      * @OA\Put(
      *     path="/competitions/{uuid}",
      *     summary="Updating resource in storage.",
@@ -184,12 +181,16 @@ class CompetitionController extends Controller
      *      @OA\Parameter(
      *         name="uuid",
      *         in="path",
-     *         description="UUID of the competition to retrieve",
+     *         description="UUID of the competition",
      *         required=true,
      *         @OA\Schema(
      *             type="string",
      *             format="uuid"
      *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/Competition")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -198,7 +199,7 @@ class CompetitionController extends Controller
      *     ),
      *     @OA\Response(
      *      response=403,
-     *      description="Access denied to live stream.",
+     *      description="Access denied to competition.",
      *      @OA\JsonContent(
      *          @OA\Property(property="message", type="Access denined to live stream.")
      *       )
@@ -215,7 +216,7 @@ class CompetitionController extends Controller
         }
 
         if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.', 'message' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to competition.', 'message' => 'Access denied to competition.'], 403);
         }
 
         $input = $request->all();
@@ -253,7 +254,7 @@ class CompetitionController extends Controller
      *      @OA\Parameter(
      *         name="uuid",
      *         in="path",
-     *         description="UUID of the competition to retrieve",
+     *         description="UUID of the competition",
      *         required=true,
      *         @OA\Schema(
      *             type="string",
@@ -266,9 +267,9 @@ class CompetitionController extends Controller
      *     ),
      *     @OA\Response(
      *      response=403,
-     *      description="Access denied to live stream.",
+     *      description="Access denied to competition.",
      *      @OA\JsonContent(
-     *         @OA\Property(property="message", type="Access denied to live stream.")
+     *         @OA\Property(property="message", type="Access denied to competition.")
      *        )
      *      ) 
      * )
@@ -279,7 +280,7 @@ class CompetitionController extends Controller
         $competition = Competition::where('id', $id)->first();
 
         if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $competition->delete();
@@ -307,12 +308,26 @@ class CompetitionController extends Controller
      *      @OA\Parameter(
      *         name="uuid",
      *         in="path",
-     *         description="UUID of the competition to retrieve",
+     *         description="UUID of the competition",
      *         required=true,
      *         @OA\Schema(
      *             type="string",
      *             format="uuid"
      *         )
+     *     ),
+     *     @OA\RequestBody(
+     *      required=true,
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              @OA\Property(
+     *                  property="team_id",
+     *                  type="string",
+     *                  format="uuid",
+     *                  description="The id of the team to add to the competition."
+     *              ),
+     *          )
+     *      )
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -339,7 +354,7 @@ class CompetitionController extends Controller
         }
 
         if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $input = $request->all();
@@ -383,12 +398,26 @@ class CompetitionController extends Controller
      *      @OA\Parameter(
      *         name="uuid",
      *         in="path",
-     *         description="UUID of the competition to retrieve",
+     *         description="UUID of the competition",
      *         required=true,
      *         @OA\Schema(
      *             type="string",
      *             format="uuid"
      *         )
+     *     ),
+     *     @OA\RequestBody(
+     *      required=true,
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              @OA\Property(
+     *                  property="user_id",
+     *                  type="string",
+     *                  format="uuid",
+     *                  description="The id of the user to add as a participant"
+     *              ),
+     *          )
+     *      )
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -417,7 +446,7 @@ class CompetitionController extends Controller
         }
 
         if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $input = $request->all();
@@ -470,6 +499,20 @@ class CompetitionController extends Controller
      *             type="string",
      *             format="uuid"
      *         )
+     *     ),
+     *     @OA\RequestBody(
+     *      required=true,
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              @OA\Property(
+     *                  property="team_id",
+     *                  type="string",
+     *                  format="uuid",
+     *                  description="The id of the team to add to register."
+     *              ),
+     *          )
+     *      )
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -532,15 +575,15 @@ class CompetitionController extends Controller
      * 
      * @OA\Post(
      *     path="/competitions/{uuid}/registerUser",
-     *     summary="Registers a participant in storage.",
-     *     description="Registers a participant to a team.",
+     *     summary="Registers a participant for the competition. Use the current auth token when registering.",
+     *     description="Registers a particpant for the competition. Uses the current auth token when registering.",
      *     operationId="registerParticipant",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
      *     @OA\Parameter(
      *         name="uuid",
      *         in="path",
-     *         description="UUID of the competition to retrieve",
+     *         description="UUID of the competition",
      *         required=true,
      *         @OA\Schema(
      *             type="string",
@@ -601,6 +644,33 @@ class CompetitionController extends Controller
      *     operationId="syncRounds",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              @OA\Property(
+     *                  property="number_of_competitors",
+     *                  type="integer",
+     *                  description="Optional to pass the number of competitors. Default will be the number of competitors that have registered."
+     *              ),
+     *              @OA\Property(
+     *                  property="competitors_per_bracket",
+     *                  type="integer",
+     *                  description="Optional to pass the competitors per bracket. Default will be the set competitors per match."
+     *              ),
+     *          )
+     *      )
+     * ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -608,11 +678,19 @@ class CompetitionController extends Controller
      *             ref="#/components/schemas/Competition"
      *         )
      *     ),
+     * 
+     *     @OA\Response(
+     *      response=401,
+     *      description="Cannot sync these rounds",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *              )
+     *      ),
      *     @OA\Response(
      *      response=403,
      *      description="Cannot sync these rounds",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="Cannot sync these rounds.")
+     *              @OA\Property(property="message", type="Access denied to competiton.")
      *              )
      *      ) 
      * )
@@ -628,7 +706,7 @@ class CompetitionController extends Controller
         }
 
         if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to competiton.'], 403);
         }
 
         $input = $request->all();
@@ -674,6 +752,25 @@ class CompetitionController extends Controller
      *     operationId="autoGenerateTeamBrackets",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="round",
+     *         in="path",
+     *         description="The round to update.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -682,12 +779,27 @@ class CompetitionController extends Controller
      *         )
      *     ),
      *     @OA\Response(
-     *      response=403,
-     *      description="Cannot generate team brackets",
+     *      response=401,
+     *      description="The competition does not exist.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="Cannot generate team brackets.")
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *              )
+     *      ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to competition.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to competition.")
+     *              )
+     *      ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The round is required.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="The round is required.")
      *              )
      *      ) 
+     *     )
      * )
      *     
      */
@@ -701,7 +813,7 @@ class CompetitionController extends Controller
         }
 
         if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $input = $request->all();
@@ -736,24 +848,48 @@ class CompetitionController extends Controller
      * Auto generate user brackets
      * 
      * @OA\Get(
-     *     path="/autoGenerateUserBrackets",
+     *     path="/competitions/{uuid}/autoGenerateUserBrackets",
      *     summary="Generates user brackets.",
      *     description="Generates user brackets.",
      *     operationId="autoGenerateUserBrackets",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
      *     @OA\JsonContent(
-     *             ref="#/components/schemas/Competition"
+     *             ref="#/components/schemas/CompetitionFull"
      *         )
      *     ),
      *     @OA\Response(
-     *      response=403,
-     *      description="Cannot generate brackets for this user",
+     *      response=401,
+     *      description="The competition does not exist.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="Cannot generate brackets for this user.")
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *              )
+     *      ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to competition.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to competition.")
+     *              )
+     *      ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The round is required.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="The round is required.")
      *              )
      *      ) 
      * )
@@ -769,7 +905,7 @@ class CompetitionController extends Controller
         }
 
         if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $input = $request->all();
@@ -790,7 +926,7 @@ class CompetitionController extends Controller
 
         CompetitionFacade::autoAssignCompetitorsUsers($competition, $round, $competitors_per_bracket);
 
-        return new CompetitionResource($competition);
+        return new CompetitionFullResource($competition);
     }
 
     /**
@@ -810,18 +946,50 @@ class CompetitionController extends Controller
      *     operationId="uploadMainImage",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Image file to upload",
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="image",
+     *                      description="Image file to upload",
+     *                      type="string",
+     *                      format="binary"
+     *                  )
+     *              )
+     *          )
+     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
      *     @OA\JsonContent(
-     *             ref="#/components/schemas/Competition"
+     *             ref="#/components/schemas/CompetitionFull"
      *         )
      *     ),
      *     @OA\Response(
-     *      response=400,
-     *      description="File was not uploaded",
+     *      response=401,
+     *      description="The competition does not exist.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="File was not uploaded.")
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *              )
+     *      ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to competition.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to competition.")
      *              )
      *      ) 
      * )
@@ -881,18 +1049,50 @@ class CompetitionController extends Controller
      *     operationId="uploadBannerImage",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Image file to upload",
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="image",
+     *                      description="Image file to upload",
+     *                      type="string",
+     *                      format="binary"
+     *                  )
+     *              )
+     *          )
+     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
      *     @OA\JsonContent(
-     *             ref="#/components/schemas/Competition"
+     *             ref="#/components/schemas/CompetitionFull"
      *         )
      *     ),
      *     @OA\Response(
-     *      response=400,
-     *      description="File was not uploaded",
+     *      response=401,
+     *      description="The competition does not exist.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="File was not uploaded.")
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *              )
+     *      ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to competition.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to competition.")
      *              )
      *      ) 
      * )

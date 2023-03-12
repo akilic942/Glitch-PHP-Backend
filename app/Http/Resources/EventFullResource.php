@@ -16,6 +16,50 @@ class EventFullResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+    /**
+     * @OA\Schema(
+     *     schema="EventFull",
+     *     title="Event Extended Model",
+     *     description="The event model.",
+     *     allOf={
+     *         @OA\Schema(ref="#/components/schemas/Competition"),
+     *         @OA\Schema(
+     *            @OA\Property(
+     *              property="admins",
+     *              description="Users that are admins to the event.",
+     *              @OA\Items(ref="#/components/schemas/User"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
+     *              property="moderators",
+     *              description="Users who are moderators to the event.",
+     *              @OA\Items(ref="#/components/schemas/User"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
+     *              property="speakers",
+     *              description="Users who are co-host to the event.",
+     *              @OA\Items(ref="#/components/schemas/User"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
+     *              property="events",
+     *              description="A list of events the user is associated with.",
+     *              @OA\Items(ref="#/components/schemas/EventOverlay"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
+     *              property="overlays",
+     *              description="A list of competitions the user is associated with.",
+     *              @OA\Items(ref="#/components/schemas/Competition"),
+     *              type="array"
+     *          ),
+     *             
+     *        ),
+     *     },
+     * )
+     */
     public function toArray($request)
     {
         $data = [

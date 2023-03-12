@@ -13,6 +13,51 @@ class CompetitionFullResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+    /**
+     * Class CompetitionFullResource
+     *
+     * @OA\Schema(
+     *     schema="CompetitionFull",
+     *     title="Competition Extended Model",
+     *     description="The competition model with complete information.",
+     *     allOf={
+     *         @OA\Schema(ref="#/components/schemas/Competition"),
+     *         @OA\Schema(
+     *            @OA\Property(
+     *              property="admins",
+     *              description="A list of users who are following the current user.",
+     *              @OA\Items(ref="#/components/schemas/User"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
+     *              property="contestants",
+     *              description="A list of users who the current user is following.",
+     *              @OA\Items(ref="#/components/schemas/User"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
+     *              property="venues",
+     *              description="A list of venues associated with the competition.",
+     *              @OA\Items(ref="#/components/schemas/Event"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
+     *              property="rounds",
+     *              description="A list of rounds associated witht he competition.",
+     *              @OA\Items(ref="#/components/schemas/CompetitionRound"),
+     *              type="array"
+     *          ),
+     *             
+     *        ),
+     *     },
+     * 
+     * )
+     * 
+     * 
+     *
+     * 
+     */
     public function toArray($request)
     {
         $data = [

@@ -59,22 +59,26 @@ class TeamResource extends JsonResource
         *          @OA\Property(
         *              property="contact_name",
         *              description="The name of the contact person to contact about the team.",
-        *              type="string"
+        *              type="string",
+        *              maxLength=255,
         *          ),
         *          @OA\Property(
         *              property="contact_email",
         *              description="The contact email to send inquires too about the team.",
-        *              type="string"
+        *              type="string",
+        *              maxLength=255,
         *          ),
         *          @OA\Property(
         *              property="contact_phone_number",
         *              description="The phone number to call for inquires about the team.",
-        *              type="string"
+        *              type="string",
+        *              maxLength=255,
         *          ),
         *          @OA\Property(
         *              property="website",
         *              description="The phone number to call for inquires about the team.",
-        *              type="string"
+        *              type="string",
+        *              maxLength=255,
         *          ),
         *          @OA\Property(
         *              property="join_process",

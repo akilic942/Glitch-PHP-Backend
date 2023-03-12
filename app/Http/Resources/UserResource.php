@@ -24,68 +24,59 @@ class UserResource extends JsonResource
      *     @OA\Property(
      *          property="first_name",
      *          description="The users first name",
-     *          title="first_name",
      *          type="string"
      *     ),
      *     @OA\Property(
      *          property="last_name",
      *          description="The users last name",
-     *          title="last_name",
      *          type="string"
      *     ),
      *      @OA\Property(
      *          property="username",
      *          description="The username associated with the user",
-     *          title="username",
      *          type="string"
      *     ),
      *      @OA\Property(
      *          property="display_name",
      *          description="The name to show to others for the users",
-     *          title="username",
      *          type="string"
      *     ),
      *     @OA\Property(
      *          property="bio",
      *          description="Text information about the user.",
-     *          title="bio",
      *          type="string"
      *     ),
      *      @OA\Property(
      *          property="avatar",
      *          description="The users avatar image. This property is read-only and the avatar must be updated via image route.",
-     *          title="avatar",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true
      *     ),
      *      @OA\Property(
      *          property="banner_image",
      *          description="The users banner image. This property is read-only and must be updated via the image route.",
-     *          title="banner_image",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true
      *     ),
      * 
      *      @OA\Property(
      *          property="twitter_page",
      *          description="The URL to the users Twitter Page.",
-     *          title="twitter_page",
      *          type="string"
      *     ),
      *      @OA\Property(
      *          property="facebook_page",
      *          description="The URL to the users Facebook Page.",
-     *          title="facebook_page",
      *          type="string"
      *     ),
      *      @OA\Property(
      *          property="instagram_page",
      *          description="The URL to the users Instagram Page.",
-     *          title="instagram_page",
      *          type="string"
      *     ),
      *      @OA\Property(
      *          property="snapchat_page",
      *          description="The URL to the users Snapchat Page.",
-     *          title="snapchat_page",
      *          type="string"
      *     ),
      *      @OA\Property(
@@ -141,39 +132,35 @@ class UserResource extends JsonResource
      *      @OA\Property(
      *          property="tiktok_handle",
      *          description="The URL to the users Tiktok Handle.",
-     *          title="tiktok_handle",
      *          type="string"
      *     ),
      *      @OA\Property(
      *          property="twitch_handle",
      *          description="The URL to the users Twitch Handle.",
-     *          title="twitch_handle",
      *          type="string"
      *     ),
      *      @OA\Property(
      *          property="youtube_handle",
      *          description="The URL to the users Youtube Handle.",
-     *          title="youtube_handle",
      *          type="string"
      *     ),
      *      @OA\Property(
      *          property="paetron_handle",
      *          description="The URL to the users Paetron Handle.",
-     *          title="paetron_handle",
      *          type="string"
      *     ),
      * 
      *      @OA\Property(
      *          property="created_at",
      *          description="The date the user account was created.",
-     *          title="created_at",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true
      *     ),
      *     @OA\Property(
      *          property="updated_at",
      *          description="The date the user account was last updated.",
-     *          title="updated_at",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true
      *     ),
      * 
      * 

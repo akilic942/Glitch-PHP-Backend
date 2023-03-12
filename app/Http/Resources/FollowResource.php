@@ -14,8 +14,6 @@ class FollowResource extends JsonResource
      */
 
     /**
-     * Class Event.
-     *
      * @OA\Schema(
      *     schema="Follow",
      *     title="Followers Relationship Model",
@@ -45,10 +43,6 @@ class FollowResource extends JsonResource
      *     ),
      * 
      * )
-     * 
-     * 
-     *
-     * 
      */
     public function toArray($request)
     {

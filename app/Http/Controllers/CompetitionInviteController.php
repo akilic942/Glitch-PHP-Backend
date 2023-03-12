@@ -19,46 +19,63 @@ class CompetitionInviteController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      * Invites 
-      *
-      * @OA\Get(
-      *     path="/competitions/{uuid}/invites",
-      *     summary="Displays a listing of the resource.",
-      *     description="Displays a listing of the resource.",
-      *     operationId="resourceInviteList",
-      *     tags={"Competitions Route"},
-      *     security={ {"bearer": {} }},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *         @OA\JsonContent(
-      *         @OA\Property(
-      *            ref="app/Http/Resources/CompetitionInviteResource"
-      *                 ),
-      *             )
-      *     ),
-      *     @OA\Response(
-      *         response=403,
-      *         description="No invites listed",
-      *         @OA\JsonContent(
-      *              @OA\Property(property="message", type="Cannot invite this user.")
-      *              )
-      *          )
-      * )
-      *     
-      */
+    /**
+     * Invites 
+     *
+     * @OA\Get(
+     *     path="/competitions/{uuid}/invites",
+     *     summary="Display a list of invites.",
+     *     description="Display a list of invites.",
+     *     operationId="resourceInviteList",
+     *     tags={"Competitions Route"},
+     *     security={ {"bearer": {} }},
+     *   @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *         @OA\Property(
+     *            ref="#/components/schemas/CompetitionInvite"
+     *                 ),
+     *             )
+     *     ),
+     *      @OA\Response(
+     *         response=401,
+     *         description="The competition does not exist.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Accessed denied to listing invites.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Accessed denied to listing invites.")
+     *         )
+     *     )
+     * )
+     *     
+     */
     public function index(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
-           return response()->json(['error' => 'Cannot invite user to the stream.', 'message' => 'Cannot invite user to the stream.'], 403);
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
+            return response()->json(['error' => 'Accessed denied to listing invites.', 'message' => 'Accessed denied to listing invites.'], 403);
         }
 
         $invites = CompetitionInvite::where('competition_id', $id)->get();
@@ -66,15 +83,6 @@ class CompetitionInviteController extends Controller
         return CompetitionInviteResource::collection($invites);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -83,46 +91,65 @@ class CompetitionInviteController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      * SendInvite 
-      *
-      * @OA\Post(
-      *     path="/index",
-      *     summary="Store a newly created resource in storage.",
-      *     description="Store a newly created resource in storage.",
-      *     operationId="sendInvite",
-      *     tags={"Competitions Route"},
-      *     security={ {"bearer": {} }},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *         @OA\JsonContent(
-      *         @OA\Property(
-      *            ref="app/Http/Resources/CompetitionInviteResource"
-      *                 ),
-      *             )
-      *     ),
-      *     @OA\Response(
-      *         response=403,
-      *         description="No invites listed",
-      *         @OA\JsonContent(
-      *              @OA\Property(property="message", type="Cannot send invite to user.")
-      *              )
-      *          )
-      * )
-      *     
-      */
+    /**
+     * @OA\Post(
+     *     path="/competitions/{uuid}/sendInvite",
+     *     summary="Send an invite to a user.",
+     *     description="Send an invite to a user.",
+     *     operationId="sendInvite",
+     *     tags={"Competitions Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/CompetitionInvite")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             
+     *            ref="#/components/schemas/CompetitionInvite"
+     *               
+     *             )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="The competition does not exist.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="No invites listed",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Cannot send invite to user.")
+     *              )
+     *          )
+     * )
+     *     
+     */
     public function store(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
-           return response()->json(['error' => 'Cannot invite user to the stream.', 'message' => 'Cannot invite user to the stream.'], 403);
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
+            return response()->json(['error' => 'Cannot invite user to the stream.', 'message' => 'Cannot invite user to the stream.'], 403);
         }
 
         $input = $request->all();
@@ -140,7 +167,7 @@ class CompetitionInviteController extends Controller
 
         $invite = CompetitionInvite::create($input);
 
-        if($invite) {
+        if ($invite) {
             CompetitionInvitesFacade::sendInvite($invite);
         }
 
@@ -148,112 +175,90 @@ class CompetitionInviteController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Accept invite 
      *
-     * @param  \App\Models\CompetitionInvite  $competitionInvite
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/acceptInvite",
+     *     summary="Use this endpoint to accept the invite. Requires the users auth token to validate.",
+     *     description="Use this endpoint to accept the invite. Requires the users auth token to validate.",
+     *     operationId="acceptInvite",
+     *     tags={"Competitions Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/CompetitionInvite")
+     *     ),
+     *     @OA\RequestBody(
+     *      required=true,
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              @OA\Property(
+     *                  property="token",
+     *                  type="string",
+     *                  description="The token that was created with the invite."
+     *              ),
+     *          )
+     *      )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="The competition does not exist.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="No invites listed",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Invite is not associated with the current user.")
+     *              )
+     *      ),
+     *      @OA\Response(
+     *         response=405,
+     *         description="No invites listed",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Invite does not belong to this competition.")
+     *              )
+     *      ),
+     * )
+     *     
      */
-    public function show(CompetitionInvite $competitionInvite)
+    public function acceptInvite(Request $request, $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CompetitionInvite  $competitionInvite
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CompetitionInvite $competitionInvite)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CompetitionInvite  $competitionInvite
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, CompetitionInvite $competitionInvite)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\CompetitionInvite  $competitionInvite
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(CompetitionInvite $competitionInvite)
-    {
-        //
-    }
-
-    /**
-      * Accept invite 
-      *
-      * @OA\Post(
-      *     path="/acceptInvite",
-      *     summary="Invite was accepted.",
-      *     description="Invite was accepted.",
-      *     operationId="acceptInvite",
-      *     tags={"Competitions Route"},
-      *     security={ {"bearer": {} }},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *         @OA\JsonContent(
-      *         @OA\Property(
-      *            ref="app/Http/Resources/CompetitionInviteResource"
-      *                 ),
-      *             )
-      *     ),
-      *     @OA\Response(
-      *         response=403,
-      *         description="No invites listed",
-      *         @OA\JsonContent(
-      *              @OA\Property(property="message", type="Invite is not associated with the current user.")
-      *              )
-      *          )
-      * )
-      *     
-      */
-    public function acceptInvite(Request $request, $id){
 
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.', 'message' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
 
         $input = $request->all();
 
-        if(!isset($input['token']) || (isset($input['token']) || !$input['token'])){
+        if (!isset($input['token']) || (isset($input['token']) || !$input['token'])) {
             return response()->json(['message' => 'Invites require the token to accept.'], HttpStatusCodes::HTTP_NO_CONTENT);
         }
 
         $invite = CompetitionInvite::where('token', $input['token'])->first();
 
-        if(!$invite) {
+        if (!$invite) {
             return response()->json(['Invite not found.'], HttpStatusCodes::HTTP_NOT_FOUND);
         }
 
-        if($competition->id != $invite->competition_id) {
+        if ($competition->id != $invite->competition_id) {
             return response()->json(['error' => 'Invite does not belong to this competition', 'message' => 'Invite does not belong to this event'], HttpStatusCodes::HTTP_FORBIDDEN);
         }
 
         $invite = CompetitionInvitesFacade::acceptInvite($invite, $request->user());
 
-        if($invite->user_id != $request->user()->id) {
+        if ($invite->user_id != $request->user()->id) {
             return response()->json(['message' => 'Invite is not associated with the current user.'], HttpStatusCodes::HTTP_FORBIDDEN);
-        } 
-  
+        }
+
 
         return new CompetitionInviteResource($invite);
-
     }
 }

@@ -21,15 +21,27 @@ class CompetitionResource extends JsonResource
      *     schema="Competition",
      *     title="Competition Model",
      *     description="The model that describes a competition",
+     *     required={"name", "description"},
+     * 
+     *     allOf={
+     *         
+     *         @OA\Schema(
      *     @OA\Property(
      *          property="id",
      *          description="The id of the competition.",
-     *          type="uuid"
+     *          type="string",
+     *          format="uuid"
      *     ),
      *     @OA\Property(
      *          property="name",
      *          description="The name of the competiton.",
-     *          type="string"
+     *          type="string",
+     *          maxLength=255
+     *     ),
+     *     @OA\Property(
+     *          property="description",
+     *          description="A description of competition.",
+     *          type="string",
      *     ),
      *    @OA\Property(
      *          property="start_date", 
@@ -43,16 +55,62 @@ class CompetitionResource extends JsonResource
      *           format="date-time",
      *           description="The end date of the competition.",
      *       ),
-     *     @OA\Property(
-     *            property="status", 
-     *            type="string", 
-     *            enum={"open", "closed"},
-     *            description="If the competition.",
+     * 
+     *      @OA\Property(
+     *          property="registration_start_date", 
+     *          type="string", 
+     *          format="date-time",
+     *          description="The registration start date of the competition.",
      *      ),
      *     @OA\Property(
-     *            property="image_url", 
+     *           property="registration_end_date", 
+     *           type="string", 
+     *           format="date-time",
+     *           description="The registration end date of the competition.",
+     *       ),
+     *     @OA\Property(
+     *            property="type", 
+     *            type="integer", 
+     *            enum={"1", "2", "3", "4", "5", "6", "7", "8", "9"},
+     *            description="The type of competition.",
+     *      ),
+     *          @OA\Property(
+     *              property="contact_name",
+     *              description="The name of the contact person to contact about the team.",
+     *              type="string",
+     *              maxLength=255,
+     *          ),
+     *          @OA\Property(
+     *              property="contact_email",
+     *              description="The contact email to send inquires too about the team.",
+     *              type="string",
+     *              maxLength=255,
+     *          ),
+     *          @OA\Property(
+     *              property="contact_phone_number",
+     *              description="The phone number to call for inquires about the team.",
+     *              type="string",
+     *              maxLength=255,
+     *          ),
+     *          @OA\Property(
+     *              property="website",
+     *              description="The phone number to call for inquires about the team.",
+     *              type="string",
+     *              maxLength=255,
+     *          ),
+     *      @OA\Property(
+     *            property="main_image", 
      *            type="string",
      *            description="Read only file of the main image of the competition.",
+     *            readOnly=true,
+     *            maxLength=255
+     *      ),
+     *      @OA\Property(
+     *            property="bannner_image", 
+     *            type="string",
+     *            description="Read only file of the banner image of the competition.",
+     *            readOnly=true,
+     *            maxLength=255
      *      ),
      *    
      *     
@@ -80,28 +138,28 @@ class CompetitionResource extends JsonResource
      * 
      *      @OA\Property(
      *          property="competitors_per_match", 
-     *          type="interger",
+     *          type="integer",
      *          description="The number of competitors to have in a single match. This value is used when matches are auto generated.",
      *     ),
      *      @OA\Property(
      *          property="winners_per_match", 
-     *          type="interger",
+     *          type="integer",
      *          description="The number winners to allow per match when there is more than 2 competitors.",
      *     ),
      * 
      *      @OA\Property(
      *          property="max_registration_for_teams", 
-     *          type="interger",
+     *          type="integer",
      *          description="The maximum number of teams that will be allowed to sign-up for the compeititon. Optional field, leave null or 0 for infinite.",
      *     ),
      *      @OA\Property(
      *          property="max_registration_for_users", 
-     *          type="interger",
+     *          type="integer",
      *          description="The maximum number of individual users that will be allowed to sign-up for the compeititon. Optional field, leave null or 0 for infinite.",
      *     ),
      *       @OA\Property(
      *          property="minimum_team_size", 
-     *          type="interger",
+     *          type="integer",
      *          description="The minimum amount of people required to be on a team to allow sign-up.",
      *      ),
      * 
@@ -145,7 +203,9 @@ class CompetitionResource extends JsonResource
      *       @OA\Property(
      *          property="currency", 
      *          type="string",
+     *          example="USD",
      *          description="The currecny for the tournmanet.",
+     *          maxLength=5
      *      ),
      * 
      *      @OA\Property(
@@ -194,6 +254,9 @@ class CompetitionResource extends JsonResource
      *          type="string",
      *          description="Set a safety policy for the competition.",
      *      ),
+     *    ),
+     *    @OA\Schema(ref="#/components/schemas/BaseSocialFields"),
+     *  },
      * )
      */
     public function toArray($request)

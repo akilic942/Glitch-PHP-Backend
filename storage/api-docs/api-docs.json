@@ -258,7 +258,7 @@
                     {
                         "name": "uuid",
                         "in": "path",
-                        "description": "UUID of the competition to retrieve",
+                        "description": "UUID of the competition",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -295,7 +295,7 @@
                     {
                         "name": "uuid",
                         "in": "path",
-                        "description": "UUID of the competition to retrieve",
+                        "description": "UUID of the competition",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -303,6 +303,16 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Competition"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -315,7 +325,7 @@
                         }
                     },
                     "403": {
-                        "description": "Access denied to live stream.",
+                        "description": "Access denied to competition.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -347,7 +357,7 @@
                     {
                         "name": "uuid",
                         "in": "path",
-                        "description": "UUID of the competition to retrieve",
+                        "description": "UUID of the competition",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -360,13 +370,13 @@
                         "description": "Competition successfully deleted"
                     },
                     "403": {
-                        "description": "Access denied to live stream.",
+                        "description": "Access denied to competition.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Access denied to live stream."
+                                            "type": "Access denied to competition."
                                         }
                                     },
                                     "type": "object"
@@ -394,7 +404,7 @@
                     {
                         "name": "uuid",
                         "in": "path",
-                        "description": "UUID of the competition to retrieve",
+                        "description": "UUID of the competition",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -402,6 +412,23 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "team_id": {
+                                        "description": "The id of the team to add to the competition.",
+                                        "type": "string",
+                                        "format": "uuid"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -448,7 +475,7 @@
                     {
                         "name": "uuid",
                         "in": "path",
-                        "description": "UUID of the competition to retrieve",
+                        "description": "UUID of the competition",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -456,6 +483,23 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "description": "The id of the user to add as a participant",
+                                        "type": "string",
+                                        "format": "uuid"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -510,6 +554,23 @@
                         }
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "team_id": {
+                                        "description": "The id of the team to add to register.",
+                                        "type": "string",
+                                        "format": "uuid"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -549,14 +610,14 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Registers a participant in storage.",
-                "description": "Registers a participant to a team.",
+                "summary": "Registers a participant for the competition. Use the current auth token when registering.",
+                "description": "Registers a particpant for the competition. Uses the current auth token when registering.",
                 "operationId": "registerParticipant",
                 "parameters": [
                     {
                         "name": "uuid",
                         "in": "path",
-                        "description": "UUID of the competition to retrieve",
+                        "description": "UUID of the competition",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -606,6 +667,37 @@
                 "summary": "Syncs rounds for competitions.",
                 "description": "Syncs rounds for competitions.",
                 "operationId": "syncRounds",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "number_of_competitors": {
+                                        "description": "Optional to pass the number of competitors. Default will be the number of competitors that have registered.",
+                                        "type": "integer"
+                                    },
+                                    "competitors_per_bracket": {
+                                        "description": "Optional to pass the competitors per bracket. Default will be the set competitors per match.",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -617,6 +709,21 @@
                             }
                         }
                     },
+                    "401": {
+                        "description": "Cannot sync these rounds",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The competition does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
                     "403": {
                         "description": "Cannot sync these rounds",
                         "content": {
@@ -624,7 +731,7 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Cannot sync these rounds."
+                                            "type": "Access denied to competiton."
                                         }
                                     },
                                     "type": "object"
@@ -693,6 +800,27 @@
                 "summary": "Generates team brackets.",
                 "description": "Generates team brackets.",
                 "operationId": "autoGenerateTeamBrackets",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "round",
+                        "in": "path",
+                        "description": "The round to update.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -704,14 +832,44 @@
                             }
                         }
                     },
-                    "403": {
-                        "description": "Cannot generate team brackets",
+                    "401": {
+                        "description": "The competition does not exist.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Cannot generate team brackets."
+                                            "type": "The competition does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to competition.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to competition."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The round is required.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The round is required."
                                         }
                                     },
                                     "type": "object"
@@ -727,7 +885,7 @@
                 ]
             }
         },
-        "/autoGenerateUserBrackets": {
+        "/competitions/{uuid}/autoGenerateUserBrackets": {
             "get": {
                 "tags": [
                     "Competitions Route"
@@ -735,25 +893,67 @@
                 "summary": "Generates user brackets.",
                 "description": "Generates user brackets.",
                 "operationId": "autoGenerateUserBrackets",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Competition"
+                                    "$ref": "#/components/schemas/CompetitionFull"
                                 }
                             }
                         }
                     },
-                    "403": {
-                        "description": "Cannot generate brackets for this user",
+                    "401": {
+                        "description": "The competition does not exist.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Cannot generate brackets for this user."
+                                            "type": "The competition does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to competition.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to competition."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The round is required.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The round is required."
                                         }
                                     },
                                     "type": "object"
@@ -777,25 +977,70 @@
                 "summary": "Upload main image to storage.",
                 "description": "Upload main image to storage.",
                 "operationId": "uploadMainImage",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Image file to upload",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "Image file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Competition"
+                                    "$ref": "#/components/schemas/CompetitionFull"
                                 }
                             }
                         }
                     },
-                    "400": {
-                        "description": "File was not uploaded",
+                    "401": {
+                        "description": "The competition does not exist.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "File was not uploaded."
+                                            "type": "The competition does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to competition.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to competition."
                                         }
                                     },
                                     "type": "object"
@@ -819,25 +1064,70 @@
                 "summary": "Upload banner image to storage.",
                 "description": "Upload banner image to storage.",
                 "operationId": "uploadBannerImage",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Image file to upload",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "Image file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Competition"
+                                    "$ref": "#/components/schemas/CompetitionFull"
                                 }
                             }
                         }
                     },
-                    "400": {
-                        "description": "File was not uploaded",
+                    "401": {
+                        "description": "The competition does not exist.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "File was not uploaded."
+                                            "type": "The competition does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to competition.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to competition."
                                         }
                                     },
                                     "type": "object"
@@ -858,9 +1148,21 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Displays a listing of the resource.",
-                "description": "Displays a listing of the resource.",
+                "summary": "Display a list of invites.",
+                "description": "Display a list of invites.",
                 "operationId": "resourceInviteList",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -869,7 +1171,22 @@
                                 "schema": {
                                     "properties": {
                                         "": {
-                                            "$ref": "app/Http/Resources/CompetitionInviteResource"
+                                            "$ref": "#/components/schemas/CompetitionInvite"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The competition does not exist."
                                         }
                                     },
                                     "type": "object"
@@ -878,13 +1195,13 @@
                         }
                     },
                     "403": {
-                        "description": "No invites listed",
+                        "description": "Accessed denied to listing invites.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Cannot invite this user."
+                                            "type": "Accessed denied to listing invites."
                                         }
                                     },
                                     "type": "object"
@@ -900,23 +1217,55 @@
                 ]
             }
         },
-        "/index": {
+        "/competitions/{uuid}/sendInvite": {
             "post": {
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Store a newly created resource in storage.",
-                "description": "Store a newly created resource in storage.",
+                "summary": "Send an invite to a user.",
+                "description": "Send an invite to a user.",
                 "operationId": "sendInvite",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompetitionInvite"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
+                                    "$ref": "#/components/schemas/CompetitionInvite"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
                                     "properties": {
-                                        "": {
-                                            "$ref": "app/Http/Resources/CompetitionInviteResource"
+                                        "message": {
+                                            "type": "The competition does not exist."
                                         }
                                     },
                                     "type": "object"
@@ -952,18 +1301,44 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Invite was accepted.",
-                "description": "Invite was accepted.",
+                "summary": "Use this endpoint to accept the invite. Requires the users auth token to validate.",
+                "description": "Use this endpoint to accept the invite. Requires the users auth token to validate.",
                 "operationId": "acceptInvite",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "description": "The token that was created with the invite.",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
+                                    "$ref": "#/components/schemas/CompetitionInvite"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
                                     "properties": {
-                                        "": {
-                                            "$ref": "app/Http/Resources/CompetitionInviteResource"
+                                        "message": {
+                                            "type": "The competition does not exist."
                                         }
                                     },
                                     "type": "object"
@@ -979,6 +1354,21 @@
                                     "properties": {
                                         "message": {
                                             "type": "Invite is not associated with the current user."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "No invites listed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Invite does not belong to this competition."
                                         }
                                     },
                                     "type": "object"
@@ -1635,14 +2025,105 @@
     },
     "components": {
         "schemas": {
+            "CompetitionFull": {
+                "title": "Competition Extended Model",
+                "description": "The competition model with complete information.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Competition"
+                    },
+                    {
+                        "properties": {
+                            "admins": {
+                                "description": "A list of users who are following the current user.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            },
+                            "contestants": {
+                                "description": "A list of users who the current user is following.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            },
+                            "venues": {
+                                "description": "A list of venues associated with the competition.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Event"
+                                }
+                            },
+                            "rounds": {
+                                "description": "A list of rounds associated witht he competition.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/CompetitionRound"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
             "CompetitionInvite": {
                 "title": "Competition Invite Model",
-                "description": "Competition Invite Model",
+                "description": "Keep track of users when that have been invited to a competition.",
+                "required": [
+                    "name",
+                    "email",
+                    "competition_id"
+                ],
                 "properties": {
                     "id": {
-                        "title": "id",
-                        "description": "Class CompetitionInviteResource for CompetitionInviteController.",
-                        "type": "string"
+                        "description": "The uuid of invite.",
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "email": {
+                        "description": "The email address of the person that is invited.",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "name": {
+                        "description": "The name of the person that is invited.",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "competition_id": {
+                        "description": "The id of the competition that the invite belongs too.",
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "invited_as_participant": {
+                        "description": "Sets if the user is to be invited as an individual participant.",
+                        "type": "boolean"
+                    },
+                    "invited_as_team_member": {
+                        "description": "Sets if the user is to be invited as part of a team.",
+                        "type": "boolean"
+                    },
+                    "accepted_invite": {
+                        "description": "Is true of the user has accepted the invite.",
+                        "type": "boolean"
+                    },
+                    "token": {
+                        "description": "The auto-generated token that is sent along with the invite.",
+                        "type": "string",
+                        "maxLength": 255,
+                        "readOnly": true
+                    },
+                    "role": {
+                        "description": "The role the user is being invited as.",
+                        "type": "integer",
+                        "enum": [
+                            "0",
+                            "1",
+                            "2"
+                        ]
                     }
                 },
                 "type": "object"
@@ -1650,191 +2131,691 @@
             "Competition": {
                 "title": "Competition Model",
                 "description": "The model that describes a competition",
-                "properties": {
-                    "id": {
-                        "description": "The id of the competition.",
-                        "type": "uuid"
+                "required": [
+                    "name",
+                    "description"
+                ],
+                "allOf": [
+                    {
+                        "properties": {
+                            "id": {
+                                "description": "The id of the competition.",
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "name": {
+                                "description": "The name of the competiton.",
+                                "type": "string",
+                                "maxLength": 255
+                            },
+                            "description": {
+                                "description": "A description of competition.",
+                                "type": "string"
+                            },
+                            "start_date": {
+                                "description": "The start date of the competition.",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "end_date": {
+                                "description": "The end date of the competition.",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "registration_start_date": {
+                                "description": "The registration start date of the competition.",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "registration_end_date": {
+                                "description": "The registration end date of the competition.",
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "type": {
+                                "description": "The type of competition.",
+                                "type": "integer",
+                                "enum": [
+                                    "1",
+                                    "2",
+                                    "3",
+                                    "4",
+                                    "5",
+                                    "6",
+                                    "7",
+                                    "8",
+                                    "9"
+                                ]
+                            },
+                            "contact_name": {
+                                "description": "The name of the contact person to contact about the team.",
+                                "type": "string",
+                                "maxLength": 255
+                            },
+                            "contact_email": {
+                                "description": "The contact email to send inquires too about the team.",
+                                "type": "string",
+                                "maxLength": 255
+                            },
+                            "contact_phone_number": {
+                                "description": "The phone number to call for inquires about the team.",
+                                "type": "string",
+                                "maxLength": 255
+                            },
+                            "website": {
+                                "description": "The phone number to call for inquires about the team.",
+                                "type": "string",
+                                "maxLength": 255
+                            },
+                            "main_image": {
+                                "description": "Read only file of the main image of the competition.",
+                                "type": "string",
+                                "maxLength": 255,
+                                "readOnly": true
+                            },
+                            "bannner_image": {
+                                "description": "Read only file of the banner image of the competition.",
+                                "type": "string",
+                                "maxLength": 255,
+                                "readOnly": true
+                            },
+                            "allow_team_signup": {
+                                "description": "Will allow teams to sign-up to the competition.",
+                                "type": "boolean"
+                            },
+                            "allow_individual_signup": {
+                                "description": "Will allow individuals to sign-up to the competition.",
+                                "type": "boolean"
+                            },
+                            "require_attendee_rsvp": {
+                                "description": "Attendees will be required to RSVP to access competition and its events.",
+                                "type": "boolean"
+                            },
+                            "is_private": {
+                                "description": "If the event is private and will not show on lists.",
+                                "type": "boolean"
+                            },
+                            "competitors_per_match": {
+                                "description": "The number of competitors to have in a single match. This value is used when matches are auto generated.",
+                                "type": "integer"
+                            },
+                            "winners_per_match": {
+                                "description": "The number winners to allow per match when there is more than 2 competitors.",
+                                "type": "integer"
+                            },
+                            "max_registration_for_teams": {
+                                "description": "The maximum number of teams that will be allowed to sign-up for the compeititon. Optional field, leave null or 0 for infinite.",
+                                "type": "integer"
+                            },
+                            "max_registration_for_users": {
+                                "description": "The maximum number of individual users that will be allowed to sign-up for the compeititon. Optional field, leave null or 0 for infinite.",
+                                "type": "integer"
+                            },
+                            "minimum_team_size": {
+                                "description": "The minimum amount of people required to be on a team to allow sign-up.",
+                                "type": "integer"
+                            },
+                            "checkin_enabled": {
+                                "description": "Enable check-in that will have users check-in to the compeitition.",
+                                "type": "boolean"
+                            },
+                            "checkin_mintues_prior": {
+                                "description": "The number of minutes prior to the competition that the user must check-in.",
+                                "type": "integer"
+                            },
+                            "team_signup_requires_approval": {
+                                "description": "Once a team has signed up, this will require an administrator to approve them before they can be considered registered.",
+                                "type": "boolean"
+                            },
+                            "individual_signup_requires_approval": {
+                                "description": "Once an individual has signed up, this will require an administrator to approve them before they can be considered registered.",
+                                "type": "boolean"
+                            },
+                            "team_registration_price": {
+                                "description": "The cost associated when registering a team.",
+                                "type": "number",
+                                "format": "float"
+                            },
+                            "individual_registration_price": {
+                                "description": "The cost associated when registering a individual user.",
+                                "type": "number",
+                                "format": "float"
+                            },
+                            "grand_prize_total": {
+                                "description": "The total amount the grand prize is worth.",
+                                "type": "number",
+                                "format": "float"
+                            },
+                            "currency": {
+                                "description": "The currecny for the tournmanet.",
+                                "type": "string",
+                                "maxLength": 5,
+                                "example": "USD"
+                            },
+                            "require_contestant_waiver": {
+                                "description": "Will require constentants to sign a waiver before registering.",
+                                "type": "boolean"
+                            },
+                            "require_attendee_waiver": {
+                                "description": "Will require attendees to sign a waiver before registering.",
+                                "type": "boolean"
+                            },
+                            "rules": {
+                                "description": "Enter all the rules for competition.",
+                                "type": "string"
+                            },
+                            "agreement": {
+                                "description": "Enter the agreement a user must agree to for entering the competition.",
+                                "type": "string"
+                            },
+                            "schedule": {
+                                "description": "Enter the schedule for the competition.",
+                                "type": "string"
+                            },
+                            "disqualifiers": {
+                                "description": "Set any disqualifers for the competition.",
+                                "type": "string"
+                            },
+                            "refund_policy": {
+                                "description": "Set the refund policy for the competition.",
+                                "type": "string"
+                            },
+                            "harassment_policy": {
+                                "description": "Set an harassment policy for the competition.",
+                                "type": "string"
+                            },
+                            "saftey_policy": {
+                                "description": "Set a safety policy for the competition.",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
                     },
-                    "name": {
-                        "description": "The name of the competiton.",
-                        "type": "string"
-                    },
-                    "start_date": {
-                        "description": "The start date of the competition.",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "end_date": {
-                        "description": "The end date of the competition.",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "status": {
-                        "description": "If the competition.",
-                        "type": "string",
-                        "enum": [
-                            "open",
-                            "closed"
-                        ]
-                    },
-                    "image_url": {
-                        "description": "Read only file of the main image of the competition.",
-                        "type": "string"
-                    },
-                    "allow_team_signup": {
-                        "description": "Will allow teams to sign-up to the competition.",
-                        "type": "boolean"
-                    },
-                    "allow_individual_signup": {
-                        "description": "Will allow individuals to sign-up to the competition.",
-                        "type": "boolean"
-                    },
-                    "require_attendee_rsvp": {
-                        "description": "Attendees will be required to RSVP to access competition and its events.",
-                        "type": "boolean"
-                    },
-                    "is_private": {
-                        "description": "If the event is private and will not show on lists.",
-                        "type": "boolean"
-                    },
-                    "competitors_per_match": {
-                        "description": "The number of competitors to have in a single match. This value is used when matches are auto generated.",
-                        "type": "interger"
-                    },
-                    "winners_per_match": {
-                        "description": "The number winners to allow per match when there is more than 2 competitors.",
-                        "type": "interger"
-                    },
-                    "max_registration_for_teams": {
-                        "description": "The maximum number of teams that will be allowed to sign-up for the compeititon. Optional field, leave null or 0 for infinite.",
-                        "type": "interger"
-                    },
-                    "max_registration_for_users": {
-                        "description": "The maximum number of individual users that will be allowed to sign-up for the compeititon. Optional field, leave null or 0 for infinite.",
-                        "type": "interger"
-                    },
-                    "minimum_team_size": {
-                        "description": "The minimum amount of people required to be on a team to allow sign-up.",
-                        "type": "interger"
-                    },
-                    "checkin_enabled": {
-                        "description": "Enable check-in that will have users check-in to the compeitition.",
-                        "type": "boolean"
-                    },
-                    "checkin_mintues_prior": {
-                        "description": "The number of minutes prior to the competition that the user must check-in.",
-                        "type": "integer"
-                    },
-                    "team_signup_requires_approval": {
-                        "description": "Once a team has signed up, this will require an administrator to approve them before they can be considered registered.",
-                        "type": "boolean"
-                    },
-                    "individual_signup_requires_approval": {
-                        "description": "Once an individual has signed up, this will require an administrator to approve them before they can be considered registered.",
-                        "type": "boolean"
-                    },
-                    "team_registration_price": {
-                        "description": "The cost associated when registering a team.",
-                        "type": "number",
-                        "format": "float"
-                    },
-                    "individual_registration_price": {
-                        "description": "The cost associated when registering a individual user.",
-                        "type": "number",
-                        "format": "float"
-                    },
-                    "grand_prize_total": {
-                        "description": "The total amount the grand prize is worth.",
-                        "type": "number",
-                        "format": "float"
-                    },
-                    "currency": {
-                        "description": "The currecny for the tournmanet.",
-                        "type": "string"
-                    },
-                    "require_contestant_waiver": {
-                        "description": "Will require constentants to sign a waiver before registering.",
-                        "type": "boolean"
-                    },
-                    "require_attendee_waiver": {
-                        "description": "Will require attendees to sign a waiver before registering.",
-                        "type": "boolean"
-                    },
-                    "rules": {
-                        "description": "Enter all the rules for competition.",
-                        "type": "string"
-                    },
-                    "agreement": {
-                        "description": "Enter the agreement a user must agree to for entering the competition.",
-                        "type": "string"
-                    },
-                    "schedule": {
-                        "description": "Enter the schedule for the competition.",
-                        "type": "string"
-                    },
-                    "disqualifiers": {
-                        "description": "Set any disqualifers for the competition.",
-                        "type": "string"
-                    },
-                    "refund_policy": {
-                        "description": "Set the refund policy for the competition.",
-                        "type": "string"
-                    },
-                    "harassment_policy": {
-                        "description": "Set an harassment policy for the competition.",
-                        "type": "string"
-                    },
-                    "saftey_policy": {
-                        "description": "Set a safety policy for the competition.",
-                        "type": "string"
+                    {
+                        "$ref": "#/components/schemas/BaseSocialFields"
                     }
-                },
-                "type": "object"
+                ]
             },
             "CompetitionRoundBracket": {
                 "title": "Competition Round Bracket Model",
-                "description": "Competition Round Bracket Model",
+                "description": "The mode of how a bracket is defined that is inside a round.",
                 "properties": {
                     "id": {
-                        "title": "id",
-                        "description": "Class CompetitionRoundBracketResource for CompetitionRoundBracketController.",
+                        "description": "The id of the bracket for the round.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "competition_id": {
+                        "description": "The id of the competition the bracket belongs too.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "round": {
+                        "description": "The round the bracket is associate with.",
+                        "type": "integer"
+                    },
+                    "bracket": {
+                        "description": "The current bracket.",
+                        "type": "integer"
+                    },
+                    "user_id": {
+                        "description": "The id of the user for this bracket/round.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "team_id": {
+                        "description": "The id of the team for this bracket/round.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "event_id": {
+                        "description": "The id of the event the event is associated with.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "is_winner": {
+                        "description": "Sets true if the current user is the winner.",
+                        "type": "boolean"
+                    },
+                    "is_finished": {
+                        "description": "Sets true if the match is finished.",
+                        "type": "boolean"
+                    },
+                    "checked_in": {
+                        "description": "Sets true if the user has checked in.",
+                        "type": "boolean"
+                    },
+                    "bracket_start_date": {
+                        "description": "The start date for the bracket to begin.",
+                        "type": "date-time"
+                    },
+                    "bracket_end_date": {
+                        "description": "The end date for the bracket to end.",
+                        "type": "date-time"
+                    },
+                    "cash_awarded": {
+                        "description": "The amount of cash awarded to the winner.",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "points_awarded": {
+                        "description": "The amount of points awarded to the winner.",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "user": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "team": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "created_at": {
+                        "description": "The date the bracket/round  was created.",
                         "type": "string"
                     },
-                    "subid": {
-                        "title": "subid",
+                    "updated_at": {
+                        "description": "The date the bracket/round was last updated.",
                         "type": "string"
                     }
                 },
                 "type": "object"
             },
-            "CompetitionRoundController": {
-                "title": "Competition Round Controller Model",
-                "description": "Competition round controller model",
+            "CompetitionRound": {
+                "title": "Competition Round Model",
+                "description": "The model that relates to how a round is associated with competition.",
                 "properties": {
-                    "id": {
-                        "title": "id",
-                        "description": "Class CompetitionRoundResource for CompetitionRoundController.",
+                    "competition_id": {
+                        "description": "The id of the competition the round belongs too.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "round": {
+                        "description": "The round in the current competition",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "description": "The title given to then round.",
                         "type": "string"
                     },
-                    "subid": {
-                        "title": "subid",
+                    "overview": {
+                        "description": "The overview description of the round.",
+                        "type": "string"
+                    },
+                    "round_start_date": {
+                        "description": "The start date of the round.",
+                        "type": "date-time"
+                    },
+                    "round_end_date": {
+                        "description": "The end date of the round.",
+                        "type": "date-time"
+                    },
+                    "checkin_enabled": {
+                        "description": "Set if check-in is enabled for this round.",
+                        "type": "boolean"
+                    },
+                    "checkin_mintues_prior": {
+                        "description": "The number of minutes check-in is required before the round begins.",
+                        "type": "integer"
+                    },
+                    "elimination_type": {
+                        "description": "The elimination type for this round.",
+                        "type": "integer",
+                        "enum": [
+                            "1",
+                            "2",
+                            "3",
+                            "4",
+                            "5",
+                            "6",
+                            "7",
+                            "8",
+                            "9"
+                        ]
+                    },
+                    "venue_id": {
+                        "description": "The id of the venue the round is associated with.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "brackets": {
+                        "description": "The brackets associated with the round.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CompetitionRoundBracket"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "CompetitionTeam": {
+                "title": "Competition Team Model",
+                "description": "Controls how a team is associated with a competition.",
+                "properties": {
+                    "competition_id": {
+                        "description": "The id of the competition the team belongs too.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "team_id": {
+                        "description": "The id of the team associated with the relationship.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "checked_in": {
+                        "description": "If the team has checked-in.",
+                        "type": "boolean"
+                    },
+                    "waiver_signed": {
+                        "description": "If the waiver has been signed for the team.",
+                        "type": "boolean"
+                    },
+                    "entry_fee_paid": {
+                        "description": "If the waiver has been signed for the team.",
+                        "type": "boolean"
+                    },
+                    "status": {
+                        "description": "The current statues of the team in the competition.",
+                        "type": "integer",
+                        "enum": [
+                            "1",
+                            "2",
+                            "3",
+                            "4",
+                            "5",
+                            "6",
+                            "7",
+                            "8",
+                            "9"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "CompetitionTicketPurchase": {
+                "title": "Competition Ticket Purchase Model",
+                "description": "Every time a ticket is purchased or rsvped to an event, it is recorded in this model.",
+                "properties": {
+                    "id": {
+                        "description": "The id of the ticket purchase.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "cteam_id": {
+                        "description": "The id of the team associated with the relationship.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "checked_in": {
+                        "description": "If the team has checked-in.",
+                        "type": "boolean"
+                    },
+                    "waiver_signed": {
+                        "description": "If the waiver has been signed for the team.",
+                        "type": "boolean"
+                    },
+                    "entry_fee_paid": {
+                        "description": "If the waiver has been signed for the team.",
+                        "type": "boolean"
+                    },
+                    "status": {
+                        "description": "The current statues of the team in the competition.",
+                        "type": "integer",
+                        "enum": [
+                            "1",
+                            "2",
+                            "3",
+                            "4",
+                            "5",
+                            "6",
+                            "7",
+                            "8",
+                            "9"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "CompetitionUser": {
+                "title": "Competition User Model",
+                "description": "Manage a user relationship with a competition.",
+                "required": [
+                    "competition_id",
+                    "user_id"
+                ],
+                "properties": {
+                    "competition_id": {
+                        "description": "The id of the competition.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "user_id": {
+                        "description": "The id of the user associated with the competition.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "checked_in": {
+                        "description": "If the user has checked-in.",
+                        "type": "boolean"
+                    },
+                    "waiver_signed": {
+                        "description": "If the waiver has been signed for the user.",
+                        "type": "boolean"
+                    },
+                    "entry_fee_paid": {
+                        "description": "If the waiver has been signed for the user.",
+                        "type": "boolean"
+                    },
+                    "status": {
+                        "description": "The current status of the user in the competition.",
+                        "type": "integer",
+                        "enum": [
+                            "1",
+                            "2",
+                            "3",
+                            "4",
+                            "5",
+                            "6",
+                            "7",
+                            "8",
+                            "9"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "CompetitionVenue": {
+                "title": "Competition Venue Model",
+                "description": "Setup competitions to take place in venues.",
+                "required": [
+                    "venue_name",
+                    "is_virtual_hybrid_remote",
+                    "competition_id"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The id of the venue",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "venue_name": {
+                        "description": "The name of the venue.",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "address_line_1": {
+                        "description": "The first address line of the venue.",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "address_line_2": {
+                        "description": "The second address line of the venue.",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "postal_code": {
+                        "description": "The postol/zipcode of the venue.",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "locality": {
+                        "description": "The locality of venue (ie: city).",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "province": {
+                        "description": "The province of venue (ie: state).",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "country": {
+                        "description": "The country of the venue.",
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "is_virtual_hybrid_remote": {
+                        "description": "Select if the venue is online, physical or hybrid - both.",
+                        "type": "integer",
+                        "enum": [
+                            "1",
+                            "2",
+                            "3"
+                        ]
+                    },
+                    "competition_id": {
+                        "description": "The id of the competition the venue is associated with.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "venue_direction_instructions": {
+                        "description": "Set instructions on how to reach the venue.",
+                        "type": "string"
+                    },
+                    "venue_access_instructions": {
+                        "description": "Set instructions on how to access the venue.",
+                        "type": "string"
+                    },
+                    "additional_notes": {
+                        "description": "Add any additional information about the venue.",
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "description": "The time the event was created at.",
+                        "type": "timestamp"
+                    },
+                    "updated_at": {
+                        "description": "The timestamp the event was last updated.",
                         "type": "string"
                     }
                 },
                 "type": "object"
             },
-            "CompetitionTeamController": {
-                "title": "Competition Team Controller Model",
-                "description": "Competition team controller model",
+            "EventFull": {
+                "title": "Event Extended Model",
+                "description": "The event model.",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Competition"
+                    },
+                    {
+                        "properties": {
+                            "admins": {
+                                "description": "Users that are admins to the event.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            },
+                            "moderators": {
+                                "description": "Users who are moderators to the event.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            },
+                            "speakers": {
+                                "description": "Users who are co-host to the event.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            },
+                            "events": {
+                                "description": "A list of events the user is associated with.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/EventOverlay"
+                                }
+                            },
+                            "overlays": {
+                                "description": "A list of competitions the user is associated with.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Competition"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    }
+                ]
+            },
+            "EventInvite": {
+                "title": "Event Invite Model",
+                "description": "Manages how a user is invited to an event.",
                 "properties": {
                     "id": {
-                        "title": "id",
-                        "description": "Class CompetitionteamResource for CompetitionTeamController.",
+                        "description": "The uuid of invite.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "email": {
+                        "description": "The email address of the person that is invited.",
                         "type": "string"
                     },
-                    "subid": {
-                        "title": "subid",
+                    "name": {
+                        "description": "The name of the person that is invited.",
                         "type": "string"
+                    },
+                    "event_id": {
+                        "description": "The id of the team that the invite belongs too.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "invited_as_cohost": {
+                        "description": "Sets if the user is to be invited as co-host to the event where they can join chat with the host.",
+                        "type": "boolean"
+                    },
+                    "accepted_invite": {
+                        "description": "Is true of the user has accepted the invite.",
+                        "type": "boolean"
+                    },
+                    "token": {
+                        "description": "The auto-generated token that is sent along with the invite.",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "EventOverlay": {
+                "title": "Event Overlay Model",
+                "description": "Manage the overlays that appear over screens at events.",
+                "properties": {
+                    "id": {
+                        "description": "The id of overlay.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "event_id": {
+                        "description": "The event id the overlay is associated with.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "image_url": {
+                        "description": "The url of where the overlay resides",
+                        "type": "string"
+                    },
+                    "is_active": {
+                        "description": "If the overlay is active or not.",
+                        "type": "boolean"
                     }
                 },
                 "type": "object"
@@ -1935,6 +2916,48 @@
                 },
                 "type": "object"
             },
+            "TeamInvite": {
+                "title": "Team Invite Model",
+                "description": "Manages how a user is invited to a team.",
+                "properties": {
+                    "id": {
+                        "description": "The uuid of invite.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "email": {
+                        "description": "The email address of the person that is invited.",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "The name of the person that is invited.",
+                        "type": "string"
+                    },
+                    "team_id": {
+                        "description": "The id of the team that the invite belongs too.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "accepted_invite": {
+                        "description": "Is true of the user has accepted the invite.",
+                        "type": "boolean"
+                    },
+                    "token": {
+                        "description": "The auto-generated token that is sent along with the invite.",
+                        "type": "string"
+                    },
+                    "role": {
+                        "description": "The role the user is being invited as.",
+                        "type": "integer",
+                        "enum": [
+                            "0",
+                            "1",
+                            "2"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
             "Team": {
                 "title": "Team Model",
                 "description": "The model that describes the attributes for a team.",
@@ -1970,19 +2993,23 @@
                             },
                             "contact_name": {
                                 "description": "The name of the contact person to contact about the team.",
-                                "type": "string"
+                                "type": "string",
+                                "maxLength": 255
                             },
                             "contact_email": {
                                 "description": "The contact email to send inquires too about the team.",
-                                "type": "string"
+                                "type": "string",
+                                "maxLength": 255
                             },
                             "contact_phone_number": {
                                 "description": "The phone number to call for inquires about the team.",
-                                "type": "string"
+                                "type": "string",
+                                "maxLength": 255
                             },
                             "website": {
                                 "description": "The phone number to call for inquires about the team.",
-                                "type": "string"
+                                "type": "string",
+                                "maxLength": 255
                             },
                             "join_process": {
                                 "description": "The process for another user joing a team.",
@@ -1995,6 +3022,54 @@
                         "$ref": "#/components/schemas/BaseSocialFields"
                     }
                 ]
+            },
+            "TeamUser": {
+                "title": "Team User Model",
+                "description": "Manages how a user relates to a team.",
+                "properties": {
+                    "user_id": {
+                        "description": "The user id associated with the team.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "team_id": {
+                        "description": "The team id associated with the user.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "one_time_login_token": {
+                        "description": "The token that must be passed back when logging in",
+                        "type": "string"
+                    },
+                    "user_role": {
+                        "description": "The The role of the current user.",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "description": "The status of the user.",
+                        "type": "integer",
+                        "enum": [
+                            "1",
+                            "2",
+                            "3",
+                            "4",
+                            "5",
+                            "6",
+                            "7",
+                            "8",
+                            "9"
+                        ]
+                    },
+                    "waiver_signed": {
+                        "description": "Indicates if the waiver for the user has been signed.",
+                        "type": "boolean"
+                    },
+                    "is_competitor": {
+                        "description": "Not everyone on a team has  to be competitor, (ie: business manager). This boolean will make the user as a competitor.",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
             },
             "UserFull": {
                 "title": "User Extended Model",
@@ -2038,62 +3113,73 @@
                     }
                 ]
             },
+            "UserOneTimeToken": {
+                "title": "User One Time Token Model",
+                "description": "The one time token is a special token used for logging-in.",
+                "properties": {
+                    "id": {
+                        "description": "The id of the one time login request.",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "one_time_login_token": {
+                        "description": "The token that must be passed back when logging in",
+                        "type": "string"
+                    },
+                    "one_time_login_token_date": {
+                        "description": "The date in which the token was created.",
+                        "type": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "User": {
                 "title": "User model",
                 "description": "The model describes the user.",
                 "properties": {
                     "first_name": {
-                        "title": "first_name",
                         "description": "The users first name",
                         "type": "string"
                     },
                     "last_name": {
-                        "title": "last_name",
                         "description": "The users last name",
                         "type": "string"
                     },
                     "username": {
-                        "title": "username",
                         "description": "The username associated with the user",
                         "type": "string"
                     },
                     "display_name": {
-                        "title": "username",
                         "description": "The name to show to others for the users",
                         "type": "string"
                     },
                     "bio": {
-                        "title": "bio",
                         "description": "Text information about the user.",
                         "type": "string"
                     },
                     "avatar": {
-                        "title": "avatar",
                         "description": "The users avatar image. This property is read-only and the avatar must be updated via image route.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "banner_image": {
-                        "title": "banner_image",
                         "description": "The users banner image. This property is read-only and must be updated via the image route.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "twitter_page": {
-                        "title": "twitter_page",
                         "description": "The URL to the users Twitter Page.",
                         "type": "string"
                     },
                     "facebook_page": {
-                        "title": "facebook_page",
                         "description": "The URL to the users Facebook Page.",
                         "type": "string"
                     },
                     "instagram_page": {
-                        "title": "instagram_page",
                         "description": "The URL to the users Instagram Page.",
                         "type": "string"
                     },
                     "snapchat_page": {
-                        "title": "snapchat_page",
                         "description": "The URL to the users Snapchat Page.",
                         "type": "string"
                     },
@@ -2138,34 +3224,30 @@
                         "type": "string"
                     },
                     "tiktok_handle": {
-                        "title": "tiktok_handle",
                         "description": "The URL to the users Tiktok Handle.",
                         "type": "string"
                     },
                     "twitch_handle": {
-                        "title": "twitch_handle",
                         "description": "The URL to the users Twitch Handle.",
                         "type": "string"
                     },
                     "youtube_handle": {
-                        "title": "youtube_handle",
                         "description": "The URL to the users Youtube Handle.",
                         "type": "string"
                     },
                     "paetron_handle": {
-                        "title": "paetron_handle",
                         "description": "The URL to the users Paetron Handle.",
                         "type": "string"
                     },
                     "created_at": {
-                        "title": "created_at",
                         "description": "The date the user account was created.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "updated_at": {
-                        "title": "updated_at",
                         "description": "The date the user account was last updated.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     }
                 },
                 "type": "object"
@@ -2175,84 +3257,84 @@
                 "description": "The base model for social that is used on several models.",
                 "properties": {
                     "twitter_page": {
-                        "title": "twitter_page",
                         "description": "The URL to the users Twitter Page.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "facebook_page": {
-                        "title": "facebook_page",
                         "description": "The URL to the users Facebook Page.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "instagram_page": {
-                        "title": "instagram_page",
                         "description": "The URL to the users Instagram Page.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "snapchat_page": {
-                        "title": "snapchat_page",
                         "description": "The URL to the users Snapchat Page.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "tiktok_page": {
-                        "title": "tiktok_page",
                         "description": "The URL to the users Tiktok Page.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "twitch_page": {
-                        "title": "twitch_page",
                         "description": "The URL to the users Twitch Page.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "youtube_page": {
-                        "title": "youtube_page",
                         "description": "The URL to the users Youtube Page.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "paetron_page": {
-                        "title": "paetron_page",
                         "description": "The URL to the users Paetron Page.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "twitter_handle": {
-                        "title": "twitter_handle",
                         "description": "The URL to the users Twitter Handle.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "facebook_handle": {
-                        "title": "facebook_handle",
                         "description": "The URL to the users Facebook Handle.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "instagram_handle": {
-                        "title": "instagram_handle",
                         "description": "The URL to the users Instagram Handle.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "snapchat_handle": {
-                        "title": "snapchat_handle",
                         "description": "The URL to the users Snapchat Handle.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "tiktok_handle": {
-                        "title": "tiktok_handle",
                         "description": "The URL to the users Tiktok Handle.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "twitch_handle": {
-                        "title": "twitch_handle",
                         "description": "The URL to the users Twitch Handle.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "youtube_handle": {
-                        "title": "youtube_handle",
                         "description": "The URL to the users Youtube Handle.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     },
                     "paetron_handle": {
-                        "title": "paetron_handle",
                         "description": "The URL to the users Paetron Handle.",
-                        "type": "string"
+                        "type": "string",
+                        "maxLength": 255
                     }
                 },
                 "type": "object"
