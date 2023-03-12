@@ -29,11 +29,13 @@ class CompetitionRoundBracketResource extends JsonResource
      *          description="The id of the competition the bracket belongs too.",
      *          type="string",
      *          format="uuid",
+     *          readOnly=true,
      *      ),
      *      @OA\Property(
      *          property="round",
      *          description="The round the bracket is associate with.",
      *          type="integer",
+     *          readOnly=true,
      *      ),
      *      @OA\Property(
      *          property="bracket",

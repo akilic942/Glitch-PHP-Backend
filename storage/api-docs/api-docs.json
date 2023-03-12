@@ -812,7 +812,7 @@
                         }
                     },
                     {
-                        "name": "round",
+                        "name": "round_id",
                         "in": "path",
                         "description": "The round to update.",
                         "required": true,
@@ -1392,15 +1392,49 @@
                 "summary": "Displays a listing of the resource.",
                 "description": "Displays a listing of the resource.",
                 "operationId": "resourceRoundBracketList1",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "round_id",
+                        "in": "path",
+                        "description": "The round number.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CompetitionRoundBracket"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
                                     "properties": {
-                                        "": {
-                                            "$ref": "app/Http/Resource/CompetitionRoundBracketResource"
+                                        "message": {
+                                            "type": "The competition does not exist."
                                         }
                                     },
                                     "type": "object"
@@ -1437,6 +1471,37 @@
                 "summary": "Store a newly created resource in storage.",
                 "description": "Store a newly created resource in storage.",
                 "operationId": "resourceRoundBracketStorage",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "round_id",
+                        "in": "path",
+                        "description": "The round number.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompetitionRoundBracket"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -1445,7 +1510,7 @@
                                 "schema": {
                                     "properties": {
                                         "": {
-                                            "$ref": "app/Http/Resource/CompetitionRoundBracketResource"
+                                            "$ref": "#/components/schemas/CompetitionRoundBracket"
                                         }
                                     },
                                     "type": "object"
@@ -1484,6 +1549,36 @@
                 "summary": "Display the specific resource.",
                 "description": "Display the specific resource.",
                 "operationId": "resourceRoundBracketShow",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "round_id",
+                        "in": "path",
+                        "description": "The round number.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bracket_id",
+                        "in": "path",
+                        "description": "The bracket number.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -1492,7 +1587,7 @@
                                 "schema": {
                                     "properties": {
                                         "": {
-                                            "$ref": "app/Http/Resource/CompetitionRoundBracketResource"
+                                            "$ref": "#/components/schemas/CompetitionRoundBracket"
                                         }
                                     },
                                     "type": "object"
@@ -1529,18 +1624,52 @@
                 "summary": "Updating resource in storage.",
                 "description": "Updating resource in storage with new information.",
                 "operationId": "updateRoundBracket",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "round_id",
+                        "in": "path",
+                        "description": "The round number.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bracket_id",
+                        "in": "path",
+                        "description": "The bracket number.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompetitionRoundBracket"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "": {
-                                            "$ref": "app/Http/Resource/CompetitionRoundBracketResource"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/CompetitionRoundBracket"
                                 }
                             }
                         }
@@ -1574,18 +1703,43 @@
                 "summary": "Removes a specific resource from storage.",
                 "description": "Removes a specific resource from storage.",
                 "operationId": "destoryRoundBracket",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "round_id",
+                        "in": "path",
+                        "description": "The round number.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "bracket_id",
+                        "in": "path",
+                        "description": "The bracket number.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "": {
-                                            "$ref": "app/Http/Resource/CompetitionRoundBracketResource"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/CompetitionRoundBracket"
                                 }
                             }
                         }
@@ -2348,11 +2502,13 @@
                     "competition_id": {
                         "description": "The id of the competition the bracket belongs too.",
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "readOnly": true
                     },
                     "round": {
                         "description": "The round the bracket is associate with.",
-                        "type": "integer"
+                        "type": "integer",
+                        "readOnly": true
                     },
                     "bracket": {
                         "description": "The current bracket.",

@@ -763,7 +763,7 @@ class CompetitionController extends Controller
      *         )
      *     ),
      *     @OA\Parameter(
-     *         name="round",
+     *         name="round_id",
      *         in="path",
      *         description="The round to update.",
      *         required=true,
