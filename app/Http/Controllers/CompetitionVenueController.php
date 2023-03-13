@@ -17,7 +17,7 @@ class CompetitionVenueController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
+    /**
      * @OA\Get(
      *     path="/competitions/{uuid}/venues",
      *     summary="List all the venues associated with a competition.",
@@ -57,7 +57,7 @@ class CompetitionVenueController extends Controller
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
@@ -122,11 +122,11 @@ class CompetitionVenueController extends Controller
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
@@ -207,13 +207,13 @@ class CompetitionVenueController extends Controller
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $address = CompetitionVenue::where('competition_id', $id)->where('id', $subid)->first();
 
-        if(!$address){
+        if (!$address) {
             return response()->json(['error' => 'The address does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
@@ -286,17 +286,17 @@ class CompetitionVenueController extends Controller
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $address = CompetitionVenue::where('competition_id', $id)->where('id', $subid)->first();
 
-        if(!$address){
+        if (!$address) {
             return response()->json(['error' => 'The address does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
@@ -326,12 +326,12 @@ class CompetitionVenueController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
+    /**
      * @OA\Delete(
-     *     path="/competitions/{uuid}/users/{user_id}",
-     *     summary="Deletes the user from the competition.",
-     *     description="Deletes the user from the competition.",
-     *     operationId="removeCompetitionUser",
+     *     path="/competitions/{uuid}/venues/{venue_id}",
+     *     summary="Deletes the venue from the competition.",
+     *     description="Deletes the venue from the competition.",
+     *     operationId="removeCompetitionVenue",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
      *      @OA\Parameter(
@@ -345,9 +345,9 @@ class CompetitionVenueController extends Controller
      *         )
      *     ),
      *      @OA\Parameter(
-     *         name="user_id",
+     *         name="venue_id",
      *         in="path",
-     *         description="UUID of the user.",
+     *         description="UUID of the venue.",
      *         required=true,
      *         @OA\Schema(
      *             type="string",
@@ -356,7 +356,7 @@ class CompetitionVenueController extends Controller
      *     ),
      *     @OA\Response(
      *         response=204,
-     *         description="User successfully deleted from competition.",
+     *         description="Venue successfully deleted from competition.",
      *     ),
      *     @OA\Response(
      *      response=403,
@@ -372,17 +372,17 @@ class CompetitionVenueController extends Controller
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $address = CompetitionVenue::where('competition_id', $id)->where('id', $subid)->first();
 
-        if(!$address){
+        if (!$address) {
             return response()->json(['error' => 'The venue does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
@@ -464,43 +464,42 @@ class CompetitionVenueController extends Controller
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $venue = CompetitionVenue::where('id', $subid)->first();
 
-        if(!$venue){
+        if (!$venue) {
             return response()->json(['error' => 'The venue does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $base_location = 'images';
 
         // Handle File Upload
-        if($request->hasFile('image')) {              
+        if ($request->hasFile('image')) {
             //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
             //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
             //or you can specify the visibility of the file in the second parameter of the store() method like:
             //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
-            
+
             $imagePath = $request->file('image')->store($base_location, 's3');
-          
         } else {
             return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
         }
-        
+
         //We save new path
         $venue->forceFill([
             'venue_image' => $imagePath
         ]);
 
         $venue->save();
-       
+
         return CompetitionVenueResource::make($venue);
     }
 }

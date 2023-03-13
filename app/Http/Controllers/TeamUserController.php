@@ -16,6 +16,43 @@ class TeamUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    /**
+     * @OA\Get(
+     *     path="/teams/{uuid}/users",
+     *     summary="List all the users associated with a team.",
+     *     description="List all the users associated with a team.",
+     *     operationId="teamUserList",
+     *     tags={"Teams Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the team",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent( 
+     *          type="array",
+     *           @OA\Items(ref="#/components/schemas/TeamUser"),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="The team does not exist.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="The team does not exist.")
+     *              )
+     *          )
+     * )
+     *     
+     */
     public function index(Request $request, $id)
     {
         $team = Team::where('id', $id)->first();
@@ -36,6 +73,57 @@ class TeamUserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     */
+
+    /**
+     * @OA\Post(
+     *     path="/teams/{uuid}/users",
+     *     summary="Associate a new users with the team.",
+     *     description="Associate a new users with the team.",
+     *     operationId="createTeamUser",
+     *     tags={"Teams Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the team",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/TeamUser")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *           @OA\JsonContent(
+     *             ref="#/components/schemas/TeamUser"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The team does not exist.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="The team does not exist.")
+     *       )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to the team.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denied to the team.")
+     *       )
+     *     ),
+     *     @OA\Response(
+     *      response=422,
+     *          description="Errors when creating user",
+     *      ) 
+     *  )
+     * )
      */
     public function store(Request $request, $id)
     {
@@ -72,6 +160,52 @@ class TeamUserController extends Controller
      * @param  \App\Models\TeamUser  $teamUser
      * @return \Illuminate\Http\Response
      */
+
+    /**
+     * @OA\Get(
+     *     path="/teams/{uuid}/users/{user_id}",
+     *     summary="Show a single user by its ID.",
+     *     description="Show a single user by its ID.",
+     *     operationId="showTeamUser",
+     *     tags={"Teams Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the team.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         description="UUID of the user.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/TeamUser"
+     *     ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The team does not exist.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="The team does not exist.")
+     *       )
+     *     ),
+     *     )
+     *)
+     *     
+     */
     public function show(Request $request, $id, $subid)
     {
         $team = Team::where('id', $id)->first();
@@ -95,6 +229,62 @@ class TeamUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\TeamUser  $teamUser
      * @return \Illuminate\Http\Response
+     */
+
+
+    /**
+     * @OA\Put(
+     *     path="/teams/{uuid}/users/{user_id}",
+     *     summary="Update the user associated with team.",
+     *     description="Update the user associated with team.",
+     *     operationId="updateTeamUser",
+     *     tags={"Teams Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the team.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         description="UUID of the user.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/TeamUser")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *          @OA\JsonContent( ref="#/components/schemas/TeamUser")
+     *     ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The team does not exist.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to venue.")
+     *       )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to team.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to user.")
+     *       )
+     *     ) 
+     * )
+     *     
      */
     public function update(Request $request, $id, $subid)
     {
@@ -138,6 +328,57 @@ class TeamUserController extends Controller
      *
      * @param  \App\Models\TeamUser  $teamUser
      * @return \Illuminate\Http\Response
+     */
+
+
+    /**
+     * @OA\Delete(
+     *     path="/teams/{uuid}/users/{user_id}",
+     *     summary="Remove the associated user from the team.",
+     *     description="Remove the associated user from the team.",
+     *     operationId="removeTeamUser",
+     *     tags={"Teams Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the team.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         description="UUID of the user.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Success",
+     *     ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The team does not exist.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to team.")
+     *       )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to team.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to user.")
+     *       )
+     *     ) 
+     * )
+     *     
      */
     public function destroy(Request $request, $id, $subid)
     {

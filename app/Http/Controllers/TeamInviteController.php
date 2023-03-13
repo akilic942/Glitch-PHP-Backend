@@ -18,6 +18,51 @@ class TeamInviteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    /**
+     * @OA\Get(
+     *     path="/teams/{uuid}/invites",
+     *     summary="Display a list of invites.",
+     *     description="Display a list of invites.",
+     *     operationId="teamsUserInviteList",
+     *     tags={"Teams Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the team",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *            type="array",
+     *            @OA\Items(ref="#/components/schemas/TeamInvite")
+     *          ),
+     *            
+     *     ),
+     *      @OA\Response(
+     *         response=404,
+     *         description="The competition does not exist.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Accessed denied to listing invites.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Accessed denied to listing invites.")
+     *         )
+     *     )
+     * )
+     *     
+     */
     public function index(Request $request, $id)
     {
         $team = Team::where('id', $id)->first();
@@ -28,7 +73,7 @@ class TeamInviteController extends Controller
 
         // check if currently authenticated user is the owner of the book
         if(!PermissionsFacade::teamCanUpdate($team, $request->user())){
-           return response()->json(['error' => 'Cannot invite user to the stream.', 'message' => 'Cannot invite user to the stream.'], 403);
+           return response()->json(['error' => 'Access denied to team resource.', 'message' => 'Access denied to team resource.'], 403);
         }
 
         $invites = TeamInvite::where('team_id', $id)->get();
@@ -37,20 +82,59 @@ class TeamInviteController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     */
+
+    /**
+     * @OA\Post(
+     *     path="/teams/{uuid}/sendInvite",
+     *     summary="Send an invite to a user.",
+     *     description="Send an invite to a user.",
+     *     operationId="teamSendInvite",
+     *     tags={"Teams Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the team.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/TeamInvite")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             
+     *            ref="#/components/schemas/TeamInvite"
+     *               
+     *             )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="The team does not exist.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="The team does not exist.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="No invites listed",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Cannot send invite to user.")
+     *              )
+     *          )
+     * )
+     *     
      */
     public function store(Request $request, $id)
     {
@@ -88,50 +172,55 @@ class TeamInviteController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\TeamInvite  $teamInvite
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/teams/{uuid}/acceptInvite",
+     *     summary="Use this endpoint to accept the invite. Requires the users auth token to validate.",
+     *     description="Use this endpoint to accept the invite. Requires the users auth token to validate.",
+     *     operationId="teamAcceptInvite",
+     *     tags={"Teams Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(ref="#/components/schemas/TeamInvite")
+     *     ),
+     *     @OA\RequestBody(
+     *      required=true,
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              @OA\Property(
+     *                  property="token",
+     *                  type="string",
+     *                  description="The token that was created with the invite."
+     *              ),
+     *          )
+     *      )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="The team does not exist.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="The team does not exist.")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="No invites listed",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Invite is not associated with the current user.")
+     *              )
+     *      ),
+     *      @OA\Response(
+     *         response=405,
+     *         description="No invites listed",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Invite does not belong to this competition.")
+     *              )
+     *      ),
+     * )
+     *     
      */
-    public function show(TeamInvite $teamInvite)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\TeamInvite  $teamInvite
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(TeamInvite $teamInvite)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TeamInvite  $teamInvite
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, TeamInvite $teamInvite)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\TeamInvite  $teamInvite
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(TeamInvite $teamInvite)
-    {
-        //
-    }
-
     public function acceptInvite(Request $request, $id){
 
         $team = Team::where('id', $id)->first();

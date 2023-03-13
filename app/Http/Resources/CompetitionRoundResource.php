@@ -13,7 +13,7 @@ class CompetitionRoundResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
 
-     /**
+    /**
      * @OA\Schema(
      *     schema="CompetitionRound",
      *     title="Competition Round Model",
@@ -22,7 +22,8 @@ class CompetitionRoundResource extends JsonResource
      *          property="competition_id",
      *          description="The id of the competition the round belongs too.",
      *          type="string",
-     *          format="uuid"
+     *          format="uuid",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="round",
@@ -42,12 +43,12 @@ class CompetitionRoundResource extends JsonResource
      *       @OA\Property(
      *          property="round_start_date",
      *          description="The start date of the round.",
-     *          type="date-time"
+     *          type="datetime"
      *      ),
      *       @OA\Property(
      *          property="round_end_date",
      *          description="The end date of the round.",
-     *          type="date-time"
+     *          type="datetime"
      *      ),
      *       @OA\Property(
      *          property="checkin_enabled",

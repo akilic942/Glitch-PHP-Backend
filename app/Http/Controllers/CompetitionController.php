@@ -29,8 +29,8 @@ class CompetitionController extends Controller
     /**
      * @OA\Get(
      *     path="/competitions",
-     *     summary="Displays a listing of the resource.",
-     *     description="Displays a listing of the resource.",
+     *     summary="Displays a listing of competitions.",
+     *     description="Displays a listing of competitions.",
      *     operationId="resourceList",
      *     tags={"Competitions Route"},
      *     security={ {"bearer": {} }},
@@ -42,13 +42,6 @@ class CompetitionController extends Controller
      *              @OA\Items(ref="#/components/schemas/Competition")
      *         )
      *     ),
-     *     @OA\Response(
-     *         response=405,
-     *         description="No competitions listed",
-     *         @OA\JsonContent(
-     *              @OA\Property(property="message", type="No competitions listed")
-     *              )
-     *          )
      * )
      *     
      */
@@ -71,8 +64,8 @@ class CompetitionController extends Controller
     /**
      * @OA\Post(
      *     path="/competitions",
-     *     summary="Creating new resource in storage.",
-     *     description="Creating new resource in storage.",
+     *     summary="Create a new competition.",
+     *     description="Create a new cometition.",
      *     operationId="newResourceStorage",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
@@ -89,7 +82,7 @@ class CompetitionController extends Controller
      *     ),
      *     @OA\Response(
      *      response=422,
-     *      description="New storage not created",
+     *      description="Validation errors",
      *      ) 
      * )
      *  )
@@ -125,8 +118,8 @@ class CompetitionController extends Controller
     /**
      * @OA\Get(
      *     path="/competitions/{uuid}",
-     *     summary="Displays specified resource.",
-     *     description="Displays specified resource.",
+     *     summary="Retrieve a single competition resource.",
+     *     description="Retrieve a single competition resource.",
      *     operationId="showStorage",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
@@ -147,8 +140,8 @@ class CompetitionController extends Controller
      *             ref="#/components/schemas/Competition"
      *         ),
      *     @OA\Response(
-     *      response=405,
-     *      description="Storage is not being displayed"
+     *      response=404,
+     *      description="Competition does not exist."
      *      ) 
      *     )
      *)
@@ -173,8 +166,8 @@ class CompetitionController extends Controller
     /**
      * @OA\Put(
      *     path="/competitions/{uuid}",
-     *     summary="Updating resource in storage.",
-     *     description="Updating resource in storage with new information.",
+     *     summary="Update a competition.",
+     *     description="Update a competition.",
      *     operationId="updateStorage",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
@@ -201,7 +194,7 @@ class CompetitionController extends Controller
      *      response=403,
      *      description="Access denied to competition.",
      *      @OA\JsonContent(
-     *          @OA\Property(property="message", type="Access denined to live stream.")
+     *          @OA\Property(property="message", type="Access denined to the compeition resource.")
      *       )
      *     ) 
      * )
@@ -242,12 +235,10 @@ class CompetitionController extends Controller
      */
 
     /**
-     * Delete
-     *
      * @OA\Delete(
      *     path="/competitions/{uuid}",
-     *     summary="Removes a specific resource from storage.",
-     *     description="Removes a specific resource from storage.",
+     *     summary="Delete a competition.",
+     *     description="Delete a competition.",
      *     operationId="destoryStorage",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
@@ -638,7 +629,7 @@ class CompetitionController extends Controller
      * Sync rounds
      * 
      * @OA\Get(
-     *     path="/competitions/{uuid}/rounds",
+     *     path="/competitions/{uuid}/syncRounds",
      *     summary="Syncs rounds for competitions.",
      *     description="Syncs rounds for competitions.",
      *     operationId="syncRounds",
@@ -939,8 +930,8 @@ class CompetitionController extends Controller
     /**
      * @OA\Post(
      *     path="/competitions/{uuid}/uploadMainImage",
-     *     summary="Upload main image to storage.",
-     *     description="Upload main image to storage.",
+     *     summary="Upload main image to competition.",
+     *     description="Upload main image to competition.",
      *     operationId="uploadMainImage",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},

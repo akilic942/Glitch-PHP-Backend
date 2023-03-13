@@ -171,8 +171,8 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Displays a listing of the resource.",
-                "description": "Displays a listing of the resource.",
+                "summary": "Displays a listing of competitions.",
+                "description": "Displays a listing of competitions.",
                 "operationId": "resourceList",
                 "responses": {
                     "200": {
@@ -184,21 +184,6 @@
                                     "items": {
                                         "$ref": "#/components/schemas/Competition"
                                     }
-                                }
-                            }
-                        }
-                    },
-                    "405": {
-                        "description": "No competitions listed",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "No competitions listed"
-                                        }
-                                    },
-                                    "type": "object"
                                 }
                             }
                         }
@@ -214,8 +199,8 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Creating new resource in storage.",
-                "description": "Creating new resource in storage.",
+                "summary": "Create a new competition.",
+                "description": "Create a new cometition.",
                 "operationId": "newResourceStorage",
                 "requestBody": {
                     "required": true,
@@ -239,7 +224,7 @@
                         }
                     },
                     "422": {
-                        "description": "New storage not created"
+                        "description": "Validation errors"
                     }
                 },
                 "security": [
@@ -254,8 +239,8 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Displays specified resource.",
-                "description": "Displays specified resource.",
+                "summary": "Retrieve a single competition resource.",
+                "description": "Retrieve a single competition resource.",
                 "operationId": "showStorage",
                 "parameters": [
                     {
@@ -291,8 +276,8 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Updating resource in storage.",
-                "description": "Updating resource in storage with new information.",
+                "summary": "Update a competition.",
+                "description": "Update a competition.",
                 "operationId": "updateStorage",
                 "parameters": [
                     {
@@ -334,7 +319,7 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Access denined to live stream."
+                                            "type": "Access denined to the compeition resource."
                                         }
                                     },
                                     "type": "object"
@@ -353,8 +338,8 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Removes a specific resource from storage.",
-                "description": "Removes a specific resource from storage.",
+                "summary": "Delete a competition.",
+                "description": "Delete a competition.",
                 "operationId": "destoryStorage",
                 "parameters": [
                     {
@@ -662,7 +647,7 @@
                 ]
             }
         },
-        "/competitions/{uuid}/rounds": {
+        "/competitions/{uuid}/syncRounds": {
             "get": {
                 "tags": [
                     "Competitions Route"
@@ -735,51 +720,6 @@
                                     "properties": {
                                         "message": {
                                             "type": "Access denied to competiton."
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearer": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "Competitions Route"
-                ],
-                "summary": "Store a newly created resource in storage.",
-                "description": "Store a newly created resource in storage.",
-                "operationId": "resourceRoundStorage",
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "app/Http/Resource/CompetitionResource"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        }
-                    },
-                    "403": {
-                        "description": "No rounds listed",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "Cannot store round."
                                         }
                                     },
                                     "type": "object"
@@ -977,8 +917,8 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Upload main image to storage.",
-                "description": "Upload main image to storage.",
+                "summary": "Upload main image to competition.",
+                "description": "Upload main image to competition.",
                 "operationId": "uploadMainImage",
                 "parameters": [
                     {
@@ -1153,7 +1093,7 @@
                 ],
                 "summary": "Display a list of invites.",
                 "description": "Display a list of invites.",
-                "operationId": "resourceInviteList",
+                "operationId": "competitionUserInviteList",
                 "parameters": [
                     {
                         "name": "uuid",
@@ -1172,12 +1112,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "": {
-                                            "$ref": "#/components/schemas/CompetitionInvite"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CompetitionInvite"
+                                    }
                                 }
                             }
                         }
@@ -1227,7 +1165,7 @@
                 ],
                 "summary": "Send an invite to a user.",
                 "description": "Send an invite to a user.",
-                "operationId": "sendInvite",
+                "operationId": "competitionSendInvite",
                 "parameters": [
                     {
                         "name": "uuid",
@@ -1299,14 +1237,14 @@
                 ]
             }
         },
-        "/acceptInvite": {
+        "/competitions/{uuid}/acceptInvite": {
             "post": {
                 "tags": [
                     "Competitions Route"
                 ],
                 "summary": "Use this endpoint to accept the invite. Requires the users auth token to validate.",
                 "description": "Use this endpoint to accept the invite. Requires the users auth token to validate.",
-                "operationId": "acceptInvite",
+                "operationId": "competitionAcceptInvite",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1770,21 +1708,97 @@
                 ]
             }
         },
-        "/competitions/{uuid}/rounds1": {
+        "/competitions/{uuid}/rounds": {
             "get": {
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Displays a listing of the resource.",
-                "description": "Displays a listing of the resource.",
+                "summary": "Display the rounds associated with a competition.",
+                "description": "Display the rounds associated with a competition.",
                 "operationId": "resourceRoundList",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resource/CompetitionResource"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CompetitionRound"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The competition does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Create a new round for the competition.",
+                "description": "Create a new round for the competition.",
+                "operationId": "resourceRoundStorage",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompetitionRound"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompetitionRound"
                                 }
                             }
                         }
@@ -1796,7 +1810,22 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Cannot list rounds."
+                                            "type": "Cannot store round."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Validation errors."
                                         }
                                     },
                                     "type": "object"
@@ -1817,9 +1846,39 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Display the specific resource.",
-                "description": "Display the specific resource.",
+                "summary": "Retrieve the information for a single round.",
+                "description": "Retrieve the information for a single round.",
                 "operationId": "resourceRoundShow",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "round_id",
+                        "in": "path",
+                        "description": "The round number.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompetitionRound"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -1828,7 +1887,7 @@
                                 "schema": {
                                     "properties": {
                                         "data": {
-                                            "$ref": "app/Http/Resource/CompetitionRoundResource"
+                                            "$ref": "#/components/schemas/CompetitionRound"
                                         }
                                     },
                                     "type": "object"
@@ -1836,7 +1895,7 @@
                             }
                         }
                     },
-                    "405": {
+                    "404": {
                         "description": "No rounds displayed",
                         "content": {
                             "application/json": {
@@ -1865,18 +1924,34 @@
                 "summary": "Updating resource in storage.",
                 "description": "Updating resource in storage with new information.",
                 "operationId": "updateRound",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "round_id",
+                        "in": "path",
+                        "description": "The round number.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "app/Http/Resource/CompetitionRoundResource"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/CompetitionRound"
                                 }
                             }
                         }
@@ -1895,6 +1970,21 @@
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "Competition/round not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Competition/round not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -1907,9 +1997,30 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Removes a specific resource from storage.",
-                "description": "Removes a specific resource from storage.",
+                "summary": "Deletes the round for the competition.",
+                "description": "Deletes the round for the competition.",
                 "operationId": "destoryRound",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "round_id",
+                        "in": "path",
+                        "description": "The round number.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -1918,7 +2029,7 @@
                                 "schema": {
                                     "properties": {
                                         "": {
-                                            "$ref": "app/Http/Resource/CompetitionRoundResource"
+                                            "$ref": "#/components/schemas/CompetitionRound"
                                         }
                                     },
                                     "type": "object"
@@ -1954,24 +2065,31 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Displays a listing of the resource.",
-                "description": "Displays a listing of the resource.",
-                "operationId": "resourceTeamList",
+                "summary": "Retrieve a list of teams associated with the competition.",
+                "description": "Retrieve a list of teams associated with the competition.",
+                "operationId": "resourceCompetitionTeamList",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "required": [
-                                        "id"
-                                    ],
-                                    "properties": {
-                                        "id": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CompetitionTeam"
+                                    }
                                 }
                             }
                         }
@@ -2002,21 +2120,49 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Store a newly created resource in storage.",
-                "description": "Store a newly created resource in storage.",
-                "operationId": "resourceTeamStorage",
+                "summary": "Associate a new team with the competition.",
+                "description": "Associate a new team with the competition.",
+                "operationId": "resourceCompetitionTeamStorage",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompetitionTeam"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "required": [
-                                        "id"
-                                    ],
+                                    "$ref": "#/components/schemas/CompetitionTeam"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to competition.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
                                     "properties": {
-                                        "id": {
-                                            "type": "string"
+                                        "message": {
+                                            "type": "Access denied to competition."
                                         }
                                     },
                                     "type": "object"
@@ -2024,14 +2170,14 @@
                             }
                         }
                     },
-                    "403": {
-                        "description": "No rounds listed",
+                    "404": {
+                        "description": "The competition does not exist.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Cannot store this team."
+                                            "type": "The competition does not exist."
                                         }
                                     },
                                     "type": "object"
@@ -2052,28 +2198,50 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Display the specified resource.",
-                "description": "Display the specified resource.",
+                "summary": "Display the contents of a single team associated with the competition.",
+                "description": "Display the contents of a single team associated with the competition.",
                 "operationId": "resourceTeamShow",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "team",
+                        "in": "path",
+                        "description": "UUID of the team.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "app/Http/Resource/CompetitionTeamResource"
+                                    "$ref": "#/components/schemas/CompetitionTeam"
                                 }
                             }
                         }
                     },
-                    "403": {
-                        "description": "No teams showed",
+                    "404": {
+                        "description": "The competition/team relationship does not exist.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Cannot show this team."
+                                            "type": "The competition/team relationship does not exist."
                                         }
                                     },
                                     "type": "object"
@@ -2092,21 +2260,47 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Updating resource in storage.",
-                "description": "Updating resource in storage with new information.",
+                "summary": "Update the team information associated with the competition.",
+                "description": "Update the team information associated with the competition.",
                 "operationId": "updateTeam",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "description": "UUID of the team.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompetitionTeam"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "app/Http/Resource/CompetitionTeamResource"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/CompetitionTeam"
                                 }
                             }
                         }
@@ -2137,24 +2331,34 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Removes a specific resource from storage.",
-                "description": "Removes a specific resource from storage.",
+                "summary": "Removes the team from the competition.",
+                "description": "Remoes the team from the competition.",
                 "operationId": "destoryTeam",
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "properties": {
-                                        "": {
-                                            "$ref": "app/Http/Resource/CompetitionTeamResource"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
                         }
+                    },
+                    {
+                        "name": "team_id",
+                        "in": "path",
+                        "description": "UUID of the team.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
                     },
                     "403": {
                         "description": "Access denied to competition.",
@@ -2455,14 +2659,14 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "Deletes the user from the competition.",
-                "description": "Deletes the user from the competition.",
+                "summary": "Remove the associated user from the competition.",
+                "description": "Remove the associated user from the competition.",
                 "operationId": "removeCompetitionUser",
                 "parameters": [
                     {
                         "name": "uuid",
                         "in": "path",
-                        "description": "UUID of the competition",
+                        "description": "UUID of the competition.",
                         "required": true,
                         "schema": {
                             "type": "string",
@@ -2482,16 +2686,31 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "User successfully deleted from competition."
+                        "description": "Success"
                     },
-                    "403": {
-                        "description": "Access denied to competition.",
+                    "404": {
+                        "description": "The competition does not exist.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Access denied to competition."
+                                            "type": "Access denined to competition."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to team.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to competition."
                                         }
                                     },
                                     "type": "object"
@@ -2763,6 +2982,61 @@
                         "bearer": []
                     }
                 ]
+            },
+            "delete": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Deletes the venue from the competition.",
+                "description": "Deletes the venue from the competition.",
+                "operationId": "removeCompetitionVenue",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "venue_id",
+                        "in": "path",
+                        "description": "UUID of the venue.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Venue successfully deleted from competition."
+                    },
+                    "403": {
+                        "description": "Access denied to competition.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to competition."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
             }
         },
         "/competitions/{uuid}/venues/{venue_id}/uploadMainImage": {
@@ -2847,6 +3121,976 @@
                                     "properties": {
                                         "message": {
                                             "type": "Access denied to competition."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/teams": {
+            "get": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Displays a list of teams",
+                "description": "Displays a list of teams.",
+                "operationId": "teamsList",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Team"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Create new team.",
+                "description": "Create a new team.",
+                "operationId": "teamCreate",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Team"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Team"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/teams/{uuid}": {
+            "get": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Retrieve a single teams resource.",
+                "description": "Retrieve a single teams resource.",
+                "operationId": "teamShow",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Team"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Update a team.",
+                "description": "Update a team.",
+                "operationId": "teamUpdate",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Team"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Team"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to the team resource.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to team resource."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Delete a team.",
+                "description": "Delete a team.",
+                "operationId": "teamDelete",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Team successfully deleted"
+                    },
+                    "403": {
+                        "description": "Access denied to team.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to team."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/teams/{uuid}/uploadMainImage": {
+            "post": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Upload main image to team.",
+                "description": "Upload main image to team.",
+                "operationId": "teamUploadMainImage",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Image file to upload",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "Image file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Team"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The team does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The team does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to team.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to team."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/teams/{uuid}/uploadBannerImag": {
+            "post": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Upload banner image to team.",
+                "description": "Upload banner image to team.",
+                "operationId": "teamUploadBannerImage",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Image file to upload",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "Image file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Team"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The team does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The team does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to team.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to team."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/teams/{uuid}/invites": {
+            "get": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Display a list of invites.",
+                "description": "Display a list of invites.",
+                "operationId": "teamsUserInviteList",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TeamInvite"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The competition does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Accessed denied to listing invites.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Accessed denied to listing invites."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/teams/{uuid}/sendInvite": {
+            "post": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Send an invite to a user.",
+                "description": "Send an invite to a user.",
+                "operationId": "teamSendInvite",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamInvite"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamInvite"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The team does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The team does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "No invites listed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Cannot send invite to user."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/teams/{uuid}/acceptInvite": {
+            "post": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Use this endpoint to accept the invite. Requires the users auth token to validate.",
+                "description": "Use this endpoint to accept the invite. Requires the users auth token to validate.",
+                "operationId": "teamAcceptInvite",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "description": "The token that was created with the invite.",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamInvite"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The team does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The team does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "No invites listed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Invite is not associated with the current user."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "No invites listed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Invite does not belong to this competition."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/teams/{uuid}/users": {
+            "get": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "List all the users associated with a team.",
+                "description": "List all the users associated with a team.",
+                "operationId": "teamUserList",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TeamUser"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The team does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The team does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Associate a new users with the team.",
+                "description": "Associate a new users with the team.",
+                "operationId": "createTeamUser",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamUser"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The team does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The team does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to the team.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to the team."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Errors when creating user"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/teams/{uuid}/users/{user_id}": {
+            "get": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Show a single user by its ID.",
+                "description": "Show a single user by its ID.",
+                "operationId": "showTeamUser",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "UUID of the user.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamUser"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Update the user associated with team.",
+                "description": "Update the user associated with team.",
+                "operationId": "updateTeamUser",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "UUID of the user.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TeamUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TeamUser"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The team does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to venue."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to team.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to user."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Teams Route"
+                ],
+                "summary": "Remove the associated user from the team.",
+                "description": "Remove the associated user from the team.",
+                "operationId": "removeTeamUser",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the team.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "UUID of the user.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "The team does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to team."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to team.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to user."
                                         }
                                     },
                                     "type": "object"
@@ -3628,7 +4872,8 @@
                     "competition_id": {
                         "description": "The id of the competition the round belongs too.",
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "readOnly": true
                     },
                     "round": {
                         "description": "The round in the current competition",
@@ -3644,11 +4889,13 @@
                     },
                     "round_start_date": {
                         "description": "The start date of the round.",
-                        "type": "date-time"
+                        "type": "string",
+                        "format": "date-time"
                     },
                     "round_end_date": {
                         "description": "The end date of the round.",
-                        "type": "date-time"
+                        "type": "string",
+                        "format": "date-time"
                     },
                     "checkin_enabled": {
                         "description": "Set if check-in is enabled for this round.",
@@ -3695,7 +4942,8 @@
                     "competition_id": {
                         "description": "The id of the competition the team belongs too.",
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "readOnly": true
                     },
                     "team_id": {
                         "description": "The id of the team associated with the relationship.",
@@ -4131,7 +5379,8 @@
                     "id": {
                         "description": "The uuid of invite.",
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "readOnly": true
                     },
                     "email": {
                         "description": "The email address of the person that is invited.",
@@ -4144,7 +5393,8 @@
                     "team_id": {
                         "description": "The id of the team that the invite belongs too.",
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "readOnly": true
                     },
                     "accepted_invite": {
                         "description": "Is true of the user has accepted the invite.",
@@ -4152,7 +5402,8 @@
                     },
                     "token": {
                         "description": "The auto-generated token that is sent along with the invite.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "role": {
                         "description": "The role the user is being invited as.",
@@ -4172,13 +5423,6 @@
                 "allOf": [
                     {
                         "properties": {
-                            "followers": {
-                                "description": "A list of users who are following the current user.",
-                                "type": "array",
-                                "items": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            },
                             "id": {
                                 "description": "The id of the team.",
                                 "type": "string",

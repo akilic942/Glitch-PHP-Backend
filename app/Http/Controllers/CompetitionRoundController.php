@@ -18,36 +18,49 @@ class CompetitionRoundController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      * Competition round bracket index 
-      *
-      * @OA\Get(
-      *     path="/competitions/{uuid}/rounds1",
-      *     summary="Displays a listing of the resource.",
-      *     description="Displays a listing of the resource.",
-      *     operationId="resourceRoundList",
-      *     tags={"Competitions Route"},
-      *     security={ {"bearer": {} }},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *         @OA\JsonContent(ref="app/Http/Resource/CompetitionResource")
-      *     ),
-      *     @OA\Response(
-      *         response=403,
-      *         description="No rounds listed",
-      *         @OA\JsonContent(
-      *              @OA\Property(property="message", type="Cannot list rounds.")
-      *              )
-      *          )
-      * )
-      *     
-      */
+    /**
+     * Competition round bracket index 
+     *
+     * @OA\Get(
+     *     path="/competitions/{uuid}/rounds",
+     *     summary="Display the rounds associated with a competition.",
+     *     description="Display the rounds associated with a competition.",
+     *     operationId="resourceRoundList",
+     *     tags={"Competitions Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/CompetitionRound"),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="The competition does not exist.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *              )
+     *          )
+     * )
+     *     
+     */
     public function index(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
@@ -65,45 +78,60 @@ class CompetitionRoundController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      * Storage of competitions
-      *
-      * @OA\Post(
-      *     path="/competitions/{uuid}/rounds",
-      *     summary="Store a newly created resource in storage.",
-      *     description="Store a newly created resource in storage.",
-      *     operationId="resourceRoundStorage",
-      *     tags={"Competitions Route"},
-      *     security={ {"bearer": {} }},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *         @OA\JsonContent(
-      *         @OA\Property(
-      *            property="data",
-      *            ref="app/Http/Resource/CompetitionResource"
-      *                 ),
-      *             )
-      *     ),
-      *     @OA\Response(
-      *         response=403,
-      *         description="No rounds listed",
-      *         @OA\JsonContent(
-      *              @OA\Property(property="message", type="Cannot store round.")
-      *              )
-      *          )
-      * )
-      *     
-      */
+    /**
+     * @OA\Post(
+     *     path="/competitions/{uuid}/rounds",
+     *     summary="Create a new round for the competition.",
+     *     description="Create a new round for the competition.",
+     *     operationId="resourceRoundStorage",
+     *     tags={"Competitions Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *      ),
+     *      @OA\RequestBody(
+     *         @OA\JsonContent( ref="#/components/schemas/CompetitionRound")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/CompetitionRound"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="No rounds listed",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Cannot store round.")
+     *              )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation errors",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Validation errors.")
+     *              )
+     *     ),
+     * )
+     *     
+     */
     public function store(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
@@ -133,47 +161,67 @@ class CompetitionRoundController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      * Show round brackets
-      *
-      * @OA\Get(
-      *     path="/competitions/{uuid}/rounds/{round_id}",
-      *     summary="Display the specific resource.",
-      *     description="Display the specific resource.",
-      *     operationId="resourceRoundShow",
-      *     tags={"Competitions Route"},
-      *     security={ {"bearer": {} }},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *         @OA\JsonContent(
-      *         @OA\Property(
-      *            property="data",
-      *            ref="app/Http/Resource/CompetitionRoundResource"
-      *                 ),
-      *             )
-      *     ),
-      *     @OA\Response(
-      *         response=405,
-      *         description="No rounds displayed",
-      *         @OA\JsonContent(
-      *              @OA\Property(property="message", type="Cannot display rounds.")
-      *              )
-      *          )
-      * )
-      *     
-      */
+    /**
+     * @OA\Get(
+     *     path="/competitions/{uuid}/rounds/{round_id}",
+     *     summary="Retrieve the information for a single round.",
+     *     description="Retrieve the information for a single round.",
+     *     operationId="resourceRoundShow",
+     *     tags={"Competitions Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *      ),
+     *      @OA\Parameter(
+     *         name="round_id",
+     *         in="path",
+     *         description="The round number.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         )
+     *      ),
+     * *      @OA\RequestBody(
+     *         @OA\JsonContent( ref="#/components/schemas/CompetitionRound")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *         @OA\Property(
+     *            property="data",
+     *            ref="#/components/schemas/CompetitionRound"
+     *                 ),
+     *             )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="No rounds displayed",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Cannot display rounds.")
+     *              )
+     *          )
+     * )
+     *     
+     */
     public function show(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
 
-        if(!$round){
+        if (!$round) {
             return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
@@ -188,51 +236,72 @@ class CompetitionRoundController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      *  Update
-      *
-      * @OA\Put(
-      *     path="/competitions/{uuid}/rounds/{round_id}",
-      *     summary="Updating resource in storage.",
-      *     description="Updating resource in storage with new information.",
-      *     operationId="updateRound",
-      *     tags={"Competitions Route"},
-      *     security={{"bearer": {}}},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *     @OA\JsonContent(
-      *         @OA\Property(
-      *            property="data",
-      *            ref="app/Http/Resource/CompetitionRoundResource"
-      *                 ),
-      *             )
-      *     ),
-      *     @OA\Response(
-      *      response=403,
-      *      description="Access denied to competition.",
-      *      @OA\JsonContent(
-      *              @OA\Property(property="message", type="Access denined to competition.")
-      *              )
-      *      ) 
-      * )
-      *     
-      */
+    /**
+     * @OA\Put(
+     *     path="/competitions/{uuid}/rounds/{round_id}",
+     *     summary="Updating resource in storage.",
+     *     description="Updating resource in storage with new information.",
+     *     operationId="updateRound",
+     *     tags={"Competitions Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *      ),
+     *      @OA\Parameter(
+     *         name="round_id",
+     *         in="path",
+     *         description="The round number.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *          @OA\JsonContent(
+     *              ref="#/components/schemas/CompetitionRound"          
+     *          )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to competition.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denined to competition.")
+     *              )
+     *      ),
+     *      @OA\Response(
+     *      response=404,
+     *      description="Competition/round not found.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Competition/round not found")
+     *              )
+     *      )  
+     * )
+     *     
+     */
     public function update(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
 
-        if(!$round){
+        if (!$round) {
             return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
@@ -262,50 +331,67 @@ class CompetitionRoundController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      * Delete
-      *
-      * @OA\Delete(
-      *     path="/competitions/{uuid}/rounds/{round_id}",
-      *     summary="Removes a specific resource from storage.",
-      *     description="Removes a specific resource from storage.",
-      *     operationId="destoryRound",
-      *     tags={"Competitions Route"},
-      *     security={{"bearer": {}}},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *     @OA\JsonContent(
-      *         @OA\Property(
-      *            ref="app/Http/Resource/CompetitionRoundResource"
-      *                 ),
-      *             )
-      *     ),
-      *     @OA\Response(
-      *      response=403,
-      *      description="Access denied to competition.",
-      *      @OA\JsonContent(
-      *              @OA\Property(property="message", type="Access denied to competition.")
-      *              )
-      *      ) 
-      * )
-      *     
-      */
+    /**
+     * @OA\Delete(
+     *     path="/competitions/{uuid}/rounds/{round_id}",
+     *     summary="Deletes the round for the competition.",
+     *     description="Deletes the round for the competition.",
+     *     operationId="destoryRound",
+     *     tags={"Competitions Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *      ),
+     *      @OA\Parameter(
+     *         name="round_id",
+     *         in="path",
+     *         description="The round number.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *         )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *         @OA\Property(
+     *            ref="#/components/schemas/CompetitionRound"
+     *                 ),
+     *             )
+     *     ),
+     *     @OA\Response(
+     *          response=403,
+     *          description="Access denied to competition.",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to competition.")
+     *          )
+     *      ) 
+     * )
+     *     
+     */
     public function destroy(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $round = CompetitionRound::where('competition_id', $id)->where('round', $subid)->first();
 
-        if(!$round){
+        if (!$round) {
             return response()->json(['error' => 'The round does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 

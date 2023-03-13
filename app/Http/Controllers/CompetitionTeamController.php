@@ -17,39 +17,49 @@ class CompetitionTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      * Competition team index 
-      *
-      * @OA\Get(
-      *     path="/competitions/{uuid}/teams",
-      *     summary="Displays a listing of the resource.",
-      *     description="Displays a listing of the resource.",
-      *     operationId="resourceTeamList",
-      *     tags={"Competitions Route"},
-      *     security={ {"bearer": {} }},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *         @OA\JsonContent(
-      *             required={"id"},
-      *             @OA\Property(property="id", type="string"),
-      *         )
-      *     ),
-      *     @OA\Response(
-      *         response=403,
-      *         description="No rounds listed",
-      *         @OA\JsonContent(
-      *              @OA\Property(property="message", type="Cannot list this team.")
-      *              )
-      *          )
-      * )
-      *     
-      */
+    /**
+     * Competition team index 
+     *
+     * @OA\Get(
+     *     path="/competitions/{uuid}/teams",
+     *     summary="Retrieve a list of teams associated with the competition.",
+     *     description="Retrieve a list of teams associated with the competition.",
+     *     operationId="resourceCompetitionTeamList",
+     *     tags={"Competitions Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/CompetitionTeam"),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="No rounds listed",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Cannot list this team.")
+     *              )
+     *          )
+     * )
+     *     
+     */
     public function index(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
@@ -67,43 +77,62 @@ class CompetitionTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      * Storage of teams
-      *
-      * @OA\Post(
-      *     path="/competitions/{uuid}/teams",
-      *     summary="Store a newly created resource in storage.",
-      *     description="Store a newly created resource in storage.",
-      *     operationId="resourceTeamStorage",
-      *     tags={"Competitions Route"},
-      *     security={ {"bearer": {} }},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *         @OA\JsonContent(
-      *             required={"id"},
-      *             @OA\Property(property="id", type="string"),
-      *         )
-      *     ),
-      *     @OA\Response(
-      *         response=403,
-      *         description="No rounds listed",
-      *         @OA\JsonContent(
-      *              @OA\Property(property="message", type="Cannot store this team.")
-      *              )
-      *          )
-      * )
-      *     
-      */
+    /**
+     * Storage of teams
+     *
+     * @OA\Post(
+     *     path="/competitions/{uuid}/teams",
+     *     summary="Associate a new team with the competition.",
+     *     description="Associate a new team with the competition.",
+     *     operationId="resourceCompetitionTeamStorage",
+     *     tags={"Competitions Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *      ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent( ref="#/components/schemas/CompetitionTeam")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/CompetitionTeam"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Access denied to competition.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to competition.")
+     *              )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="The competition does not exist.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *              )
+     *     ),
+     * )
+     *     
+     */
     public function store(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
@@ -131,44 +160,64 @@ class CompetitionTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      * Display the specified resource.
-      *
-      * @OA\Get(
-      *     path="/competitions/{uuid}/teams/{team_id}",
-      *     summary="Display the specified resource.",
-      *     description="Display the specified resource.",
-      *     operationId="resourceTeamShow",
-      *     tags={"Competitions Route"},
-      *     security={ {"bearer": {} }},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *         @OA\JsonContent(
-      *             ref="app/Http/Resource/CompetitionTeamResource"
-      *         )
-      *     ),
-      *     @OA\Response(
-      *         response=403,
-      *         description="No teams showed",
-      *         @OA\JsonContent(
-      *              @OA\Property(property="message", type="Cannot show this team.")
-      *              )
-      *          )
-      * )
-      *     
-      */
+    /**
+     * Display the specified resource.
+     *
+     * @OA\Get(
+     *     path="/competitions/{uuid}/teams/{team_id}",
+     *     summary="Display the contents of a single team associated with the competition.",
+     *     description="Display the contents of a single team associated with the competition.",
+     *     operationId="resourceTeamShow",
+     *     tags={"Competitions Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *      ),
+     *     @OA\Parameter(
+     *         name="team",
+     *         in="path",
+     *         description="UUID of the team.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/CompetitionTeam"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="The competition/team relationship does not exist.",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="The competition/team relationship does not exist.")
+     *         )
+     *     )
+     * )
+     *     
+     */
     public function show(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $team = CompetitionTeam::where('competition_id', $id)->where('team_id', $subid)->first();
 
-        if(!$team){
+        if (!$team) {
             return response()->json(['error' => 'The competition/team relationship does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
@@ -183,51 +232,69 @@ class CompetitionTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      *  Update
-      *
-      * @OA\Put(
-      *     path="/competitions/{uuid}/teams/{team_id}",
-      *     summary="Updating resource in storage.",
-      *     description="Updating resource in storage with new information.",
-      *     operationId="updateTeam",
-      *     tags={"Competitions Route"},
-      *     security={{"bearer": {}}},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *     @OA\JsonContent(
-      *         @OA\Property(
-      *            property="data",
-      *            ref="app/Http/Resource/CompetitionTeamResource"
-      *                 ),
-      *             )
-      *     ),
-      *     @OA\Response(
-      *      response=403,
-      *      description="Access denied to team.",
-      *      @OA\JsonContent(
-      *              @OA\Property(property="message", type="Access denined to team.")
-      *              )
-      *      ) 
-      * )
-      *     
-      */
+    /**
+     * @OA\Put(
+     *     path="/competitions/{uuid}/teams/{team_id}",
+     *     summary="Update the team information associated with the competition.",
+     *     description="Update the team information associated with the competition.",
+     *     operationId="updateTeam",
+     *     tags={"Competitions Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *      ),
+     *     @OA\Parameter(
+     *         name="team_id",
+     *         in="path",
+     *         description="UUID of the team.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent( ref="#/components/schemas/CompetitionTeam")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/CompetitionTeam"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to team.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denined to team.")
+     *              )
+     *      ) 
+     * )
+     *     
+     */
     public function update(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $team = CompetitionTeam::where('competition_id', $id)->where('team_id', $subid)->first();
 
-        if(!$team){
+        if (!$team) {
             return response()->json(['error' => 'The competition/team relationship does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
@@ -257,50 +324,63 @@ class CompetitionTeamController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
-      * Delete
-      *
-      * @OA\Delete(
-      *     path="/competitions/{uuid}/teams/{team_id}",
-      *     summary="Removes a specific resource from storage.",
-      *     description="Removes a specific resource from storage.",
-      *     operationId="destoryTeam",
-      *     tags={"Competitions Route"},
-      *     security={{"bearer": {}}},
-      *     @OA\Response(
-      *         response=200,
-      *         description="Success",
-      *     @OA\JsonContent(
-      *         @OA\Property(
-      *            ref="app/Http/Resource/CompetitionTeamResource"
-      *                 ),
-      *             )
-      *     ),
-      *     @OA\Response(
-      *      response=403,
-      *      description="Access denied to competition.",
-      *      @OA\JsonContent(
-      *              @OA\Property(property="message", type="Access denied to competition.")
-      *              )
-      *      ) 
-      * )
-      *     
-      */
+    /**
+     * @OA\Delete(
+     *     path="/competitions/{uuid}/teams/{team_id}",
+     *     summary="Removes the team from the competition.",
+     *     description="Remoes the team from the competition.",
+     *     operationId="destoryTeam",
+     *     tags={"Competitions Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *      ),
+     *     @OA\Parameter(
+     *         name="team_id",
+     *         in="path",
+     *         description="UUID of the team.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Success",
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to competition.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to competition.")
+     *          )
+     *      ) 
+     * )
+     *     
+     */
     public function destroy(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
 
-        if(!$competition){
+        if (!$competition) {
             return response()->json(['error' => 'The competition does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::competitionCanUpdate($competition, $request->user())){
+        if (!PermissionsFacade::competitionCanUpdate($competition, $request->user())) {
             return response()->json(['error' => 'Access denied to competition.'], 403);
         }
 
         $team = CompetitionTeam::where('competition_id', $id)->where('team_id', $subid)->first();
 
-        if(!$team){
+        if (!$team) {
             return response()->json(['error' => 'The competition/team relationship does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 

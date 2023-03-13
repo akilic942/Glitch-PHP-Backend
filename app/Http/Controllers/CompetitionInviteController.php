@@ -20,16 +20,14 @@ class CompetitionInviteController extends Controller
      */
 
     /**
-     * Invites 
-     *
      * @OA\Get(
      *     path="/competitions/{uuid}/invites",
      *     summary="Display a list of invites.",
      *     description="Display a list of invites.",
-     *     operationId="resourceInviteList",
+     *     operationId="competitionUserInviteList",
      *     tags={"Competitions Route"},
      *     security={ {"bearer": {} }},
-     *   @OA\Parameter(
+     *     @OA\Parameter(
      *         name="uuid",
      *         in="path",
      *         description="UUID of the competition",
@@ -43,10 +41,10 @@ class CompetitionInviteController extends Controller
      *         response=200,
      *         description="Success",
      *         @OA\JsonContent(
-     *         @OA\Property(
-     *            ref="#/components/schemas/CompetitionInvite"
-     *                 ),
-     *             )
+     *            type="array",
+     *            @OA\Items(ref="#/components/schemas/CompetitionInvite")
+     *          ),
+     *            
      *     ),
      *      @OA\Response(
      *         response=401,
@@ -96,7 +94,7 @@ class CompetitionInviteController extends Controller
      *     path="/competitions/{uuid}/sendInvite",
      *     summary="Send an invite to a user.",
      *     description="Send an invite to a user.",
-     *     operationId="sendInvite",
+     *     operationId="competitionSendInvite",
      *     tags={"Competitions Route"},
      *     security={ {"bearer": {} }},
      *     @OA\Parameter(
@@ -175,13 +173,11 @@ class CompetitionInviteController extends Controller
     }
 
     /**
-     * Accept invite 
-     *
      * @OA\Post(
-     *     path="/acceptInvite",
+     *     path="/competitions/{uuid}/acceptInvite",
      *     summary="Use this endpoint to accept the invite. Requires the users auth token to validate.",
      *     description="Use this endpoint to accept the invite. Requires the users auth token to validate.",
-     *     operationId="acceptInvite",
+     *     operationId="competitionAcceptInvite",
      *     tags={"Competitions Route"},
      *     security={ {"bearer": {} }},
      *     @OA\Response(

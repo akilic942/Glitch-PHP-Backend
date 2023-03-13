@@ -22,7 +22,8 @@ class TeamInviteResource extends JsonResource
      *          property="id",
      *          description="The uuid of invite.",
      *          type="string",
-     *          format="uuid"
+     *          format="uuid",
+     *          readOnly=true
      *     ),
      *     @OA\Property(
      *          property="email",
@@ -38,7 +39,8 @@ class TeamInviteResource extends JsonResource
      *          property="team_id",
      *          description="The id of the team that the invite belongs too.",
      *          type="string",
-     *          format="uuid"
+     *          format="uuid",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="accepted_invite",
@@ -48,7 +50,8 @@ class TeamInviteResource extends JsonResource
      *       @OA\Property(
      *          property="token",
      *          description="The auto-generated token that is sent along with the invite.",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="role",

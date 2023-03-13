@@ -24,7 +24,8 @@ class CompetitionTeamResource extends JsonResource
      *          property="competition_id",
      *          description="The id of the competition the team belongs too.",
      *          type="string",
-     *          format="uuid"
+     *          format="uuid",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="team_id",

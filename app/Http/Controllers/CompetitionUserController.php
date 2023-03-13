@@ -122,8 +122,8 @@ class CompetitionUserController extends Controller
      *      response=422,
      *          description="Errors when creating user",
      *      ) 
-     * )
      *  )
+     * )
      */
     public function store(Request $request, $id)
     {
@@ -333,6 +333,56 @@ class CompetitionUserController extends Controller
      *
      * @param  \App\Models\CompetitionUser  $competitionUser
      * @return \Illuminate\Http\Response
+     */
+
+    /**
+     * @OA\Delete(
+     *     path="/competitions/{uuid}/users/{user_id}",
+     *     summary="Remove the associated user from the competition.",
+     *     description="Remove the associated user from the competition.",
+     *     operationId="removeCompetitionUser",
+     *     tags={"Competitions Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         description="UUID of the user.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Success",
+     *     ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The competition does not exist.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to competition.")
+     *       )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to team.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to competition.")
+     *       )
+     *     ) 
+     * )
+     *     
      */
     public function destroy(Request $request, $id, $subid)
     {

@@ -25,13 +25,7 @@ class TeamResource extends JsonResource
      *     allOf={
      *         
      *         @OA\Schema(
-     *            @OA\Property(
-     *              property="followers",
-     *              description="A list of users who are following the current user.",
-     *              @OA\Items(ref="#/components/schemas/User"),
-     *              type="array"
-     *          ),
-     *             @OA\Property(
+     *              @OA\Property(
      *                  property="id",
      *                  description="The id of the team.",
      *                  type="string",
