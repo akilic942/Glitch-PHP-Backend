@@ -19,14 +19,22 @@ class AuthController extends Controller
      * @OA\Post(
      *     path="/auth/register",
      *     tags={"Authentication Route"},
-     *     operationId="register",
+     *     operationId="authRegister",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/UserFull"
+     *          )
+     *     ),
      *     @OA\Response(
      *         response=422,
-     *         description="Invalid input"
-     *     ),
-     *     security={
-     *         {"petstore_auth": {"write:pets", "read:pets"}}
-     *     },
+     *         description="Validation Errors"
+     *     )
      *    
      * )
      */
@@ -71,17 +79,17 @@ class AuthController extends Controller
      *          required=true,
      *          description="Pass user credentials",
      *          @OA\JsonContent(
-     *              required={"email","password"},
-     *              @OA\Property(property="email", type="string", format="email", example="user1@mail.com"),
+     *              required={"password"},
+     *              @OA\Property(property="email", type="string", format="email", example="user1@mail.com", description="The users email. Login can use either the email or username."),
+     *              @OA\Property(property="username", type="string", example="johndoe", description="The users username. Login can use either be email or username."),
      *              @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
-     *              @OA\Property(property="persistent", type="boolean", example="true"),
      *          ),
      *      ),
      *      @OA\Response(
      *          response=200,
-     *          description="Succesfuly Login",
+     *          description="Succesfull Login",
      *          @OA\JsonContent(
-      *             ref="#/components/schemas/User"
+      *             ref="#/components/schemas/UserFull"
       *         )
      *      ),
      *      @OA\Response(
@@ -160,18 +168,38 @@ class AuthController extends Controller
      *
      * @OA\Post(
      *     path="/auth/oneTimeLoginToken",
-     *     summary="One time login token.",
-     *     description="One time token to login",
+     *     summary="Attempts to login with a one time login token.",
+     *     description="Attempts to login with a one time login token.",
      *     operationId="oneTimeLoginToken",
      *     tags={"Authentication Route"},
      *     security={ {"bearer": {} }},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success"
+     *     @OA\RequestBody(
+     *      required=true,
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              @OA\Property(
+     *                  property="token",
+     *                  type="string",
+     *                  description="The token to log the user in with."
+     *              ),
+     *          )
+     *      )
      *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Succesfull Login",
+     *          @OA\JsonContent(
+      *             ref="#/components/schemas/UserFull"
+      *         )
+     *      ),
+     *      @OA\Response(
+     *      response=404,
+     *      description="No Token Supplied.",
+     *      ),
      *     @OA\Response(
-     *      response=405,
-     *      description="Login with one time login token not given",
+     *      response=422,
+     *      description="Unable to authenticate with provided token",
      *      )  
      * )
      */
@@ -180,7 +208,7 @@ class AuthController extends Controller
         $input = $request->all();
 
         if(!isset($input['token'])) {
-            return response()->json('No Token Supplied', 422);
+            return response()->json('No Token Supplied', 404);
         }
 
         $user = AuthenticationFacade::useOneTimeLoginToken($input['token']);
@@ -202,29 +230,6 @@ class AuthController extends Controller
 
     }
 
-    /**
-     * respondWithToken
-     *
-     * @OA\Post(
-     *     path="/auth/respondWithToken",
-     *     summary="Responds with a token.",
-     *     description="Responds with a token.",
-     *     operationId="respondWithToken",
-     *     tags={"Authentication Route"},
-     *     security={ {"bearer": {} }},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success"
-     *     ),
-     *     @OA\Response(
-     *      response=401,
-     *      description="Resonds with a temporary token",
-     *      @OA\JsonContent(
-     *          @OA\Property(property="message", type="string", example="Not authorized"),
-     *          )
-     *      )  
-     * )
-     */
     protected function respondWithToken($token)
     {
         return [

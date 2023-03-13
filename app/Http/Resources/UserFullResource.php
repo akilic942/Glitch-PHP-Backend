@@ -49,6 +49,61 @@ class UserFullResource extends JsonResource
      *              @OA\Items(ref="#/components/schemas/Competition"),
      *              type="array"
      *          ),
+     *          @OA\Property(
+     *              property="token",
+     *              description="An auth token that will only be returned when a user logins or registers.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="invirtu_user_id",
+     *              description="The user id for invirtu. Will only be return of the auth token is the current user.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="invirtu_user_jwt_token",
+     *              description="The invirtu auth token for this user. Will only be return of the auth token is the current user.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="facebook_auth_token",
+     *              description="The auth token for facebook. Will only be return of the auth token is the current user.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="facebook_id",
+     *              description="The user id for facebook. Will only be return of the auth token is the current user.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="twitch_auth_token",
+     *              description="The auth token for twitch. Will only be return of the auth token is the current user.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="twitch_id",
+     *              description="The user's id for twitch. Will only be return of the auth token is the current user.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="youtube_auth_token",
+     *              description="The auth token for youtube. Will only be return of the auth token is the current user.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="youtube_id",
+     *              description="The youtube user id. Will only be return of the auth token is the current user.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="stripe_express_account_id",
+     *              description="The user's id for their stripe express account. Will only be return of the auth token is the current user.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="stripe_donation_purhcase_link_url",
+     *              description="The page to donate to this user using stripe. Will only be return of the auth token is the current user.",
+     *              type="string"
+     *          ),
      *             
      *        ),
      *     },

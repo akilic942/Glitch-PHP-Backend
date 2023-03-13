@@ -14,6 +14,39 @@ use Illuminate\Support\Str;
 
 class ForgotPasswordController extends Controller
 {
+
+    /**
+     * @OA\Post(
+     *      path="/auth/forgotpassword",
+     *      summary="Request a new password for a user.",
+     *      description="Request a new password for a user.",
+     *      operationId="authForgotPassword",
+     *      tags={"Authentication Route"},
+     *      @OA\RequestBody(
+     *          required=true,
+     *          description="Send users information to start the reset procress.",
+     *          @OA\JsonContent(
+     *              required={"email"},
+     *              @OA\Property(property="email", type="string", format="email", example="user1@mail.com", description="The users email."),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Successful Password Reset Request",
+     *           @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="New password request sent.")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="There is no user with that email.",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="There is no user with that email.")
+     *          )
+     *      ),
+     * ),
+     * 
+     */
     public function requestNewPassword(Request $request) {
 
         $result = $request->validate([
@@ -28,9 +61,44 @@ class ForgotPasswordController extends Controller
 
         UsersFacade::sendPasswordReset($input['email']);
 
-        return response()->json(['New Password request send'], 201);
+        return response()->json(['New password request sent.'], 201);
     }
 
+    /**
+     * @OA\Post(
+     *      path="/auth/resetpassword",
+     *      summary="Reset the users password.",
+     *      description="Reset the users password.",
+     *      operationId="authResetPassword",
+     *      tags={"Authentication Route"},
+     *      @OA\RequestBody(
+     *          required=true,
+     *          description="Reset the users password",
+     *          @OA\JsonContent(
+     *              required={"email", "token", "new_password"},
+     *              @OA\Property(property="email", type="string", format="email", example="user1@mail.com", description="The user's email."),
+     *              @OA\Property(property="token", type="string", description="The token that was sent with the request to reset the password."),
+     *              @OA\Property(property="new_password", type="string", description="The new password to set for the user."),
+
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Succesful Password Reset",
+     *           @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Password has been reset.")
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="There was an error resetting your password..",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="There was an error resetting your password.")
+     *          )
+     *      ),
+     * ),
+     * 
+     */
     public function changePassword(Request $request) {
 
         $input = $request->all();

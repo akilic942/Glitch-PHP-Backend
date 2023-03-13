@@ -19,20 +19,32 @@
                     "Authentication Route"
                 ],
                 "summary": "Add a new pet to the store.",
-                "operationId": "register",
-                "responses": {
-                    "422": {
-                        "description": "Invalid input"
+                "operationId": "authRegister",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
                     }
                 },
-                "security": [
-                    {
-                        "petstore_auth": [
-                            "write:pets",
-                            "read:pets"
-                        ]
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserFull"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Errors"
                     }
-                ]
+                }
             }
         },
         "/auth/login": {
@@ -50,23 +62,24 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "email",
                                     "password"
                                 ],
                                 "properties": {
                                     "email": {
+                                        "description": "The users email. Login can use either the email or username.",
                                         "type": "string",
                                         "format": "email",
                                         "example": "user1@mail.com"
+                                    },
+                                    "username": {
+                                        "description": "The users username. Login can use either be email or username.",
+                                        "type": "string",
+                                        "example": "johndoe"
                                     },
                                     "password": {
                                         "type": "string",
                                         "format": "password",
                                         "example": "PassWord12345"
-                                    },
-                                    "persistent": {
-                                        "type": "boolean",
-                                        "example": "true"
                                     }
                                 },
                                 "type": "object"
@@ -76,11 +89,11 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Succesfuly Login",
+                        "description": "Succesfull Login",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/User"
+                                    "$ref": "#/components/schemas/UserFull"
                                 }
                             }
                         }
@@ -112,51 +125,41 @@
                 "tags": [
                     "Authentication Route"
                 ],
-                "summary": "One time login token.",
-                "description": "One time token to login",
+                "summary": "Attempts to login with a one time login token.",
+                "description": "Attempts to login with a one time login token.",
                 "operationId": "oneTimeLoginToken",
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "405": {
-                        "description": "Login with one time login token not given"
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "description": "The token to log the user in with.",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
                     }
                 },
-                "security": [
-                    {
-                        "bearer": []
-                    }
-                ]
-            }
-        },
-        "/auth/respondWithToken": {
-            "post": {
-                "tags": [
-                    "Authentication Route"
-                ],
-                "summary": "Responds with a token.",
-                "description": "Responds with a token.",
-                "operationId": "respondWithToken",
                 "responses": {
                     "200": {
-                        "description": "Success"
-                    },
-                    "401": {
-                        "description": "Resonds with a temporary token",
+                        "description": "Succesfull Login",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "type": "string",
-                                            "example": "Not authorized"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/UserFull"
                                 }
                             }
                         }
+                    },
+                    "404": {
+                        "description": "No Token Supplied."
+                    },
+                    "422": {
+                        "description": "Unable to authenticate with provided token"
                     }
                 },
                 "security": [
@@ -3136,6 +3139,148 @@
                 ]
             }
         },
+        "/auth/forgotpassword": {
+            "post": {
+                "tags": [
+                    "Authentication Route"
+                ],
+                "summary": "Request a new password for a user.",
+                "description": "Request a new password for a user.",
+                "operationId": "authForgotPassword",
+                "requestBody": {
+                    "description": "Send users information to start the reset procress.",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "The users email.",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Password Reset Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "New password request sent."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "There is no user with that email.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "There is no user with that email."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/resetpassword": {
+            "post": {
+                "tags": [
+                    "Authentication Route"
+                ],
+                "summary": "Reset the users password.",
+                "description": "Reset the users password.",
+                "operationId": "authResetPassword",
+                "requestBody": {
+                    "description": "Reset the users password",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "token",
+                                    "new_password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "The user's email.",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "token": {
+                                        "description": "The token that was sent with the request to reset the password.",
+                                        "type": "string"
+                                    },
+                                    "new_password": {
+                                        "description": "The new password to set for the user.",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Succesful Password Reset",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Password has been reset."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "There was an error resetting your password..",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "There was an error resetting your password."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/teams": {
             "get": {
                 "tags": [
@@ -5282,7 +5427,9 @@
                 "properties": {
                     "id": {
                         "description": "The id of the event",
-                        "type": "uuid"
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
                     },
                     "title": {
                         "description": "The name of the event",
@@ -5314,39 +5461,48 @@
                     },
                     "created_at": {
                         "description": "The time the event was created at.",
-                        "type": "timestamp"
+                        "type": "timestamp",
+                        "readOnly": true
                     },
                     "updated_at": {
                         "description": "The timestamp the event was last updated.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "invirtu_id": {
                         "description": "The id associated with the invirtu live event, that controls the streaming.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "invirtu_webrtc_url": {
                         "description": "The URL for joining a WebRTC video chat session using for streaming the games.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "invirtu_broadcast_url": {
                         "description": "The URL to send a broadcast too using Invirtu.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "invirtu_rtmp_livestream_endpoint": {
                         "description": "The endpoint to send an RTMP stream too.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "invirtu_rtmp_livestream_key": {
                         "description": "The stream key used for accessing the rtmp endpoint for the livestream.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "invirtu_rtmp_broadcast_endpoint": {
                         "description": "The endpoint to send an RTMP broadcast too.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     },
                     "invirtu_rtmp_broadcast_key": {
                         "description": "The stream key used for accessing the rtmp endpoint for the broadcast.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     }
                 },
                 "type": "object"
@@ -5565,6 +5721,50 @@
                                 "items": {
                                     "$ref": "#/components/schemas/Competition"
                                 }
+                            },
+                            "token": {
+                                "description": "An auth token that will only be returned when a user logins or registers.",
+                                "type": "string"
+                            },
+                            "invirtu_user_id": {
+                                "description": "The user id for invirtu. Will only be return of the auth token is the current user.",
+                                "type": "string"
+                            },
+                            "invirtu_user_jwt_token": {
+                                "description": "The invirtu auth token for this user. Will only be return of the auth token is the current user.",
+                                "type": "string"
+                            },
+                            "facebook_auth_token": {
+                                "description": "The auth token for facebook. Will only be return of the auth token is the current user.",
+                                "type": "string"
+                            },
+                            "facebook_id": {
+                                "description": "The user id for facebook. Will only be return of the auth token is the current user.",
+                                "type": "string"
+                            },
+                            "twitch_auth_token": {
+                                "description": "The auth token for twitch. Will only be return of the auth token is the current user.",
+                                "type": "string"
+                            },
+                            "twitch_id": {
+                                "description": "The user's id for twitch. Will only be return of the auth token is the current user.",
+                                "type": "string"
+                            },
+                            "youtube_auth_token": {
+                                "description": "The auth token for youtube. Will only be return of the auth token is the current user.",
+                                "type": "string"
+                            },
+                            "youtube_id": {
+                                "description": "The youtube user id. Will only be return of the auth token is the current user.",
+                                "type": "string"
+                            },
+                            "stripe_express_account_id": {
+                                "description": "The user's id for their stripe express account. Will only be return of the auth token is the current user.",
+                                "type": "string"
+                            },
+                            "stripe_donation_purhcase_link_url": {
+                                "description": "The page to donate to this user using stripe. Will only be return of the auth token is the current user.",
+                                "type": "string"
                             }
                         },
                         "type": "object"

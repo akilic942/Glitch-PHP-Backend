@@ -24,7 +24,9 @@ class EventResource extends JsonResource
      *     @OA\Property(
      *          property="id",
      *          description="The id of the event",
-     *          type="uuid"
+     *          type="string",
+     *          format="uuid",
+     *          readOnly=true,
      *     ),
      *     @OA\Property(
      *          property="title",
@@ -61,47 +63,56 @@ class EventResource extends JsonResource
      *      @OA\Property(
      *          property="created_at",
      *          description="The time the event was created at.",
-     *          type="timestamp"
+     *          type="timestamp",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="updated_at",
      *          description="The timestamp the event was last updated.",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="invirtu_id",
      *          description="The id associated with the invirtu live event, that controls the streaming.",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="invirtu_webrtc_url",
      *          description="The URL for joining a WebRTC video chat session using for streaming the games.",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="invirtu_broadcast_url",
      *          description="The URL to send a broadcast too using Invirtu.",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="invirtu_rtmp_livestream_endpoint",
      *          description="The endpoint to send an RTMP stream too.",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="invirtu_rtmp_livestream_key",
      *          description="The stream key used for accessing the rtmp endpoint for the livestream.",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="invirtu_rtmp_broadcast_endpoint",
      *          description="The endpoint to send an RTMP broadcast too.",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="invirtu_rtmp_broadcast_key",
      *          description="The stream key used for accessing the rtmp endpoint for the broadcast.",
-     *          type="string"
+     *          type="string",
+     *          readOnly=true,
      *     ),
      * 
      * )
