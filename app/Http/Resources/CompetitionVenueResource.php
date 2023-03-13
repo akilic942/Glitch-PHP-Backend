@@ -24,7 +24,8 @@ class CompetitionVenueResource extends JsonResource
      *          property="id",
      *          description="The id of the venue",
      *          type="string",
-     *          format="uuid"
+     *          format="uuid",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="venue_name",
@@ -78,7 +79,8 @@ class CompetitionVenueResource extends JsonResource
      *          property="competition_id",
      *          description="The id of the competition the venue is associated with.",
      *          type="string",
-     *          format="uuid"
+     *          format="uuid",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="venue_direction_instructions",
@@ -99,12 +101,14 @@ class CompetitionVenueResource extends JsonResource
      *      @OA\Property(
      *          property="created_at",
      *          description="The time the event was created at.",
-     *          type="timestamp"
+     *          type="datetime",
+     *          readOnly=true,
      *     ),
      *      @OA\Property(
      *          property="updated_at",
      *          description="The timestamp the event was last updated.",
-     *          type="string"
+     *          type="datetime",
+     *          readOnly=true,
      *     ),
      * 
      * )

@@ -27,8 +27,6 @@ class CompetitionController extends Controller
      */
 
     /**
-     * Index 
-     *
      * @OA\Get(
      *     path="/competitions",
      *     summary="Displays a listing of the resource.",
@@ -39,7 +37,10 @@ class CompetitionController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *         @OA\JsonContent( ref="#/components/schemas/Competition")
+     *         @OA\JsonContent( 
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Competition")
+     *         )
      *     ),
      *     @OA\Response(
      *         response=405,
@@ -122,7 +123,6 @@ class CompetitionController extends Controller
      */
 
     /**
-     * 
      * @OA\Get(
      *     path="/competitions/{uuid}",
      *     summary="Displays specified resource.",

@@ -16,6 +16,43 @@ class CompetitionVenueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     /**
+     * @OA\Get(
+     *     path="/competitions/{uuid}/venues",
+     *     summary="List all the venues associated with a competition.",
+     *     description="List all the venues associated with a competition.",
+     *     operationId="venueList",
+     *     tags={"Competitions Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent( 
+     *          type="array",
+     *           @OA\Items(ref="#/components/schemas/CompetitionVenue"),
+     *          )
+     *     ),
+     *     @OA\Response(
+     *         response=405,
+     *         description="No competitions listed",
+     *         @OA\JsonContent(
+     *              @OA\Property(property="message", type="No competitions listed")
+     *              )
+     *          )
+     * )
+     *     
+     */
     public function index(Request $request, $id)
     {
         $competition = Competition::where('id', $id)->first();
@@ -36,6 +73,50 @@ class CompetitionVenueController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
+     */
+
+    /**
+     * @OA\Post(
+     *     path="/competitions/{uuid}/venues",
+     *     summary="Creating a new venue.",
+     *     description="Creating a new venue.",
+     *     operationId="createVenue",
+     *     tags={"Competitions Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/CompetitionVenue")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *           @OA\JsonContent(
+     *             ref="#/components/schemas/CompetitionVenue"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The competition does not exist.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to venue.")
+     *       )
+     *     ),
+     *     @OA\Response(
+     *      response=422,
+     *      description="New venue not created",
+     *      ) 
+     * )
+     *  )
      */
     public function store(Request $request, $id)
     {
@@ -72,6 +153,56 @@ class CompetitionVenueController extends Controller
      * @param  \App\Models\CompetitionVenue  $CompetitionVenue
      * @return \Illuminate\Http\Response
      */
+
+    /**
+     * @OA\Get(
+     *     path="/competitions/{uuid}/venues/{venue_id}",
+     *     summary="Show a single venue by its ID.",
+     *     description="Show a single venue by its ID.",
+     *     operationId="showVenue",
+     *     tags={"Competitions Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         name="venue_id",
+     *         in="path",
+     *         description="UUID of the venue.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/CompetitionVenue"
+     *     ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The competition does not exist.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to venue.")
+     *       )
+     *     ),
+     *     @OA\Response(
+     *      response=405,
+     *      description="Venue does not exist"
+     *      ) 
+     *     )
+     *)
+     *     
+     */
     public function show(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
@@ -95,6 +226,61 @@ class CompetitionVenueController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\CompetitionVenue  $CompetitionVenue
      * @return \Illuminate\Http\Response
+     */
+
+    /**
+     * @OA\Put(
+     *     path="/competitions/{uuid}/venues/{venue_id}",
+     *     summary="Update the venue.",
+     *     description="Update the venue.",
+     *     operationId="updateVenue",
+     *     tags={"Competitions Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="venue_id",
+     *         in="path",
+     *         description="UUID of the venue.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/CompetitionVenue")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *          @OA\JsonContent( ref="#/components/schemas/CompetitionVenue")
+     *     ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The competition does not exist.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to venue.")
+     *       )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to competition.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to venue.")
+     *       )
+     *     ) 
+     * )
+     *     
      */
     public function update(Request $request, $id, $subid)
     {
@@ -139,6 +325,49 @@ class CompetitionVenueController extends Controller
      * @param  \App\Models\CompetitionVenue  $CompetitionVenue
      * @return \Illuminate\Http\Response
      */
+
+     /**
+     * @OA\Delete(
+     *     path="/competitions/{uuid}/users/{user_id}",
+     *     summary="Deletes the user from the competition.",
+     *     description="Deletes the user from the competition.",
+     *     operationId="removeCompetitionUser",
+     *     tags={"Competitions Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         name="user_id",
+     *         in="path",
+     *         description="UUID of the user.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="User successfully deleted from competition.",
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to competition.",
+     *      @OA\JsonContent(
+     *         @OA\Property(property="message", type="Access denied to competition.")
+     *        )
+     *      ) 
+     * )
+     *     
+     */
     public function destroy(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();
@@ -154,7 +383,7 @@ class CompetitionVenueController extends Controller
         $address = CompetitionVenue::where('competition_id', $id)->where('id', $subid)->first();
 
         if(!$address){
-            return response()->json(['error' => 'The address does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The venue does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $address->delete();
@@ -162,6 +391,75 @@ class CompetitionVenueController extends Controller
         return response()->json(null, 204);
     }
 
+    /**
+     * Upload main image
+     * 
+     * @OA\Post(
+     *     path="/competitions/{uuid}/venues/{venue_id}/uploadMainImage",
+     *     summary="Upload venue main image to storage.",
+     *     description="Upload venue main image to storage.",
+     *     operationId="uploadVenueMainImage",
+     *     tags={"Competitions Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the competition",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *      @OA\Parameter(
+     *         name="venue_id",
+     *         in="path",
+     *         description="UUID of the venue",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Image file to upload",
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="image",
+     *                      description="Image file to upload",
+     *                      type="string",
+     *                      format="binary"
+     *                  )
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/CompetitionFull"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=401,
+     *      description="The competition does not exist.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="The competition does not exist.")
+     *              )
+     *      ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to competition.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to competition.")
+     *              )
+     *      ) 
+     * )
+     *     
+     */
     public function uploadMainImage(Request $request, $id, $subid)
     {
         $competition = Competition::where('id', $id)->first();

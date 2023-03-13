@@ -180,7 +180,10 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Competition"
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Competition"
+                                    }
                                 }
                             }
                         }
@@ -2175,6 +2178,689 @@
                     }
                 ]
             }
+        },
+        "/competitions/{uuid}/users": {
+            "get": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "List all the users associated with a competition.",
+                "description": "List all the users associated with a competition.",
+                "operationId": "competitionUserList",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CompetitionUser"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The competition does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Associate a new users with the competition.",
+                "description": "Associate a new users with the competition.",
+                "operationId": "createCompetitionUser",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompetitionUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompetitionUser"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The competition does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to competition.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to competition."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Errors when creating user"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/competitions/{uuid}/users/{user_id}": {
+            "get": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Show a single user by its ID.",
+                "description": "Show a single user by its ID.",
+                "operationId": "showCompetitionUser",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "UUID of the user.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompetitionUser"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Update the user associated with competition.",
+                "description": "Update the user associated with competition.",
+                "operationId": "updateCompetitionUser",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "UUID of the user.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompetitionUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompetitionUser"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to venue."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to competition.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to user."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Deletes the user from the competition.",
+                "description": "Deletes the user from the competition.",
+                "operationId": "removeCompetitionUser",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "UUID of the user.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User successfully deleted from competition."
+                    },
+                    "403": {
+                        "description": "Access denied to competition.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to competition."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/competitions/{uuid}/venues": {
+            "get": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "List all the venues associated with a competition.",
+                "description": "List all the venues associated with a competition.",
+                "operationId": "venueList",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CompetitionVenue"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "No competitions listed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "No competitions listed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Creating a new venue.",
+                "description": "Creating a new venue.",
+                "operationId": "createVenue",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompetitionVenue"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompetitionVenue"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to venue."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "New venue not created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/competitions/{uuid}/venues/{venue_id}": {
+            "get": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Show a single venue by its ID.",
+                "description": "Show a single venue by its ID.",
+                "operationId": "showVenue",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "venue_id",
+                        "in": "path",
+                        "description": "UUID of the venue.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompetitionVenue"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Update the venue.",
+                "description": "Update the venue.",
+                "operationId": "updateVenue",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "venue_id",
+                        "in": "path",
+                        "description": "UUID of the venue.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompetitionVenue"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompetitionVenue"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to venue."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to competition.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to venue."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/competitions/{uuid}/venues/{venue_id}/uploadMainImage": {
+            "post": {
+                "tags": [
+                    "Competitions Route"
+                ],
+                "summary": "Upload venue main image to storage.",
+                "description": "Upload venue main image to storage.",
+                "operationId": "uploadVenueMainImage",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the competition",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "venue_id",
+                        "in": "path",
+                        "description": "UUID of the venue",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Image file to upload",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "Image file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompetitionFull"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The competition does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The competition does not exist."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to competition.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to competition."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -2742,7 +3428,8 @@
                     "competition_id": {
                         "description": "The id of the competition.",
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "readOnly": true
                     },
                     "user_id": {
                         "description": "The id of the user associated with the competition.",
@@ -2791,7 +3478,8 @@
                     "id": {
                         "description": "The id of the venue",
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "readOnly": true
                     },
                     "venue_name": {
                         "description": "The name of the venue.",
@@ -2840,7 +3528,8 @@
                     "competition_id": {
                         "description": "The id of the competition the venue is associated with.",
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "readOnly": true
                     },
                     "venue_direction_instructions": {
                         "description": "Set instructions on how to reach the venue.",
@@ -2856,11 +3545,15 @@
                     },
                     "created_at": {
                         "description": "The time the event was created at.",
-                        "type": "timestamp"
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
                     },
                     "updated_at": {
                         "description": "The timestamp the event was last updated.",
-                        "type": "string"
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
                     }
                 },
                 "type": "object"
