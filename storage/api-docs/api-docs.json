@@ -18,7 +18,8 @@
                 "tags": [
                     "Authentication Route"
                 ],
-                "summary": "Add a new pet to the store.",
+                "summary": "Register a new user",
+                "description": "Register a new user",
                 "operationId": "authRegister",
                 "requestBody": {
                     "required": true,

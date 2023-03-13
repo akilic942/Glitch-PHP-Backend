@@ -14,12 +14,13 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     /**
-     * Add a new pet to the store.
      *
      * @OA\Post(
      *     path="/auth/register",
      *     tags={"Authentication Route"},
      *     operationId="authRegister",
+     *     description="Register a new user",
+     *     summary="Register a new user",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent( ref="#/components/schemas/User")
