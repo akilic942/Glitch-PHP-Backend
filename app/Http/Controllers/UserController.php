@@ -28,53 +28,29 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    
+
+    /**
+     * @OA\Get(
+     *     path="/users",
+     *     summary="Retrieve a list of users.",
+     *     description="Retrieve a list of users.",
+     *     operationId="userList",
+     *     tags={"Users Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent( 
+     *          type="array",
+     *           @OA\Items(ref="#/components/schemas/User"),
+     *          )
+     *     ),
+     * )
+     *     
+     */
     public function index()
     {
         return UserResource::collection(User::orderBy('created_at', 'desc')->paginate(25));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
     }
 
     /**
@@ -86,29 +62,61 @@ class UserController extends Controller
      */
 
 
+    /**
+     * @OA\Put(
+     *     path="/users",
+     *     summary="Updates a user but requires the JWT of the user being updated.",
+     *     description="Updates a user but requires the JWT of the user being updated.",
+     *     operationId="updateUser",
+     *     tags={"Users Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *          @OA\JsonContent( ref="#/components/schemas/User")
+     *     ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The user does not exist.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="The user does not exist..")
+     *       )
+     *     ),
+     *     @OA\Response(
+     *      response=422,
+     *      description="Validation errors occured.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Validation errors occured.")
+     *       )
+     *     ) 
+     * )
+     *     
+     */
     public function update(Request $request)
     {
         $user = User::where('id', $request->user()->id)->first();
 
-        if(!$user){
+        if (!$user) {
             return response()->json(['User does not exist'], 404);
         }
 
         $input = $request->all();
 
-        if(isset($input['email'])) {
+        if (isset($input['email'])) {
             unset($input['email']);
         }
 
-        if(isset($input['password'])) {
+        if (isset($input['password'])) {
             unset($input['password']);
         }
 
-        if(isset($input['avatar'])) {
+        if (isset($input['avatar'])) {
             unset($input['avatar']);
         }
-
-
 
         $data = $input + $user->toArray();
 
@@ -119,7 +127,7 @@ class UserController extends Controller
         }
 
         // For some weird reason, I have to get a new uer object.
-        
+
         $user = User::where('id', $request->user()->id)->first();
 
         //return response()->json($data, 422);
@@ -128,151 +136,352 @@ class UserController extends Controller
         return UserResource::make($user);
     }
 
-
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @OA\Post(
+     *     path="/users/{uuid}/follow",
+     *     summary="Toggle following a user. So if not following, accessing this route will follow the user. And if the user is being followed, it will unfollow them.",
+     *     description="Toggle following a user. So if not following, accessing this route will follow the user. And if the user is being followed, it will unfollow them.",
+     *     operationId="userToggleFollow",
+     *     tags={"Users Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the user to follow/unfollow.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *          @OA\JsonContent( ref="#/components/schemas/Follow")
+     *     ),
+     * )
+     *     
      */
-    public function destroy(User $user)
+    public function toggleFollow(Request $request, $id)
     {
-        //
-    }
-
-    public function toggleFollow(Request $request, $id) {
 
         $following = User::where('id', $id)->first();
 
         $follower = FollowFacade::toggleFollowing($following, $request->user());
 
-        if($follower){
+        if ($follower) {
             return new FollowResource($follower);
         }
 
         return  new UnfollowResource($following);
     }
 
-    public function profile(Request $request, $id) {
+    /**
+     * @OA\Get(
+     *     path="/users/{uuid}/profile",
+     *     summary="Show a single user by their ID.",
+     *     description="Show a single user by their ID.",
+     *     operationId="showUser",
+     *     tags={"Users Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the user.",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/UserFull"
+     *     ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="The user does not exist.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="The competition does not exist.")
+     *       )
+     *     ),
+     *     )
+     *)
+     *     
+     */
+    public function profile(Request $request, $id)
+    {
 
         $user = User::where('id', $id)->first();
 
         return UserFullResource::make($user);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/users/me",
+     *     summary="Retrieves the user based on the current auth token being used.",
+     *     description="Retrieves the user based on the current auth token being used.",
+     *     operationId="showMe",
+     *     tags={"Users Route"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/UserFull"
+     *     ),
+     *     @OA\Response(
+     *      response=401,
+     *      description="Unauthorized.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Unauthorized.")
+     *       )
+     *     ),
+     *     )
+     *)
+     *     
+     */
+    public function me(Request $request)
+    {
 
-  public function me(Request $request) {
+        $user = $request->user();
 
-    $user = $request->user();
+        if (!$user) {
+            return response()->json(['Unauthorized'], 401);
+        }
 
-    if(!$user){
-        return response()->json(['Unauthorized'], 401);
+        $user = User::where('id', $user->id)->first();
+
+        return UserFullResource::make($user);
     }
 
-    $user = User::where('id', $user->id)->first();
+    /**
+     * @OA\Get(
+     *     path="/users/oneTimeToken",
+     *     summary="Retrieves the one time login token based on the current auth token being used.",
+     *     description="Retrieves the one time login token based on the current auth token being used.",
+     *     operationId="userOneTimeLoginToken",
+     *     tags={"Users Route"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/UserOneTimeToken"
+     *     ),
+     *     @OA\Response(
+     *      response=401,
+     *      description="Unauthorized.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Unauthorized.")
+     *       )
+     *     ),
+     *     )
+     *)
+     *     
+     */
+    public function onetimetoken(Request $request)
+    {
 
-    return UserFullResource::make($user);
-  }
+        $user = User::where('id', $request->user()->id)->first();
 
-  public function onetimetoken(Request $request) {
+        $user = AuthenticationFacade::createOneTimeLoginToken($user);
 
-    $user = User::where('id', $request->user()->id)->first();
+        return UserOneTimeTokenResource::make($user);
+    }
 
-    $user = AuthenticationFacade::createOneTimeLoginToken($user);
-
-    return UserOneTimeTokenResource::make($user);
-  }
-
-  public function uploadAvatarImage(StoreImageRequest $request)
-   {
-       /*$this->validate($request, [
+    /**
+     * @OA\Post(
+     *     path="/users/uploadAvatarImage",
+     *     summary="Upload the user's avatar. Uses the current users auth token to select which user being updated.",
+     *     description="Upload the user's avatar. Uses the current users auth token to select which user being updated.",
+     *     operationId="userUploadAvatarImage",
+     *     tags={"Users Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Image file to upload",
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="image",
+     *                      description="Image file to upload",
+     *                      type="string",
+     *                      format="binary"
+     *                  )
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/UserFull"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=401,
+     *      description="Unauthorized access to user.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Unauthorized access to user.")
+     *              )
+     *      ),
+     * )
+     *     
+     */
+    public function uploadAvatarImage(StoreImageRequest $request)
+    {
+        /*$this->validate($request, [
             'image' => 'required|mimes:png,jpg,gif|max:9999',
         ]);*/
 
         $user = $request->user();
 
-        if(!$user){
+        if (!$user) {
             return response()->json(['Unauthorized'], 401);
         }
 
         $base_location = 'images';
 
         // Handle File Upload
-        if($request->hasFile('image')) {              
+        if ($request->hasFile('image')) {
             //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
             //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
             //or you can specify the visibility of the file in the second parameter of the store() method like:
             //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
-            
+
             $imagePath = $request->file('image')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
-          
         } else {
             return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
         }
-    
+
         //We save new path
         $user->forceFill([
             'avatar' => $imagePath
         ]);
 
         $user->save();
-       
+
         return UserFullResource::make($user);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/users/uploadBannerImage",
+     *     summary="Upload the user's banner. Uses the current users auth token to select which user being updated.",
+     *     description="Upload the user's banner. Uses the current users auth token to select which user being updated.",
+     *     operationId="userUploadBannerImage",
+     *     tags={"Users Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Image file to upload",
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="image",
+     *                      description="Image file to upload",
+     *                      type="string",
+     *                      format="binary"
+     *                  )
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/UserFull"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=401,
+     *      description="Unauthorized access to user.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Unauthorized access to user.")
+     *              )
+     *      ),
+     * )
+     *     
+     */
     public function uploadBannerImage(StoreImageRequest $request)
     {
-       /*$this->validate($request, [
+        /*$this->validate($request, [
             'image' => 'required|mimes:png,jpg,gif|max:9999',
         ]);*/
 
         $user = $request->user();
 
-        if(!$user){
+        if (!$user) {
             return response()->json(['Unauthorized'], 401);
         }
 
         $base_location = 'images';
 
         // Handle File Upload
-        if($request->hasFile('image')) {              
+        if ($request->hasFile('image')) {
             //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
             //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
             //or you can specify the visibility of the file in the second parameter of the store() method like:
             //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
-            
+
             $imagePath = $request->file('image')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
-          
         } else {
             return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
         }
-    
+
         //We save new path
         $user->forceFill([
             'banner_image' => $imagePath
         ]);
 
         $user->save();
-       
+
         return UserFullResource::make($user);
     }
 
-    public function createDonationPage(StoreImageRequest $request) {
+    /**
+     * @OA\Post(
+     *     path="/users/createDonationPage",
+     *     summary="Creates a donation page for the user to accept donations. Users current auth token.",
+     *     description="Creates a donation page for the user to accept donations. Users current auth token.",
+     *     operationId="userCreateDonationPage",
+     *     tags={"Users Route"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/UserFull"
+     *     ),
+     *     @OA\Response(
+     *      response=401,
+     *      description="Unauthorized.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Unauthorized.")
+     *       )
+     *     ),
+     *     )
+     *)
+     *     
+     */
+    public function createDonationPage(StoreImageRequest $request)
+    {
 
         $user = $request->user();
 
-        if(!$user){
+        if (!$user) {
             return response()->json(['Unauthorized'], 401);
         }
 
-        if(!$user->stripe_express_account_id) {
+        if (!$user->stripe_express_account_id) {
             return response()->json(['Must be authenticated with Stripe first.'], HttpStatusCodes::HTTP_NO_CONTENT);
         }
 
         UsersFacade::runAllDonationLinkCreation($user);
 
         return UserFullResource::make($user);
-
     }
-
 }

@@ -2861,6 +2861,365 @@
                     }
                 ]
             }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users Route"
+                ],
+                "summary": "Retrieve a list of users.",
+                "description": "Retrieve a list of users.",
+                "operationId": "userList",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Users Route"
+                ],
+                "summary": "Updates a user but requires the JWT of the user being updated.",
+                "description": "Updates a user but requires the JWT of the user being updated.",
+                "operationId": "updateUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The user does not exist.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "The user does not exist.."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors occured.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Validation errors occured."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/users/{uuid}/follow": {
+            "post": {
+                "tags": [
+                    "Users Route"
+                ],
+                "summary": "Toggle following a user. So if not following, accessing this route will follow the user. And if the user is being followed, it will unfollow them.",
+                "description": "Toggle following a user. So if not following, accessing this route will follow the user. And if the user is being followed, it will unfollow them.",
+                "operationId": "userToggleFollow",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the user to follow/unfollow.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Follow"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/users/{uuid}/profile": {
+            "get": {
+                "tags": [
+                    "Users Route"
+                ],
+                "summary": "Show a single user by their ID.",
+                "description": "Show a single user by their ID.",
+                "operationId": "showUser",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the user.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserFull"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/users/me": {
+            "get": {
+                "tags": [
+                    "Users Route"
+                ],
+                "summary": "Retrieves the user based on the current auth token being used.",
+                "description": "Retrieves the user based on the current auth token being used.",
+                "operationId": "showMe",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserFull"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/oneTimeToken": {
+            "get": {
+                "tags": [
+                    "Users Route"
+                ],
+                "summary": "Retrieves the one time login token based on the current auth token being used.",
+                "description": "Retrieves the one time login token based on the current auth token being used.",
+                "operationId": "userOneTimeLoginToken",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserOneTimeToken"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/uploadAvatarImage": {
+            "post": {
+                "tags": [
+                    "Users Route"
+                ],
+                "summary": "Upload the user's avatar. Uses the current users auth token to select which user being updated.",
+                "description": "Upload the user's avatar. Uses the current users auth token to select which user being updated.",
+                "operationId": "userUploadAvatarImage",
+                "requestBody": {
+                    "description": "Image file to upload",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "Image file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserFull"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access to user.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Unauthorized access to user."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/users/uploadBannerImage": {
+            "post": {
+                "tags": [
+                    "Users Route"
+                ],
+                "summary": "Upload the user's banner. Uses the current users auth token to select which user being updated.",
+                "description": "Upload the user's banner. Uses the current users auth token to select which user being updated.",
+                "operationId": "userUploadBannerImage",
+                "requestBody": {
+                    "description": "Image file to upload",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "description": "Image file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserFull"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized access to user.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Unauthorized access to user."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/users/createDonationPage": {
+            "post": {
+                "tags": [
+                    "Users Route"
+                ],
+                "summary": "Creates a donation page for the user to accept donations. Users current auth token.",
+                "description": "Creates a donation page for the user to accept donations. Users current auth token.",
+                "operationId": "userCreateDonationPage",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserFull"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -3820,6 +4179,12 @@
                                     "$ref": "#/components/schemas/User"
                                 }
                             },
+                            "id": {
+                                "description": "The id of the team.",
+                                "type": "string",
+                                "format": "uuid",
+                                "readOnly": true
+                            },
                             "name": {
                                 "description": "The name of the team.",
                                 "type": "string"
@@ -3986,6 +4351,12 @@
                 "title": "User model",
                 "description": "The model describes the user.",
                 "properties": {
+                    "id": {
+                        "description": "The id of the user.",
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
                     "first_name": {
                         "description": "The users first name",
                         "type": "string"
@@ -4091,11 +4462,13 @@
                     "created_at": {
                         "description": "The date the user account was created.",
                         "type": "string",
+                        "format": "date-time",
                         "readOnly": true
                     },
                     "updated_at": {
                         "description": "The date the user account was last updated.",
                         "type": "string",
+                        "format": "date-time",
                         "readOnly": true
                     }
                 },

@@ -31,60 +31,67 @@ class TeamResource extends JsonResource
      *              @OA\Items(ref="#/components/schemas/User"),
      *              type="array"
      *          ),
-        *          @OA\Property(
-        *              property="name",
-        *              description="The name of the team.",
-        *              type="string"
-        *          ),
-        *          @OA\Property(
-        *              property="description",
-        *              description="A description of the team",
-        *              type="string"
-        *          ),
-        *          @OA\Property(
-        *              property="main_image",
-        *              description="The main image for the team. Is a read-only field.",
-        *              type="string"
-        *          ),
-        *          @OA\Property(
-        *              property="banner_image",
-        *              description="The banner image for the team. Is a read-only field.",
-        *              type="string"
-        *          ),
-        *          @OA\Property(
-        *              property="logo",
-        *              description="The logo image for the team. Is a read-only field.",
-        *              type="string"
-        *          ),
-        *          @OA\Property(
-        *              property="contact_name",
-        *              description="The name of the contact person to contact about the team.",
-        *              type="string",
-        *              maxLength=255,
-        *          ),
-        *          @OA\Property(
-        *              property="contact_email",
-        *              description="The contact email to send inquires too about the team.",
-        *              type="string",
-        *              maxLength=255,
-        *          ),
-        *          @OA\Property(
-        *              property="contact_phone_number",
-        *              description="The phone number to call for inquires about the team.",
-        *              type="string",
-        *              maxLength=255,
-        *          ),
-        *          @OA\Property(
-        *              property="website",
-        *              description="The phone number to call for inquires about the team.",
-        *              type="string",
-        *              maxLength=255,
-        *          ),
-        *          @OA\Property(
-        *              property="join_process",
-        *              description="The process for another user joing a team.",
-        *              type="string"
-        *          ),
+     *             @OA\Property(
+     *                  property="id",
+     *                  description="The id of the team.",
+     *                  type="string",
+     *                  format="uuid",
+     *                  readOnly=true,
+     *          ),
+     *          @OA\Property(
+     *              property="name",
+     *              description="The name of the team.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="description",
+     *              description="A description of the team",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="main_image",
+     *              description="The main image for the team. Is a read-only field.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="banner_image",
+     *              description="The banner image for the team. Is a read-only field.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="logo",
+     *              description="The logo image for the team. Is a read-only field.",
+     *              type="string"
+     *          ),
+     *          @OA\Property(
+     *              property="contact_name",
+     *              description="The name of the contact person to contact about the team.",
+     *              type="string",
+     *              maxLength=255,
+     *          ),
+     *          @OA\Property(
+     *              property="contact_email",
+     *              description="The contact email to send inquires too about the team.",
+     *              type="string",
+     *              maxLength=255,
+     *          ),
+     *          @OA\Property(
+     *              property="contact_phone_number",
+     *              description="The phone number to call for inquires about the team.",
+     *              type="string",
+     *              maxLength=255,
+     *          ),
+     *          @OA\Property(
+     *              property="website",
+     *              description="The phone number to call for inquires about the team.",
+     *              type="string",
+     *              maxLength=255,
+     *          ),
+     *          @OA\Property(
+     *              property="join_process",
+     *              description="The process for another user joing a team.",
+     *              type="string"
+     *          ),
      *             
      *        ),
      *         @OA\Schema(ref="#/components/schemas/BaseSocialFields"),

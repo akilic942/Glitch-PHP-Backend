@@ -937,8 +937,6 @@ class CompetitionController extends Controller
      */
 
     /**
-     * Upload main image
-     * 
      * @OA\Post(
      *     path="/competitions/{uuid}/uploadMainImage",
      *     summary="Upload main image to storage.",

@@ -22,6 +22,13 @@ class UserResource extends JsonResource
      *     title="User model",
      *     description="The model describes the user.",
      *     @OA\Property(
+     *          property="id",
+     *          description="The id of the user.",
+     *          type="string",
+     *          format="uuid",
+     *          readOnly=true,
+     *     ),
+     *     @OA\Property(
      *          property="first_name",
      *          description="The users first name",
      *          type="string"
@@ -153,13 +160,13 @@ class UserResource extends JsonResource
      *      @OA\Property(
      *          property="created_at",
      *          description="The date the user account was created.",
-     *          type="string",
+     *          type="datetime",
      *          readOnly=true
      *     ),
      *     @OA\Property(
      *          property="updated_at",
      *          description="The date the user account was last updated.",
-     *          type="string",
+     *          type="datetime",
      *          readOnly=true
      *     ),
      * 
