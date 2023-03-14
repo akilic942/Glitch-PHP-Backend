@@ -31,6 +31,26 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     /**
+     * @OA\Get(
+     *     path="/events",
+     *     summary="Displays a listing of events.",
+     *     description="Displays a listing of events.",
+     *     operationId="resourceEventList",
+     *     tags={"Event Route"},
+     *     security={ {"bearer": {} }},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent( 
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Event")
+     *         )
+     *     ),
+     * )
+     *     
+     */
     public function index()
     {
         $events = Event::query();
@@ -45,6 +65,33 @@ class EventController extends Controller
      *
      * @param  \App\Http\Requests\StoreEventRequest  $request
      * @return \Illuminate\Http\Response
+     */
+
+     /**
+     * @OA\Post(
+     *     path="/events",
+     *     summary="Create a new event.",
+     *     description="Create a new event.",
+     *     operationId="newEventResourceStorage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *           @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *      response=422,
+     *      description="Validation errors",
+     *      ) 
+     * )
+     *  )
      */
     public function store(StoreEventRequest $request)
     {
@@ -73,6 +120,39 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
+
+     /**
+     * @OA\Get(
+     *     path="/events/{uuid}",
+     *     summary="Retrieve a single event resource.",
+     *     description="Retrieve a single event resource.",
+     *     operationId="showEventStorage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         ),
+     *     @OA\Response(
+     *      response=404,
+     *      description="Competition does not exist."
+     *      ) 
+     *     )
+     *)
+     *     
+     */
     public function show($id)
     {
         $event = Event::where('id', $id)->first();
@@ -87,6 +167,44 @@ class EventController extends Controller
      * @param  \App\Http\Requests\UpdateEventRequest  $request
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
+     */
+
+     /**
+     * @OA\Put(
+     *     path="/events/{uuid}",
+     *     summary="Update a event.",
+     *     description="Update a event.",
+     *     operationId="updateEventStorage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *          @OA\JsonContent( ref="#/components/schemas/Event")
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to event.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to the event resource.")
+     *       )
+     *     ) 
+     * )
+     *     
      */
     public function update(UpdateEventRequest $request, $id)
     {
@@ -115,6 +233,43 @@ class EventController extends Controller
         return new EventFullResource($event);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/events/{uuid}/invirtu",
+     *     summary="Update an Invirtu event.",
+     *     description="Update an Invirtu event.",
+     *     operationId="updateInvirtuEventStorage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *          @OA\JsonContent( ref="#/components/schemas/Event")
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to Invirtu event.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to the Invirtu event resource.")
+     *       )
+     *     ) 
+     * )
+     *     
+     */
     public function updateInvirtuEvent(UpdateEventRequest $request, $id)
     {
         $event = Event::where('id', $id)->first();
@@ -153,6 +308,39 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
+
+     /**
+     * @OA\Delete(
+     *     path="/events/{uuid}",
+     *     summary="Delete an event.",
+     *     description="Delete an event.",
+     *     operationId="destoryEventStorage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Event successfully deleted",
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to event.",
+     *      @OA\JsonContent(
+     *         @OA\Property(property="message", type="Access denied to event.")
+     *        )
+     *      ) 
+     * )
+     *     
+     */
     public function destroy(UpdateEventRequest $request, $id)
     {
         $event = Event::where('id', $id)->first();
@@ -180,6 +368,54 @@ class EventController extends Controller
         return EventResource::collection($data);
     }
 
+    /**
+     * @OA\Post(
+     *     path="events/{uuid}/addRTMPSource",
+     *     summary="adds RTMP source to storage.",
+     *     description="adds RTMP source to storage.",
+     *     operationId="addRTMPSource",
+     *     tags={"Competitions Route"},
+     *     security={{"bearer": {}}},
+     * 
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the RTMP source",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *      required=true,
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              @OA\Property(
+     *                  property="rtmp_source",
+     *                  type="string",
+     *                  format="uuid",
+     *                  description="The id of the team to add to the RTMP source."
+     *              ),
+     *          )
+     *      )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Cannot add this RTMP source",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Cannot add this RTMP source.")
+     *              )
+     *      ) 
+     * )
+     *     
+     */
     public function addRTMPSource(UpdateEventRequest $request, $id) {
 
         $event = Event::where('id', $id)->first();
@@ -205,6 +441,43 @@ class EventController extends Controller
 
     }
 
+    /**
+     * @OA\Put(
+     *     path="/events/{uuid}/updateRTMPSource/{subid}",
+     *     summary="Update the RTMP source.",
+     *     description="Update the RTMP source.",
+     *     operationId="updateRTMPSourceStorage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the RTMP source",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *          @OA\JsonContent( ref="#/components/schemas/Event")
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to RTMP source.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Access denined to RTMP source resource.")
+     *       )
+     *     ) 
+     * )
+     *     
+     */
     public function updateRTMPSource(UpdateEventRequest $request, $id, $subid) {
 
         $event = Event::where('id', $id)->first();
@@ -230,6 +503,38 @@ class EventController extends Controller
 
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/events/{uuid}/removeRTMPSource/{subid}",
+     *     summary="Delete a RTMP source.",
+     *     description="Delete a RTMP source.",
+     *     operationId="destoryRTMPSourceStorage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the RTMP source",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="RTMP source successfully deleted",
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to RTMP source.",
+     *      @OA\JsonContent(
+     *         @OA\Property(property="message", type="Access denied to RTMP source.")
+     *        )
+     *      ) 
+     * )
+     *     
+     */
     public function removeRTMPSource(UpdateEventRequest $request, $id, $subid) {
 
         $event = Event::where('id', $id)->first();
@@ -255,6 +560,56 @@ class EventController extends Controller
 
     }
 
+    /**
+     * @OA\Post(
+     *     path="/events/{uuid}/uploadMainImage",
+     *     summary="Upload main image for event.",
+     *     description="Upload main image for event.",
+     *     operationId="uploadMainEventImage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Image file to upload",
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="image",
+     *                      description="Image file to upload",
+     *                      type="string",
+     *                      format="binary"
+     *                  )
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=400,
+     *      description="Access denied to live stream.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to live stream.")
+     *              )
+     *      ) 
+     * )
+     *     
+     */
     public function uploadMainImage(StoreImageRequest $request, $id)
     {
         $event = Event::where('id', $id)->first();
@@ -293,6 +648,58 @@ class EventController extends Controller
         return EventFullResource::make($event);
     }
 
+    /**
+     * Upload banner image
+     * 
+     * @OA\Post(
+     *     path="/events/{uuid}/uploadBannerImage",
+     *     summary="Upload banner image to storage.",
+     *     description="Upload banner image to storage.",
+     *     operationId="uploadBannerEventImage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Image file to upload",
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="image",
+     *                      description="Image file to upload",
+     *                      type="string",
+     *                      format="binary"
+     *                  )
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to event.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to event.")
+     *              )
+     *      ) 
+     * )
+     *     
+     */
     public function uploadBannerImage(StoreImageRequest $request, $id)
     {
         $event = Event::where('id', $id)->first();
@@ -331,6 +738,43 @@ class EventController extends Controller
         return EventFullResource::make($event);
     }
 
+    /**
+     * Enable broadcast mode
+     * 
+     * @OA\Post(
+     *     path="/events/{uuid}/enableBroadcastMode",
+     *     summary="Enable broadcast mode.",
+     *     description="Enable broadcast mode.",
+     *     operationId="enableBroadcastMode",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Enable broadcast mode",
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to live stream.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to live stream.")
+     *              )
+     *      ) 
+     * )
+     *     
+     */
     public function enableBroadcastMode(UpdateEventRequest $request, $id) {
 
         $event = Event::where('id', $id)->first();
@@ -355,6 +799,43 @@ class EventController extends Controller
 
     }
 
+    /**
+     * Enable livestream mode
+     * 
+     * @OA\Post(
+     *     path="/events/{uuid}/enableLivestreamMode",
+     *     summary="Enable livestream mode.",
+     *     description="Enable livestream mode.",
+     *     operationId="enableLivestreamMode",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Enable livestream mode",
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to live stream.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to lives stream.")
+     *              )
+     *      ) 
+     * )
+     *     
+     */
     public function enableLivestreamMode(UpdateEventRequest $request, $id) {
 
         $event = Event::where('id', $id)->first();
@@ -388,6 +869,43 @@ class EventController extends Controller
 
     }
 
+    /**
+     * Restream live
+     * 
+     * @OA\Post(
+     *     path="/events/{uuid}/syncAsLive",
+     *     summary="Restream live.",
+     *     description="Restream live.",
+     *     operationId="syncLive",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Sync live",
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Cannot add restream to event.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Cannot add restream to event.")
+     *              )
+     *      ) 
+     * )
+     *     
+     */
     public function syncAsLive(UpdateEventRequest $request, $id) {
 
         $event = Event::where('id', $id)->first();
@@ -414,6 +932,43 @@ class EventController extends Controller
 
     }
 
+    /**
+     * Send on screen content
+     * 
+     * @OA\Post(
+     *     path="/events/{uuid}/sendOnScreenContent",
+     *     summary="Sends on screen content.",
+     *     description="Sends on screen content.",
+     *     operationId="sendOnScreenContent",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Sync live",
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to live stream.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to live stream.")
+     *              )
+     *      ) 
+     * )
+     *     
+     */
     public function sendOnScreenContent(UpdateEventRequest $request, $id) {
 
         $event = Event::where('id', $id)->first();
@@ -450,6 +1005,65 @@ class EventController extends Controller
 
     }
 
+    /**
+     * Upload overlay image
+     * 
+     * @OA\Post(
+     *     path="/events/{uuid}/addOverlay",
+     *     summary="Upload overlay image to storage.",
+     *     description="Upload overlay image to storage.",
+     *     operationId="uploadOverlayImage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Image file to upload",
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="image",
+     *                      description="Image file to upload",
+     *                      type="string",
+     *                      format="binary"
+     *                  )
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=400,
+     *      description="The stream does not exist.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="The stream does not exist.")
+     *              )
+     *      ),
+     *      @OA\Response(
+     *      response=403,
+     *      description="Access denied to live stream.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to live stream.")
+     *              )
+     *      )
+     * )
+     *     
+     */
     public function uploadOverlay(StoreImageRequest $request, $id)
     {
         $event = Event::where('id', $id)->first();
@@ -497,6 +1111,38 @@ class EventController extends Controller
         return EventFullResource::make($event);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/events/{uuid}/removeOverlay/{subid}",
+     *     summary="Delete a overlay.",
+     *     description="Delete a overlay.",
+     *     operationId="destoryOverlayStorage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="overlay successfully deleted",
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to overlay.",
+     *      @OA\JsonContent(
+     *         @OA\Property(property="message", type="Access denied to live stream.")
+     *        )
+     *      ) 
+     * )
+     *     
+     */
     public function removeOverlay(StoreImageRequest $request, $id, $subid)
     {
 
@@ -523,6 +1169,65 @@ class EventController extends Controller
 
     }
 
+    /**
+     * Enables overlay
+     * 
+     * @OA\Post(
+     *     path="/events/{uuid}/enableOverlay/{subid}",
+     *     summary="enable overlay image in storage.",
+     *     description="enable overlay image in storage.",
+     *     operationId="enableOverlayImage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Image file to upload",
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="image",
+     *                      description="Image file to upload",
+     *                      type="string",
+     *                      format="binary"
+     *                  )
+     *              )
+     *          )
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=400,
+     *      description="The stream does not exist.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="The stream does not exist.")
+     *              )
+     *      ),
+     *      @OA\Response(
+     *      response=403,
+     *      description="Access denied to live stream.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to live stream.")
+     *              )
+     *      )
+     * )
+     *     
+     */
     public function enableOverlay(StoreImageRequest $request, $id, $subid)
     {
 
@@ -548,6 +1253,38 @@ class EventController extends Controller
         return EventFullResource::make($event);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/events/{uuid}/disableOverlay",
+     *     summary="Disable an overlay.",
+     *     description="Disable an overlay.",
+     *     operationId="disableOverlay",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="overlay successfully disabled",
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to overlay.",
+     *      @OA\JsonContent(
+     *         @OA\Property(property="message", type="Access denied to live stream.")
+     *        )
+     *      ) 
+     * )
+     *     
+     */
     public function disableOverlay(StoreImageRequest $request, $id)
     {
 
@@ -567,6 +1304,43 @@ class EventController extends Controller
         return EventFullResource::make($event);
     }
 
+    /**
+     * Enable donations
+     * 
+     * @OA\Post(
+     *     path="/events/{uuid}/enableDonations",
+     *     summary="Enable donations.",
+     *     description="Enable donations.",
+     *     operationId="enableDonations",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          description="Enable donations",
+     *      ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *     @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to live stream.",
+     *      @OA\JsonContent(
+     *              @OA\Property(property="message", type="Access denied to lives stream.")
+     *              )
+     *      ) 
+     * )
+     *     
+     */
     public function enableDonations(StoreImageRequest $request, $id)
     {
 
@@ -592,6 +1366,38 @@ class EventController extends Controller
         return EventFullResource::make($event);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/events/{uuid}/disableDonations",
+     *     summary="Disable donations.",
+     *     description="Disable donations.",
+     *     operationId="disableDonations",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         description="UUID of the event",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=204,
+     *         description="Donations successfully disabled",
+     *     ),
+     *     @OA\Response(
+     *      response=403,
+     *      description="Access denied to overlay.",
+     *      @OA\JsonContent(
+     *         @OA\Property(property="message", type="Access denied to live stream.")
+     *        )
+     *      ) 
+     * )
+     *     
+     */
     public function disableDonations(StoreImageRequest $request, $id)
     {
 
