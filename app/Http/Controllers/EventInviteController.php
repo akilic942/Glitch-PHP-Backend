@@ -39,6 +39,40 @@ class EventInviteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     /**
+     * @OA\Post(
+     *     path="/events/{uuid}/sendInvite",
+     *     summary="Create a new invite.",
+     *     description="Create a new invite.",
+     *     operationId="newInviteResourceStorage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *           @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *      response=422,
+     *      description="Validation errors",
+     *      ) ,
+     *     @OA\Response(
+     *      response=403,
+     *      description="Invite not stored.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Cannot invite user to the stream.")
+     *       )
+     *     )
+     * )
+     *  )
+     */
     public function store(Request $request, $id)
     {
 
@@ -120,6 +154,40 @@ class EventInviteController extends Controller
         //
     }
 
+
+    /**
+     * @OA\Post(
+     *     path="/events/{uuid}/acceptInvite",
+     *     summary="Accept new invite.",
+     *     description="Accept new invite.",
+     *     operationId="acceptInviteResourceStorage",
+     *     tags={"Event Route"},
+     *     security={{"bearer": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success",
+     *           @OA\JsonContent(
+     *             ref="#/components/schemas/Event"
+     *         ),
+     *     ),
+     *     @OA\Response(
+     *      response=422,
+     *      description="Validation errors",
+     *      ) ,
+     *     @OA\Response(
+     *      response=403,
+     *      description="Invite not stored.",
+     *      @OA\JsonContent(
+     *          @OA\Property(property="message", type="Cannot invite user to the stream.")
+     *       )
+     *     )
+     * )
+     *  )
+     */
     public function acceptInvite(Request $request, $id){
 
         $event = Event::where('id', $id)->first();
