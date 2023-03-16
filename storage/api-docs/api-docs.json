@@ -3234,7 +3234,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -3281,7 +3281,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -3390,7 +3390,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -3461,7 +3461,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -3525,7 +3525,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -3575,7 +3575,14 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "RTMP source successfully deleted"
+                        "description": "RTMP source successfully deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventFull"
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "Access denied to RTMP source.",
@@ -3644,7 +3651,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -3716,7 +3723,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -3770,7 +3777,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -3824,7 +3831,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -3878,7 +3885,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -3932,7 +3939,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -4004,7 +4011,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -4069,7 +4076,14 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "overlay successfully deleted"
+                        "description": "overlay successfully deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventFull"
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "Access denied to overlay.",
@@ -4138,7 +4152,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -4203,7 +4217,14 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "overlay successfully disabled"
+                        "description": "overlay successfully disabled",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventFull"
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "Access denied to overlay.",
@@ -4304,7 +4325,14 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "Donations successfully disabled"
+                        "description": "Donations successfully disabled",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventFull"
+                                }
+                            }
+                        }
                     },
                     "403": {
                         "description": "Access denied to overlay.",

@@ -23,7 +23,7 @@ class EventController extends Controller
 
     public function __construct()
     {
-      $this->middleware('auth:api', ['except' => ['index', 'show']]);
+        $this->middleware('auth:api', ['except' => ['index', 'show']]);
     }
 
     /**
@@ -32,7 +32,7 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
+    /**
      * @OA\Get(
      *     path="/events",
      *     summary="Displays a listing of events.",
@@ -67,7 +67,7 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
+    /**
      * @OA\Post(
      *     path="/events",
      *     summary="Create a new event.",
@@ -107,7 +107,7 @@ class EventController extends Controller
 
         $event = Event::create($input);
 
-        if($event) {
+        if ($event) {
             RolesFacade::eventMakeSuperAdmin($event, $request->user());
         }
 
@@ -121,7 +121,7 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
+    /**
      * @OA\Get(
      *     path="/events/{uuid}",
      *     summary="Retrieve a single event resource.",
@@ -143,7 +143,7 @@ class EventController extends Controller
      *         response=200,
      *         description="Success",
      *         @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *             ref="#/components/schemas/EventFull"
      *         ),
      *     @OA\Response(
      *      response=404,
@@ -169,7 +169,7 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
+    /**
      * @OA\Put(
      *     path="/events/{uuid}",
      *     summary="Update a event.",
@@ -194,7 +194,7 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *          @OA\JsonContent( ref="#/components/schemas/Event")
+     *          @OA\JsonContent( ref="#/components/schemas/EventFull")
      *     ),
      *     @OA\Response(
      *      response=403,
@@ -210,12 +210,12 @@ class EventController extends Controller
     {
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
-            return response()->json(['error' => 'Access denied to live stream.' , 'message' => 'Access denied to live stream.'], 403);
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
+            return response()->json(['error' => 'Access denied to live stream.', 'message' => 'Access denied to live stream.'], 403);
         }
 
         $input = $request->all();
@@ -258,7 +258,7 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *          @OA\JsonContent( ref="#/components/schemas/Event")
+     *          @OA\JsonContent( ref="#/components/schemas/EventFull")
      *     ),
      *     @OA\Response(
      *      response=403,
@@ -274,12 +274,12 @@ class EventController extends Controller
     {
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
-            return response()->json(['error' => 'Access denied to live stream.' , 'message' => 'Access denied to live stream.'], 403);
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
+            return response()->json(['error' => 'Access denied to live stream.', 'message' => 'Access denied to live stream.'], 403);
         }
 
         // check if currently authenticated user is the owner of the book
@@ -291,11 +291,11 @@ class EventController extends Controller
 
         $result = EventsFacade::updateInvirtuEvent($event, $input);
 
-        if(!$result){
+        if (!$result) {
             return response()->json(['error' => 'There was an error.'], HttpStatusCodes::HTTP_NO_CONTENT);
         }
 
-        if($result->status == 'failure') {
+        if ($result->status == 'failure') {
             return response()->json(['errors' => $result->errors], HttpStatusCodes::HTTP_NO_CONTENT);
         }
 
@@ -309,7 +309,7 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     /**
+    /**
      * @OA\Delete(
      *     path="/events/{uuid}",
      *     summary="Delete an event.",
@@ -345,10 +345,10 @@ class EventController extends Controller
     {
         $event = Event::where('id', $id)->first();
 
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
             return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
-        
+
         // check if currently authenticated user is the owner of the book
         //if ($event->user()->id !== $event->user_id) {
         //   return response()->json(['error' => 'You can only delete your own Forum.'], 403);
@@ -359,7 +359,8 @@ class EventController extends Controller
         return response()->json(null, 204);
     }
 
-    public function getUsers() {
+    public function getUsers()
+    {
 
         $users = User::query();
 
@@ -404,7 +405,7 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *         @OA\JsonContent( ref="#/components/schemas/EventFull")
      *     ),
      *     @OA\Response(
      *      response=403,
@@ -416,29 +417,29 @@ class EventController extends Controller
      * )
      *     
      */
-    public function addRTMPSource(UpdateEventRequest $request, $id) {
+    public function addRTMPSource(UpdateEventRequest $request, $id)
+    {
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.', 'message' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
-           return response()->json(['error' => 'Access denied to live stream.' , 'message' => 'Access denied to live stream.'], 403);
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
+            return response()->json(['error' => 'Access denied to live stream.', 'message' => 'Access denied to live stream.'], 403);
         }
 
         $input = $request->all();
 
-        if(!isset($input['rtmp_source'])) {
+        if (!isset($input['rtmp_source'])) {
             return response()->json(['error' => 'A valid RTMP source is required.', 'message' => 'A valid RTMP source is required.'], 403);
         }
 
         EventsFacade::addRestream($event, $input['rtmp_source']);
 
         return new EventFullResource($event);
-
     }
 
     /**
@@ -466,7 +467,7 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *          @OA\JsonContent( ref="#/components/schemas/Event")
+     *          @OA\JsonContent( ref="#/components/schemas/EventFull")
      *     ),
      *     @OA\Response(
      *      response=403,
@@ -478,29 +479,29 @@ class EventController extends Controller
      * )
      *     
      */
-    public function updateRTMPSource(UpdateEventRequest $request, $id, $subid) {
+    public function updateRTMPSource(UpdateEventRequest $request, $id, $subid)
+    {
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
-           return response()->json(['error' => 'Access denied to live stream.'], 403);
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
+            return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
         $input = $request->all();
 
-        if(!$subid) {
+        if (!$subid) {
             return response()->json(['error' => 'The ID of the stream you want to remove is required.'], 403);
         }
 
         EventsFacade::updateRestream($event, $subid, $input);
 
         return new EventFullResource($event);
-
     }
 
     /**
@@ -524,6 +525,7 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=204,
      *         description="RTMP source successfully deleted",
+     *         @OA\JsonContent( ref="#/components/schemas/EventFull")
      *     ),
      *     @OA\Response(
      *      response=403,
@@ -535,29 +537,29 @@ class EventController extends Controller
      * )
      *     
      */
-    public function removeRTMPSource(UpdateEventRequest $request, $id, $subid) {
+    public function removeRTMPSource(UpdateEventRequest $request, $id, $subid)
+    {
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
-           return response()->json(['error' => 'Access denied to live stream.'], 403);
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
+            return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
         $input = $request->all();
 
-        if(!$subid) {
+        if (!$subid) {
             return response()->json(['error' => 'The ID of the stream you want to remove is required.'], 403);
         }
 
         EventsFacade::removeRestream($event, $subid);
 
         return new EventFullResource($event);
-
     }
 
     /**
@@ -596,8 +598,8 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *     @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/EventFull"
      *         )
      *     ),
      *     @OA\Response(
@@ -614,37 +616,36 @@ class EventController extends Controller
     {
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
             return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
         $base_location = 'images';
 
         // Handle File Upload
-        if($request->hasFile('image')) {              
+        if ($request->hasFile('image')) {
             //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
             //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
             //or you can specify the visibility of the file in the second parameter of the store() method like:
             //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
-            
+
             $imagePath = $request->file('image')->store($base_location, 's3');
-          
         } else {
             return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
         }
-    
+
         //We save new path
         $event->forceFill([
             'image_main' => $imagePath
         ]);
 
         $event->save();
-       
+
         return EventFullResource::make($event);
     }
 
@@ -686,8 +687,8 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *     @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/EventFull"
      *         )
      *     ),
      *     @OA\Response(
@@ -704,37 +705,36 @@ class EventController extends Controller
     {
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
             return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
         $base_location = 'images';
 
         // Handle File Upload
-        if($request->hasFile('image')) {              
+        if ($request->hasFile('image')) {
             //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
             //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
             //or you can specify the visibility of the file in the second parameter of the store() method like:
             //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
-            
+
             $imagePath = $request->file('image')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
-          
         } else {
             return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
         }
-    
+
         //We save new path
         $event->forceFill([
             'image_banner' => $imagePath
         ]);
 
         $event->save();
-       
+
         return EventFullResource::make($event);
     }
 
@@ -761,8 +761,8 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *     @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/EventFull"
      *         )
      *     ),
      *     @OA\Response(
@@ -775,17 +775,18 @@ class EventController extends Controller
      * )
      *     
      */
-    public function enableBroadcastMode(UpdateEventRequest $request, $id) {
+    public function enableBroadcastMode(UpdateEventRequest $request, $id)
+    {
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
-           return response()->json(['error' => 'Access denied to live stream.'], 403);
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
+            return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
         $event->forceFill(['mode' => Modes::BROADCAST]);
@@ -796,7 +797,6 @@ class EventController extends Controller
         //return response()->json(EventsFacade::setToBroadcastMode($event));
 
         return new EventFullResource($event);
-
     }
 
     /**
@@ -822,8 +822,8 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *     @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/EventFull"
      *         )
      *     ),
      *     @OA\Response(
@@ -836,26 +836,27 @@ class EventController extends Controller
      * )
      *     
      */
-    public function enableLivestreamMode(UpdateEventRequest $request, $id) {
+    public function enableLivestreamMode(UpdateEventRequest $request, $id)
+    {
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $input = $request->all();
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
-           return response()->json(['error' => 'Access denied to live stream..'], 403);
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
+            return response()->json(['error' => 'Access denied to live stream..'], 403);
         }
 
-        if($event->mode == Modes::BROADCAST) {
+        if ($event->mode == Modes::BROADCAST) {
             EventsFacade::setToLivestreamMode($event);
         }
 
-        if(isset($input['mode']) && $input['mode'] == Modes::OBS) {
+        if (isset($input['mode']) && $input['mode'] == Modes::OBS) {
             $event->forceFill(['mode' => Modes::OBS]);
             $event->save();
         } else {
@@ -866,7 +867,6 @@ class EventController extends Controller
         //return response()->json( EventsFacade::setToLivestreamMode($event));
 
         return new EventFullResource($event);
-
     }
 
     /**
@@ -892,8 +892,8 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *     @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/EventFull"
      *         )
      *     ),
      *     @OA\Response(
@@ -906,30 +906,30 @@ class EventController extends Controller
      * )
      *     
      */
-    public function syncAsLive(UpdateEventRequest $request, $id) {
+    public function syncAsLive(UpdateEventRequest $request, $id)
+    {
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
-            return response()->json(['error' => 'The stream does not exist.', 'message' => 'The stream does not exist.' ], HttpStatusCodes::HTTP_FOUND);
+        if (!$event) {
+            return response()->json(['error' => 'The stream does not exist.', 'message' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
-           return response()->json(['error' => 'Cannot add restream to event.', 'message' => 'Cannot add restream to event.'], 403);
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
+            return response()->json(['error' => 'Cannot add restream to event.', 'message' => 'Cannot add restream to event.'], 403);
         }
 
         $event->forceFill([
             'live_last_checkin' => Carbon::now()->toDateTimeString(),
             'is_live' => 1
         ]);
-        
+
         $event->save();
 
         //return response()->json( EventsFacade::setToLivestreamMode($event));
 
         return new EventFullResource($event);
-
     }
 
     /**
@@ -955,8 +955,8 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *     @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/EventFull"
      *         )
      *     ),
      *     @OA\Response(
@@ -969,40 +969,39 @@ class EventController extends Controller
      * )
      *     
      */
-    public function sendOnScreenContent(UpdateEventRequest $request, $id) {
+    public function sendOnScreenContent(UpdateEventRequest $request, $id)
+    {
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.', 'message' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
-           return response()->json(['error' => 'Access denied to live stream..'], 403);
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
+            return response()->json(['error' => 'Access denied to live stream..'], 403);
         }
 
         $input = $request->all();
 
-        if(!isset($input['type'])){
+        if (!isset($input['type'])) {
             return response()->json(['error' => 'The type of content being sent must be present.', 'message' => 'The type of content being sent must be present.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if(!isset($input['content']) || (isset($input['content']) && !$input['content'])){
+        if (!isset($input['content']) || (isset($input['content']) && !$input['content'])) {
             return response()->json(['error' => 'The contents cannot be empty.', 'message' => 'The contents cannot be empty.'], HttpStatusCodes::HTTP_FOUND);
         }
 
-        if($input['type'] == 'message') {
+        if ($input['type'] == 'message') {
 
             EventsFacade::sendOnScreenMessage($event, $input['content'], $input);
-        }  else if($input['type'] == 'image') {
-            
+        } else if ($input['type'] == 'image') {
         }
 
         //return response()->json( EventsFacade::setToLivestreamMode($event));
 
         return new EventFullResource($event);
-
     }
 
     /**
@@ -1043,8 +1042,8 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="Success",
-     *     @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *         @OA\JsonContent(
+     *             ref="#/components/schemas/EventFull"
      *         )
      *     ),
      *     @OA\Response(
@@ -1068,30 +1067,29 @@ class EventController extends Controller
     {
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
             return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
         $base_location = 'images';
 
         // Handle File Upload
-        if($request->hasFile('image')) {              
+        if ($request->hasFile('image')) {
             //Using store(), the filename will be hashed. You can use storeAs() to specify a name.
             //To specify the file visibility setting, you can update the config/filesystems.php s3 disk visibility key,
             //or you can specify the visibility of the file in the second parameter of the store() method like:
             //$imagePath = $request->file('document')->store($base_location, ['disk' => 's3', 'visibility' => 'public']);
-            
+
             $imagePath = $request->file('image')->store($base_location, 's3');
-          
         } else {
             return response()->json(['success' => false, 'message' => 'No file uploaded'], 400);
         }
-    
+
         $input = $request->all();
 
         $input['event_id'] = $event->id;
@@ -1107,7 +1105,7 @@ class EventController extends Controller
         $input['image_url'] = $imagePath;
 
         $overlay = EventOverlay::create($input);
-       
+
         return EventFullResource::make($event);
     }
 
@@ -1132,6 +1130,7 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=204,
      *         description="overlay successfully deleted",
+     *         @OA\JsonContent( ref="#/components/schemas/EventFull")
      *     ),
      *     @OA\Response(
      *      response=403,
@@ -1148,25 +1147,24 @@ class EventController extends Controller
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
             return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
         $overlay = EventOverlay::where('id', $subid)->where('event_id', $subid)->first();
 
-        if(!$overlay){
+        if (!$overlay) {
             return response()->json(['error' => 'Overlay not found.'], HttpStatusCodes::HTTP_NO_CONTENT);
         }
 
         $overlay->delete();
 
         return EventFullResource::make($event);
-
     }
 
     /**
@@ -1208,7 +1206,7 @@ class EventController extends Controller
      *         response=200,
      *         description="Success",
      *     @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *             ref="#/components/schemas/EventFull"
      *         )
      *     ),
      *     @OA\Response(
@@ -1233,18 +1231,18 @@ class EventController extends Controller
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
             return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
         $overlay = EventOverlay::where('id', $subid)->where('event_id', $id)->first();
 
-        if(!$overlay){
+        if (!$overlay) {
             return response()->json(['error' => 'Overlay not found.'], HttpStatusCodes::HTTP_NO_CONTENT);
         }
 
@@ -1274,6 +1272,7 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=204,
      *         description="overlay successfully disabled",
+     *         @OA\JsonContent( ref="#/components/schemas/EventFull")
      *     ),
      *     @OA\Response(
      *      response=403,
@@ -1290,12 +1289,12 @@ class EventController extends Controller
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
             return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
@@ -1346,18 +1345,18 @@ class EventController extends Controller
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
             return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
         $user = $request->user();
 
-        if(!$user->stripe_donation_purhcase_link_url){
+        if (!$user->stripe_donation_purhcase_link_url) {
             return response()->json(['error' => 'A donation page is required.'], HttpStatusCodes::HTTP_NO_CONTENT);
         }
 
@@ -1387,6 +1386,7 @@ class EventController extends Controller
      *     @OA\Response(
      *         response=204,
      *         description="Donations successfully disabled",
+     *         @OA\JsonContent( ref="#/components/schemas/EventFull")
      *     ),
      *     @OA\Response(
      *      response=403,
@@ -1403,12 +1403,12 @@ class EventController extends Controller
 
         $event = Event::where('id', $id)->first();
 
-        if(!$event){
+        if (!$event) {
             return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
-        if(!PermissionsFacade::eventCanUpdate($event, $request->user())){
+        if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
             return response()->json(['error' => 'Access denied to live stream.'], 403);
         }
 
