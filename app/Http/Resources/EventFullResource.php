@@ -44,15 +44,9 @@ class EventFullResource extends JsonResource
      *              type="array"
      *          ),
      *          @OA\Property(
-     *              property="events",
-     *              description="A list of events the user is associated with.",
-     *              @OA\Items(ref="#/components/schemas/EventOverlay"),
-     *              type="array"
-     *          ),
-     *          @OA\Property(
      *              property="overlays",
-     *              description="A list of competitions the user is associated with.",
-     *              @OA\Items(ref="#/components/schemas/Competition"),
+     *              description="A list of overlays associated with the current event.",
+     *              @OA\Items(ref="#/components/schemas/EventOverlay"),
      *              type="array"
      *          ),
      *             
