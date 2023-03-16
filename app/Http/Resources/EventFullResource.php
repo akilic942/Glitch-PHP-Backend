@@ -49,6 +49,19 @@ class EventFullResource extends JsonResource
      *              @OA\Items(ref="#/components/schemas/EventOverlay"),
      *              type="array"
      *          ),
+     *          @OA\Property(
+     *              property="restreams",
+     *              description="A list of RTMP endpoints the stream will be multicasted too.",
+     *              @OA\Items(ref="#/components/schemas/RTMPSource"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
+     *              property="recordings",
+     *              description="A list of recordings of the streamsings.",
+     *              @OA\Items(ref="#/components/schemas/Recordings"),
+     *              type="array"
+     *          ),
+     * 
      *             
      *        ),
      *     },

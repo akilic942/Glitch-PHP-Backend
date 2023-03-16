@@ -3514,7 +3514,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Event"
+                                "$ref": "#/components/schemas/RTMPSource"
                             }
                         }
                     }
@@ -4910,7 +4910,7 @@
                 ]
             }
         },
-        "/teams/{uuid}/uploadBannerImag": {
+        "/teams/{uuid}/uploadBannerImage": {
             "post": {
                 "tags": [
                     "Teams Route"
@@ -6674,6 +6674,20 @@
                                 "items": {
                                     "$ref": "#/components/schemas/EventOverlay"
                                 }
+                            },
+                            "restreams": {
+                                "description": "A list of RTMP endpoints the stream will be multicasted too.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/RTMPSource"
+                                }
+                            },
+                            "recordings": {
+                                "description": "A list of recordings of the streamsings.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Recordings"
+                                }
                             }
                         },
                         "type": "object"
@@ -7329,6 +7343,69 @@
                         "description": "The URL to the users Paetron Handle.",
                         "type": "string",
                         "maxLength": 255
+                    }
+                },
+                "type": "object"
+            },
+            "RTMPSource": {
+                "title": "The RTMP Source for adding and removing.",
+                "description": "The RTMP Source for adding and removing.",
+                "properties": {
+                    "id": {
+                        "description": "The id of the RTMP",
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "stream_url": {
+                        "description": "The RTMP endpoint to send the stream too.",
+                        "type": "string"
+                    },
+                    "label": {
+                        "description": "An optional label or name used to identify the stream.",
+                        "type": "string"
+                    },
+                    "fps": {
+                        "description": "The Frames Per Second(FPS) to play the stream. The maximum value is 120.",
+                        "type": "integer"
+                    },
+                    "bitrate": {
+                        "description": "The bitrate for the stream.",
+                        "type": "integer"
+                    },
+                    "max_bitrate": {
+                        "description": "The max bitrate for the stream. The maximum value is 13000.",
+                        "type": "integer"
+                    },
+                    "gop": {
+                        "description": "The Group of Pictures (gop) for the stream. The maximum value is 260.",
+                        "type": "integer"
+                    },
+                    "date_added": {
+                        "description": "The date/time that the RTMP endpoint was added.",
+                        "type": "timestamp",
+                        "readOnly": true
+                    }
+                },
+                "type": "object"
+            },
+            "Recordings": {
+                "title": "Recordings of the live stream.",
+                "description": "Recordings of the live stream.",
+                "properties": {
+                    "id": {
+                        "description": "The id of the video content.",
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "title": {
+                        "description": "The the title of the content.",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "The description of the content.",
+                        "type": "string"
                     }
                 },
                 "type": "object"

@@ -366,7 +366,7 @@ class TeamController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/teams/{uuid}/uploadBannerImag",
+     *     path="/teams/{uuid}/uploadBannerImage",
      *     summary="Upload banner image to team.",
      *     description="Upload banner image to team.",
      *     operationId="teamUploadBannerImage",

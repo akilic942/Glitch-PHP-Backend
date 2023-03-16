@@ -462,7 +462,7 @@ class EventController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *         @OA\JsonContent( ref="#/components/schemas/RTMPSource")
      *     ),
      *     @OA\Response(
      *         response=200,
