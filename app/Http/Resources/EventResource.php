@@ -50,14 +50,17 @@ class EventResource extends JsonResource
      *     ),
      *      @OA\Property(
      *          property="mode",
-     *          description="Need to figure out what this means...",
-     *          type="string"
+     *          description="The mode of sharing the live stream (screenshare, rtmp, etc)",
+     *          type="string",
+     *          readOnly=true,
+     *          enum={"0", "1", "2"}
      *     ),
      *     @OA\Property(
      *          property="admins",
      *          description="A list of users who are administrators for this event.",
      *          @OA\Items(ref="#/components/schemas/User"),
-     *          type="array"
+     *          type="array",
+     *          readOnly=true,
      *     ),
      * 
      *      @OA\Property(

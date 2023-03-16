@@ -3192,7 +3192,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventFull"
                                 }
                             }
                         }
@@ -3423,8 +3423,8 @@
                 "tags": [
                     "Competitions Route"
                 ],
-                "summary": "adds RTMP source to storage.",
-                "description": "adds RTMP source to storage.",
+                "summary": "Adds an RTMP source to the event that when streamed, the stream will be multicasted to the RTMP endpoint.",
+                "description": "Adds an RTMP source to the event that when streamed, the stream will be multicasted to the RTMP endpoint.",
                 "operationId": "addRTMPSource",
                 "parameters": [
                     {
@@ -3558,8 +3558,8 @@
                 "tags": [
                     "Event Route"
                 ],
-                "summary": "Delete a RTMP source.",
-                "description": "Delete a RTMP source.",
+                "summary": "Delete a RTMP source from the event.",
+                "description": "Delete a RTMP source from the event.",
                 "operationId": "destoryRTMPSourceStorage",
                 "parameters": [
                     {
@@ -3756,8 +3756,8 @@
                 "tags": [
                     "Event Route"
                 ],
-                "summary": "Enable broadcast mode.",
-                "description": "Enable broadcast mode.",
+                "summary": "Enable the broadcast mode where the video stream is being 'broadcasted' from an on-screen source such as as screenshare.",
+                "description": "Enable the broadcast mode where the video stream is being 'broadcasted' from an on-screen source such as as screenshare.",
                 "operationId": "enableBroadcastMode",
                 "parameters": [
                     {
@@ -3810,8 +3810,8 @@
                 "tags": [
                     "Event Route"
                 ],
-                "summary": "Enable livestream mode.",
-                "description": "Enable livestream mode.",
+                "summary": "Enable livestream mode where the stream will be outputted to the invirtu rtmp livestream endpoint.",
+                "description": "Enable livestream mode where the stream will be outputted to the invirtu rtmp livestream endpoint.",
                 "operationId": "enableLivestreamMode",
                 "parameters": [
                     {
@@ -3918,8 +3918,8 @@
                 "tags": [
                     "Event Route"
                 ],
-                "summary": "Sends on screen content.",
-                "description": "Sends on screen content.",
+                "summary": "Sends content such as text that will appear on the screen and the user viewers can see.",
+                "description": "Sends content such as text that will appear on the screen and the user viewers can see.",
                 "operationId": "sendOnScreenContent",
                 "parameters": [
                     {
@@ -3972,8 +3972,8 @@
                 "tags": [
                     "Event Route"
                 ],
-                "summary": "Upload overlay image to storage.",
-                "description": "Upload overlay image to storage.",
+                "summary": "Upload overlay image to storage. Overlay images can appear to cover the entire screen for the viewers.",
+                "description": "Upload overlay image to storage. Overlay images can appear to cover the entire screen for the viewers",
                 "operationId": "uploadOverlayImage",
                 "parameters": [
                     {
@@ -4113,8 +4113,8 @@
                 "tags": [
                     "Event Route"
                 ],
-                "summary": "enable overlay image in storage.",
-                "description": "enable overlay image in storage.",
+                "summary": "Enable the overlay will have the overlay appear on-screen for the viewers.",
+                "description": "Enable the overlay will have the overlay appear on-screen for the viewers.",
                 "operationId": "enableOverlayImage",
                 "parameters": [
                     {
@@ -4200,8 +4200,8 @@
                 "tags": [
                     "Event Route"
                 ],
-                "summary": "Disable an overlay.",
-                "description": "Disable an overlay.",
+                "summary": "Disabling the overlay will remove an overlay from the screen and users can watch the content.",
+                "description": "Disabling the overlay will remove an overlay from the screen and users can watch the content.",
                 "operationId": "disableOverlay",
                 "parameters": [
                     {
@@ -4254,8 +4254,8 @@
                 "tags": [
                     "Event Route"
                 ],
-                "summary": "Enable donations.",
-                "description": "Enable donations.",
+                "summary": "Enable donations so users can accept donations.",
+                "description": "Enable donations so users can accept donations.",
                 "operationId": "enableDonations",
                 "parameters": [
                     {
@@ -6770,15 +6770,22 @@
                         "format": "date-time"
                     },
                     "mode": {
-                        "description": "Need to figure out what this means...",
-                        "type": "string"
+                        "description": "The mode of sharing the live stream (screenshare, rtmp, etc)",
+                        "type": "string",
+                        "enum": [
+                            "0",
+                            "1",
+                            "2"
+                        ],
+                        "readOnly": true
                     },
                     "admins": {
                         "description": "A list of users who are administrators for this event.",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/User"
-                        }
+                        },
+                        "readOnly": true
                     },
                     "created_at": {
                         "description": "The time the event was created at.",

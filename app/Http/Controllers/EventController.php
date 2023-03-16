@@ -83,7 +83,7 @@ class EventController extends Controller
      *         response=200,
      *         description="Success",
      *           @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *             ref="#/components/schemas/EventFull"
      *         ),
      *     ),
      *     @OA\Response(
@@ -111,7 +111,7 @@ class EventController extends Controller
             RolesFacade::eventMakeSuperAdmin($event, $request->user());
         }
 
-        return new EventResource($event);
+        return new EventFullResource($event);
     }
 
     /**
@@ -372,8 +372,8 @@ class EventController extends Controller
     /**
      * @OA\Post(
      *     path="events/{uuid}/addRTMPSource",
-     *     summary="adds RTMP source to storage.",
-     *     description="adds RTMP source to storage.",
+     *     summary="Adds an RTMP source to the event that when streamed, the stream will be multicasted to the RTMP endpoint.",
+     *     description="Adds an RTMP source to the event that when streamed, the stream will be multicasted to the RTMP endpoint.",
      *     operationId="addRTMPSource",
      *     tags={"Competitions Route"},
      *     security={{"bearer": {}}},
@@ -507,8 +507,8 @@ class EventController extends Controller
     /**
      * @OA\Delete(
      *     path="/events/{uuid}/removeRTMPSource/{subid}",
-     *     summary="Delete a RTMP source.",
-     *     description="Delete a RTMP source.",
+     *     summary="Delete a RTMP source from the event.",
+     *     description="Delete a RTMP source from the event.",
      *     operationId="destoryRTMPSourceStorage",
      *     tags={"Event Route"},
      *     security={{"bearer": {}}},
@@ -743,8 +743,8 @@ class EventController extends Controller
      * 
      * @OA\Post(
      *     path="/events/{uuid}/enableBroadcastMode",
-     *     summary="Enable broadcast mode.",
-     *     description="Enable broadcast mode.",
+     *     summary="Enable the broadcast mode where the video stream is being 'broadcasted' from an on-screen source such as as screenshare.",
+     *     description="Enable the broadcast mode where the video stream is being 'broadcasted' from an on-screen source such as as screenshare.",
      *     operationId="enableBroadcastMode",
      *     tags={"Event Route"},
      *     security={{"bearer": {}}},
@@ -804,8 +804,8 @@ class EventController extends Controller
      * 
      * @OA\Post(
      *     path="/events/{uuid}/enableLivestreamMode",
-     *     summary="Enable livestream mode.",
-     *     description="Enable livestream mode.",
+     *     summary="Enable livestream mode where the stream will be outputted to the invirtu rtmp livestream endpoint.",
+     *     description="Enable livestream mode where the stream will be outputted to the invirtu rtmp livestream endpoint.",
      *     operationId="enableLivestreamMode",
      *     tags={"Event Route"},
      *     security={{"bearer": {}}},
@@ -937,8 +937,8 @@ class EventController extends Controller
      * 
      * @OA\Post(
      *     path="/events/{uuid}/sendOnScreenContent",
-     *     summary="Sends on screen content.",
-     *     description="Sends on screen content.",
+     *     summary="Sends content such as text that will appear on the screen and the user viewers can see.",
+     *     description="Sends content such as text that will appear on the screen and the user viewers can see.",
      *     operationId="sendOnScreenContent",
      *     tags={"Event Route"},
      *     security={{"bearer": {}}},
@@ -1009,8 +1009,8 @@ class EventController extends Controller
      * 
      * @OA\Post(
      *     path="/events/{uuid}/addOverlay",
-     *     summary="Upload overlay image to storage.",
-     *     description="Upload overlay image to storage.",
+     *     summary="Upload overlay image to storage. Overlay images can appear to cover the entire screen for the viewers.",
+     *     description="Upload overlay image to storage. Overlay images can appear to cover the entire screen for the viewers",
      *     operationId="uploadOverlayImage",
      *     tags={"Event Route"},
      *     security={{"bearer": {}}},
@@ -1172,8 +1172,8 @@ class EventController extends Controller
      * 
      * @OA\Post(
      *     path="/events/{uuid}/enableOverlay/{subid}",
-     *     summary="enable overlay image in storage.",
-     *     description="enable overlay image in storage.",
+     *     summary="Enable the overlay will have the overlay appear on-screen for the viewers.",
+     *     description="Enable the overlay will have the overlay appear on-screen for the viewers.",
      *     operationId="enableOverlayImage",
      *     tags={"Event Route"},
      *     security={{"bearer": {}}},
@@ -1254,8 +1254,8 @@ class EventController extends Controller
     /**
      * @OA\Post(
      *     path="/events/{uuid}/disableOverlay",
-     *     summary="Disable an overlay.",
-     *     description="Disable an overlay.",
+     *     summary="Disabling the overlay will remove an overlay from the screen and users can watch the content.",
+     *     description="Disabling the overlay will remove an overlay from the screen and users can watch the content.",
      *     operationId="disableOverlay",
      *     tags={"Event Route"},
      *     security={{"bearer": {}}},
@@ -1308,8 +1308,8 @@ class EventController extends Controller
      * 
      * @OA\Post(
      *     path="/events/{uuid}/enableDonations",
-     *     summary="Enable donations.",
-     *     description="Enable donations.",
+     *     summary="Enable donations so users can accept donations.",
+     *     description="Enable donations so users can accept donations.",
      *     operationId="enableDonations",
      *     tags={"Event Route"},
      *     security={{"bearer": {}}},
