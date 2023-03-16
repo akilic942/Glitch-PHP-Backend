@@ -375,7 +375,7 @@ class EventController extends Controller
      *     summary="Adds an RTMP source to the event that when streamed, the stream will be multicasted to the RTMP endpoint.",
      *     description="Adds an RTMP source to the event that when streamed, the stream will be multicasted to the RTMP endpoint.",
      *     operationId="addRTMPSource",
-     *     tags={"Competitions Route"},
+     *     tags={"Event Route"},
      *     security={{"bearer": {}}},
      * 
      *      @OA\Parameter(
