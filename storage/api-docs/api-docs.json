@@ -4630,6 +4630,80 @@
                 }
             }
         },
+        "events/{uuid}/recording/{subid}": {
+            "put": {
+                "tags": [
+                    "Event Route"
+                ],
+                "summary": "Update a recording related to the event.",
+                "description": "Update a recording related to the event.",
+                "operationId": "updateEventRecording",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the event",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "subid",
+                        "in": "path",
+                        "description": "UUID of the recording",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Recordings"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventFull"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to event.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to the event resource."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/teams": {
             "get": {
                 "tags": [
