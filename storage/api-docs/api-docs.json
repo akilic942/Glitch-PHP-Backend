@@ -3445,9 +3445,8 @@
                             "schema": {
                                 "properties": {
                                     "rtmp_source": {
-                                        "description": "The id of the team to add to the RTMP source.",
-                                        "type": "string",
-                                        "format": "uuid"
+                                        "description": "The endpoint of an RTMP destination. Stream Keys should be in the endpoint address.",
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
@@ -3930,8 +3929,24 @@
                     }
                 ],
                 "requestBody": {
-                    "description": "Sync live",
-                    "required": true
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "type": {
+                                        "description": "The type of on screen content.",
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "description": "For text content that will appear on-screen.",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
                 },
                 "responses": {
                     "200": {
@@ -4128,24 +4143,6 @@
                         }
                     }
                 ],
-                "requestBody": {
-                    "description": "Image file to upload",
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "image": {
-                                        "description": "Image file to upload",
-                                        "type": "string",
-                                        "format": "binary"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -4217,7 +4214,7 @@
                 ],
                 "responses": {
                     "204": {
-                        "description": "overlay successfully disabled",
+                        "description": "Overlay successfully disabled",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4370,7 +4367,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Event"
+                                "$ref": "#/components/schemas/EventInvite"
                             }
                         }
                     }
@@ -4381,7 +4378,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventInvite"
                                 }
                             }
                         }
@@ -4417,15 +4414,21 @@
                 "tags": [
                     "Event Route"
                 ],
-                "summary": "Accept new invite.",
-                "description": "Accept new invite.",
+                "summary": "Accept the invite to join the event. The JSON Web Token (JWT) must be associated with the passed in token.",
+                "description": "Accept the invite to join the event. The JSON Web Token (JWT) must be associated with the passed in token.",
                 "operationId": "acceptInviteResourceStorage",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Event"
+                                "properties": {
+                                    "token": {
+                                        "description": "The token that was created with the invite.",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
                     }
@@ -4436,7 +4439,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Event"
+                                    "$ref": "#/components/schemas/EventInvite"
                                 }
                             }
                         }

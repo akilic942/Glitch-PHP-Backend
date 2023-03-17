@@ -396,11 +396,10 @@ class EventController extends Controller
      *              @OA\Property(
      *                  property="rtmp_source",
      *                  type="string",
-     *                  format="uuid",
-     *                  description="The id of the team to add to the RTMP source."
+     *                  description="The endpoint of an RTMP destination. Stream Keys should be in the endpoint address."
      *              ),
      *          )
-     *      )
+     *       )
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -683,7 +682,7 @@ class EventController extends Controller
      *                  )
      *              )
      *          )
-     *      ),
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -949,9 +948,23 @@ class EventController extends Controller
      *         required=true
      *     ),
      *     @OA\RequestBody(
-     *          required=true,
-     *          description="Sync live",
-     *      ),
+     *      required=true,
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              @OA\Property(
+     *                  property="type",
+     *                  type="string",
+     *                  description="The type of on screen content."
+     *              ),
+     *              @OA\Property(
+     *                  property="message",
+     *                  type="string",
+     *                  description="For text content that will appear on-screen."
+     *              ),
+     *          )
+     *       )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -997,6 +1010,7 @@ class EventController extends Controller
 
             EventsFacade::sendOnScreenMessage($event, $input['content'], $input);
         } else if ($input['type'] == 'image') {
+
         }
 
         //return response()->json( EventsFacade::setToLivestreamMode($event));
@@ -1187,21 +1201,6 @@ class EventController extends Controller
      *             format="uuid"
      *         )
      *     ),
-     *     @OA\RequestBody(
-     *          required=true,
-     *          description="Image file to upload",
-     *          @OA\MediaType(
-     *              mediaType="multipart/form-data",
-     *              @OA\Schema(
-     *                  @OA\Property(
-     *                      property="image",
-     *                      description="Image file to upload",
-     *                      type="string",
-     *                      format="binary"
-     *                  )
-     *              )
-     *          )
-     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -1271,7 +1270,7 @@ class EventController extends Controller
      *     ),
      *     @OA\Response(
      *         response=204,
-     *         description="overlay successfully disabled",
+     *         description="Overlay successfully disabled",
      *         @OA\JsonContent( ref="#/components/schemas/EventFull")
      *     ),
      *     @OA\Response(

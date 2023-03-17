@@ -24,16 +24,6 @@ class EventInviteController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -50,13 +40,13 @@ class EventInviteController extends Controller
      *     security={{"bearer": {}}},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *         @OA\JsonContent( ref="#/components/schemas/EventInvite")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
      *           @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *             ref="#/components/schemas/EventInvite"
      *         ),
      *     ),
      *     @OA\Response(
@@ -79,7 +69,7 @@ class EventInviteController extends Controller
         $event = Event::where('id', $id)->first();
 
         if(!$event){
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
@@ -109,69 +99,33 @@ class EventInviteController extends Controller
         return new EventInviteResource($invite);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\EventInvite  $eventInvite
-     * @return \Illuminate\Http\Response
-     */
-    public function show(EventInvite $eventInvite)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\EventInvite  $eventInvite
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(EventInvite $eventInvite)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EventInvite  $eventInvite
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, EventInvite $eventInvite)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\EventInvite  $eventInvite
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(EventInvite $eventInvite)
-    {
-        //
-    }
-
 
     /**
      * @OA\Post(
      *     path="/events/{uuid}/acceptInvite",
-     *     summary="Accept new invite.",
-     *     description="Accept new invite.",
+     *     summary="Accept the invite to join the event. The JSON Web Token (JWT) must be associated with the passed in token.",
+     *     description="Accept the invite to join the event. The JSON Web Token (JWT) must be associated with the passed in token.",
      *     operationId="acceptInviteResourceStorage",
      *     tags={"Event Route"},
      *     security={{"bearer": {}}},
      *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *      required=true,
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(
+     *              @OA\Property(
+     *                  property="token",
+     *                  type="string",
+     *                  description="The token that was created with the invite."
+     *              ),
+     *          )
+     *      )
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
      *           @OA\JsonContent(
-     *             ref="#/components/schemas/Event"
+     *             ref="#/components/schemas/EventInvite"
      *         ),
      *     ),
      *     @OA\Response(
@@ -193,7 +147,7 @@ class EventInviteController extends Controller
         $event = Event::where('id', $id)->first();
 
         if(!$event){
-            return response()->json(['error' => 'The stream does not exist.', 'message' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.', 'message' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
 
