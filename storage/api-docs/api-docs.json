@@ -3359,8 +3359,8 @@
                 "tags": [
                     "Event Route"
                 ],
-                "summary": "Update an Invirtu event.",
-                "description": "Update an Invirtu event.",
+                "summary": "Update the Invirtu live event associated with the event in the API.",
+                "description": "Update the Invirtu live event associated with the event in the API.",
                 "operationId": "updateInvirtuEventStorage",
                 "parameters": [
                     {
@@ -3379,7 +3379,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Event"
+                                "$ref": "#/components/schemas/InvirtuEvent"
                             }
                         }
                     }
@@ -3396,7 +3396,7 @@
                         }
                     },
                     "403": {
-                        "description": "Access denied to Invirtu event.",
+                        "description": "Access denied to the event.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3656,13 +3656,13 @@
                         }
                     },
                     "400": {
-                        "description": "Access denied to live stream.",
+                        "description": "Access denied to the event.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Access denied to live stream."
+                                            "type": "Access denied to the event."
                                         }
                                     },
                                     "type": "object"
@@ -3766,10 +3766,6 @@
                         "required": true
                     }
                 ],
-                "requestBody": {
-                    "description": "Enable broadcast mode",
-                    "required": true
-                },
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -3782,13 +3778,13 @@
                         }
                     },
                     "403": {
-                        "description": "Access denied to live stream.",
+                        "description": "Access denied to the event.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Access denied to live stream."
+                                            "type": "Access denied to the event."
                                         }
                                     },
                                     "type": "object"
@@ -3820,10 +3816,6 @@
                         "required": true
                     }
                 ],
-                "requestBody": {
-                    "description": "Enable livestream mode",
-                    "required": true
-                },
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -3836,7 +3828,7 @@
                         }
                     },
                     "403": {
-                        "description": "Access denied to live stream.",
+                        "description": "Access denied to the event.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3863,8 +3855,8 @@
                 "tags": [
                     "Event Route"
                 ],
-                "summary": "Restream live.",
-                "description": "Restream live.",
+                "summary": "A check that is meant to run on an interval that marks the event as live.",
+                "description": "A check that is meant to run on an interval that marks the event as live",
                 "operationId": "syncLive",
                 "parameters": [
                     {
@@ -3874,10 +3866,6 @@
                         "required": true
                     }
                 ],
-                "requestBody": {
-                    "description": "Sync live",
-                    "required": true
-                },
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -3890,13 +3878,13 @@
                         }
                     },
                     "403": {
-                        "description": "Cannot add restream to event.",
+                        "description": "Permission denied.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Cannot add restream to event."
+                                            "type": "Permission denied."
                                         }
                                     },
                                     "type": "object"
@@ -3960,13 +3948,13 @@
                         }
                     },
                     "403": {
-                        "description": "Access denied to live stream.",
+                        "description": "Access denied to the event.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Access denied to live stream."
+                                            "type": "Access denied to the event."
                                         }
                                     },
                                     "type": "object"
@@ -4032,13 +4020,13 @@
                         }
                     },
                     "400": {
-                        "description": "The stream does not exist.",
+                        "description": "The event does not exist.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "The stream does not exist."
+                                            "type": "The event does not exist."
                                         }
                                     },
                                     "type": "object"
@@ -4047,13 +4035,13 @@
                         }
                     },
                     "403": {
-                        "description": "Access denied to live stream.",
+                        "description": "Access denied to the event.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Access denied to live stream."
+                                            "type": "Access denied to the event."
                                         }
                                     },
                                     "type": "object"
@@ -4087,6 +4075,16 @@
                             "type": "string",
                             "format": "uuid"
                         }
+                    },
+                    {
+                        "name": "subid",
+                        "in": "path",
+                        "description": "The ID of the overlay",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
                     }
                 ],
                 "responses": {
@@ -4107,7 +4105,7 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Access denied to live stream."
+                                            "type": "Access denied to the event."
                                         }
                                     },
                                     "type": "object"
@@ -4141,6 +4139,16 @@
                             "type": "string",
                             "format": "uuid"
                         }
+                    },
+                    {
+                        "name": "subid",
+                        "in": "path",
+                        "description": "The ID of the overlay",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
                     }
                 ],
                 "responses": {
@@ -4155,13 +4163,13 @@
                         }
                     },
                     "400": {
-                        "description": "The stream does not exist.",
+                        "description": "The event does not exist.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "The stream does not exist."
+                                            "type": "The event does not exist."
                                         }
                                     },
                                     "type": "object"
@@ -4170,13 +4178,13 @@
                         }
                     },
                     "403": {
-                        "description": "Access denied to live stream.",
+                        "description": "Access denied to the event.",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Access denied to live stream."
+                                            "type": "Access denied to the event."
                                         }
                                     },
                                     "type": "object"
@@ -4210,6 +4218,16 @@
                             "type": "string",
                             "format": "uuid"
                         }
+                    },
+                    {
+                        "name": "subid",
+                        "in": "path",
+                        "description": "The ID of the overlay",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
                     }
                 ],
                 "responses": {
@@ -4230,7 +4248,7 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Access denied to live stream."
+                                            "type": "Access denied to the event."
                                         }
                                     },
                                     "type": "object"
@@ -4278,7 +4296,7 @@
                         }
                     },
                     "403": {
-                        "description": "Access denied to live stream.",
+                        "description": "Access denied to the event.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -4338,7 +4356,7 @@
                                 "schema": {
                                     "properties": {
                                         "message": {
-                                            "type": "Access denied to live stream."
+                                            "type": "Access denied to the event."
                                         }
                                     },
                                     "type": "object"
@@ -6691,6 +6709,9 @@
                                 "items": {
                                     "$ref": "#/components/schemas/Recordings"
                                 }
+                            },
+                            "invirtu_event": {
+                                "$ref": "#/components/schemas/InvirtuEvent"
                             }
                         },
                         "type": "object"
@@ -6704,7 +6725,8 @@
                     "id": {
                         "description": "The uuid of invite.",
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "readOnly": true
                     },
                     "email": {
                         "description": "The email address of the person that is invited.",
@@ -6717,7 +6739,8 @@
                     "event_id": {
                         "description": "The id of the team that the invite belongs too.",
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "readOnly": true
                     },
                     "invited_as_cohost": {
                         "description": "Sets if the user is to be invited as co-host to the event where they can join chat with the host.",
@@ -6729,7 +6752,8 @@
                     },
                     "token": {
                         "description": "The auto-generated token that is sent along with the invite.",
-                        "type": "string"
+                        "type": "string",
+                        "readOnly": true
                     }
                 },
                 "type": "object"
@@ -7350,6 +7374,50 @@
                 },
                 "type": "object"
             },
+            "InvirtuEvent": {
+                "title": "Live event event information that is associated with the invirtu API.",
+                "description": "Live event event information that is associated with the invirtu API.",
+                "properties": {
+                    "id": {
+                        "description": "The id of the live event",
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "title": {
+                        "description": "The title of the live event.",
+                        "type": "string"
+                    },
+                    "slug": {
+                        "description": "A unique slug for this live event.",
+                        "type": "string",
+                        "readOnly": true
+                    },
+                    "date": {
+                        "description": "The date & time of the live event.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "timezone": {
+                        "description": "The timezone of the live event.",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "A description of the live event.",
+                        "type": "string"
+                    },
+                    "event_started": {
+                        "description": "Records if the live event has started. When the video chat has actived or a video stream is started after the live event date, the live event wil count as started.",
+                        "type": "boolean"
+                    },
+                    "price": {
+                        "description": "The ticket price of the live event.",
+                        "type": "number",
+                        "format": "float"
+                    }
+                },
+                "type": "object"
+            },
             "RTMPSource": {
                 "title": "The RTMP Source for adding and removing.",
                 "description": "The RTMP Source for adding and removing.",
@@ -7386,7 +7454,8 @@
                     },
                     "date_added": {
                         "description": "The date/time that the RTMP endpoint was added.",
-                        "type": "timestamp",
+                        "type": "string",
+                        "format": "date-time",
                         "readOnly": true
                     }
                 },

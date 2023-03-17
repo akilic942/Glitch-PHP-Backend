@@ -61,6 +61,11 @@ class EventFullResource extends JsonResource
      *              @OA\Items(ref="#/components/schemas/Recordings"),
      *              type="array"
      *          ),
+     *          @OA\Property(
+     *              property="invirtu_event",
+     *              description="The associated invirtu event information. See the Invirtu API for complete information specs.",
+     *              ref="#/components/schemas/InvirtuEvent",
+     *          ),
      * 
      *             
      *        ),

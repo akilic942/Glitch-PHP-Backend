@@ -47,7 +47,7 @@ namespace App\Swagger\Schemas
  *      @OA\Property(
  *          property="date_added",
  *          description="The date/time that the RTMP endpoint was added.",
- *          type="timestamp",
+ *          type="datetime",
  *          readOnly=true,
  *     ),
  * 

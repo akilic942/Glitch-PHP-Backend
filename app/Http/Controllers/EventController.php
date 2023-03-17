@@ -211,11 +211,11 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.', 'message' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.', 'message' => 'Access denied to the event.'], 403);
         }
 
         $input = $request->all();
@@ -236,8 +236,8 @@ class EventController extends Controller
     /**
      * @OA\Put(
      *     path="/events/{uuid}/invirtu",
-     *     summary="Update an Invirtu event.",
-     *     description="Update an Invirtu event.",
+     *     summary="Update the Invirtu live event associated with the event in the API.",
+     *     description="Update the Invirtu live event associated with the event in the API.",
      *     operationId="updateInvirtuEventStorage",
      *     tags={"Event Route"},
      *     security={{"bearer": {}}},
@@ -253,7 +253,7 @@ class EventController extends Controller
      *     ),
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent( ref="#/components/schemas/Event")
+     *         @OA\JsonContent( ref="#/components/schemas/InvirtuEvent")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -262,7 +262,7 @@ class EventController extends Controller
      *     ),
      *     @OA\Response(
      *      response=403,
-     *      description="Access denied to Invirtu event.",
+     *      description="Access denied to the event.",
      *      @OA\JsonContent(
      *          @OA\Property(property="message", type="Access denined to the Invirtu event resource.")
      *       )
@@ -275,11 +275,11 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.', 'message' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.', 'message' => 'Access denied to the event.'], 403);
         }
 
         // check if currently authenticated user is the owner of the book
@@ -346,7 +346,7 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         // check if currently authenticated user is the owner of the book
@@ -422,12 +422,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.', 'message' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.', 'message' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.', 'message' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.', 'message' => 'Access denied to the event.'], 403);
         }
 
         $input = $request->all();
@@ -484,12 +484,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         $input = $request->all();
@@ -542,12 +542,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         $input = $request->all();
@@ -603,9 +603,9 @@ class EventController extends Controller
      *     ),
      *     @OA\Response(
      *      response=400,
-     *      description="Access denied to live stream.",
+     *      description="Access denied to the event.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="Access denied to live stream.")
+     *              @OA\Property(property="message", type="Access denied to the event.")
      *              )
      *      ) 
      * )
@@ -616,12 +616,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         $base_location = 'images';
@@ -705,12 +705,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         $base_location = 'images';
@@ -753,10 +753,6 @@ class EventController extends Controller
      *         description="UUID of the event",
      *         required=true
      *     ),
-     *     @OA\RequestBody(
-     *          required=true,
-     *          description="Enable broadcast mode",
-     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -766,9 +762,9 @@ class EventController extends Controller
      *     ),
      *     @OA\Response(
      *      response=403,
-     *      description="Access denied to live stream.",
+     *      description="Access denied to the event.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="Access denied to live stream.")
+     *              @OA\Property(property="message", type="Access denied to the event.")
      *              )
      *      ) 
      * )
@@ -780,12 +776,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         $event->forceFill(['mode' => Modes::BROADCAST]);
@@ -814,10 +810,6 @@ class EventController extends Controller
      *         description="UUID of the event",
      *         required=true
      *     ),
-     *     @OA\RequestBody(
-     *          required=true,
-     *          description="Enable livestream mode",
-     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -827,7 +819,7 @@ class EventController extends Controller
      *     ),
      *     @OA\Response(
      *      response=403,
-     *      description="Access denied to live stream.",
+     *      description="Access denied to the event.",
      *      @OA\JsonContent(
      *              @OA\Property(property="message", type="Access denied to lives stream.")
      *              )
@@ -841,14 +833,14 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         $input = $request->all();
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream..'], 403);
+            return response()->json(['error' => 'Access denied to the event..'], 403);
         }
 
         if ($event->mode == Modes::BROADCAST) {
@@ -869,12 +861,10 @@ class EventController extends Controller
     }
 
     /**
-     * Restream live
-     * 
      * @OA\Post(
      *     path="/events/{uuid}/syncAsLive",
-     *     summary="Restream live.",
-     *     description="Restream live.",
+     *     summary="A check that is meant to run on an interval that marks the event as live.",
+     *     description="A check that is meant to run on an interval that marks the event as live",
      *     operationId="syncLive",
      *     tags={"Event Route"},
      *     security={{"bearer": {}}},
@@ -884,10 +874,6 @@ class EventController extends Controller
      *         description="UUID of the event",
      *         required=true
      *     ),
-     *     @OA\RequestBody(
-     *          required=true,
-     *          description="Sync live",
-     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -897,9 +883,9 @@ class EventController extends Controller
      *     ),
      *     @OA\Response(
      *      response=403,
-     *      description="Cannot add restream to event.",
+     *      description="Permission denied.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="Cannot add restream to event.")
+     *              @OA\Property(property="message", type="Permission denied.")
      *              )
      *      ) 
      * )
@@ -911,12 +897,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.', 'message' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.', 'message' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Cannot add restream to event.', 'message' => 'Cannot add restream to event.'], 403);
+            return response()->json(['error' => 'Permission denied.', 'message' => 'Permission denied.'], 403);
         }
 
         $event->forceFill([
@@ -974,9 +960,9 @@ class EventController extends Controller
      *     ),
      *     @OA\Response(
      *      response=403,
-     *      description="Access denied to live stream.",
+     *      description="Access denied to the event.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="Access denied to live stream.")
+     *              @OA\Property(property="message", type="Access denied to the event.")
      *              )
      *      ) 
      * )
@@ -988,12 +974,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.', 'message' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.', 'message' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream..'], 403);
+            return response()->json(['error' => 'Access denied to the event..'], 403);
         }
 
         $input = $request->all();
@@ -1062,16 +1048,16 @@ class EventController extends Controller
      *     ),
      *     @OA\Response(
      *      response=400,
-     *      description="The stream does not exist.",
+     *      description="The event does not exist.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="The stream does not exist.")
+     *              @OA\Property(property="message", type="The event does not exist.")
      *              )
      *      ),
      *      @OA\Response(
      *      response=403,
-     *      description="Access denied to live stream.",
+     *      description="Access denied to the event.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="Access denied to live stream.")
+     *              @OA\Property(property="message", type="Access denied to the event.")
      *              )
      *      )
      * )
@@ -1082,12 +1068,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         $base_location = 'images';
@@ -1141,6 +1127,16 @@ class EventController extends Controller
      *             format="uuid"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         name="subid",
+     *         in="path",
+     *         description="The ID of the overlay",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=204,
      *         description="overlay successfully deleted",
@@ -1150,7 +1146,7 @@ class EventController extends Controller
      *      response=403,
      *      description="Access denied to overlay.",
      *      @OA\JsonContent(
-     *         @OA\Property(property="message", type="Access denied to live stream.")
+     *         @OA\Property(property="message", type="Access denied to the event.")
      *        )
      *      ) 
      * )
@@ -1162,12 +1158,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         $overlay = EventOverlay::where('id', $subid)->where('event_id', $subid)->first();
@@ -1201,6 +1197,16 @@ class EventController extends Controller
      *             format="uuid"
      *         )
      *     ),
+     *     @OA\Parameter(
+     *         name="subid",
+     *         in="path",
+     *         description="The ID of the overlay",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Success",
@@ -1210,16 +1216,16 @@ class EventController extends Controller
      *     ),
      *     @OA\Response(
      *      response=400,
-     *      description="The stream does not exist.",
+     *      description="The event does not exist.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="The stream does not exist.")
+     *              @OA\Property(property="message", type="The event does not exist.")
      *              )
      *      ),
      *      @OA\Response(
      *      response=403,
-     *      description="Access denied to live stream.",
+     *      description="Access denied to the event.",
      *      @OA\JsonContent(
-     *              @OA\Property(property="message", type="Access denied to live stream.")
+     *              @OA\Property(property="message", type="Access denied to the event.")
      *              )
      *      )
      * )
@@ -1231,12 +1237,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         $overlay = EventOverlay::where('id', $subid)->where('event_id', $id)->first();
@@ -1268,6 +1274,16 @@ class EventController extends Controller
      *             format="uuid"
      *         )
      *     ),
+     *      @OA\Parameter(
+     *         name="subid",
+     *         in="path",
+     *         description="The ID of the overlay",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="string",
+     *             format="uuid"
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=204,
      *         description="Overlay successfully disabled",
@@ -1277,7 +1293,7 @@ class EventController extends Controller
      *      response=403,
      *      description="Access denied to overlay.",
      *      @OA\JsonContent(
-     *         @OA\Property(property="message", type="Access denied to live stream.")
+     *         @OA\Property(property="message", type="Access denied to the event.")
      *        )
      *      ) 
      * )
@@ -1289,12 +1305,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         EventsFacade::deactivateOverlay($event);
@@ -1331,7 +1347,7 @@ class EventController extends Controller
      *     ),
      *     @OA\Response(
      *      response=403,
-     *      description="Access denied to live stream.",
+     *      description="Access denied to the event.",
      *      @OA\JsonContent(
      *              @OA\Property(property="message", type="Access denied to lives stream.")
      *              )
@@ -1345,12 +1361,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         $user = $request->user();
@@ -1391,7 +1407,7 @@ class EventController extends Controller
      *      response=403,
      *      description="Access denied to overlay.",
      *      @OA\JsonContent(
-     *         @OA\Property(property="message", type="Access denied to live stream.")
+     *         @OA\Property(property="message", type="Access denied to the event.")
      *        )
      *      ) 
      * )
@@ -1403,12 +1419,12 @@ class EventController extends Controller
         $event = Event::where('id', $id)->first();
 
         if (!$event) {
-            return response()->json(['error' => 'The stream does not exist.'], HttpStatusCodes::HTTP_FOUND);
+            return response()->json(['error' => 'The event does not exist.'], HttpStatusCodes::HTTP_FOUND);
         }
 
         // check if currently authenticated user is the owner of the book
         if (!PermissionsFacade::eventCanUpdate($event, $request->user())) {
-            return response()->json(['error' => 'Access denied to live stream.'], 403);
+            return response()->json(['error' => 'Access denied to the event.'], 403);
         }
 
         UsersFacade::deactivateDonationForEvent($event);
