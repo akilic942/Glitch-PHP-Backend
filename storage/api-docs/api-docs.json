@@ -6032,6 +6032,220 @@
                     }
                 }
             }
+        },
+        "/waitlists": {
+            "get": {
+                "tags": [
+                    "Waitlist Route"
+                ],
+                "summary": "Displays a list users that have signed up to the waitlist.",
+                "description": "Displays a list users that have signed up to the waitlist.",
+                "operationId": "waitlistList",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Waitlist"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Waitlist Route"
+                ],
+                "summary": "Sign-up a user to the waitlist.",
+                "description": "Sign-up a user to the waitlist",
+                "operationId": "waitlistCreate",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Waitlist"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Waitlist"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation errors"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/waitlists/{uuid}": {
+            "get": {
+                "tags": [
+                    "Waitlist Route"
+                ],
+                "summary": "Retrieve a sign-up on the waitlist.",
+                "description": "Retrieve a sign-up on the waitlist.",
+                "operationId": "waitlistShow",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the waitlist entry.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Waitlist"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Waitlist Route"
+                ],
+                "summary": "Update a waitlist entry.",
+                "description": "Update a waitlist entry.",
+                "operationId": "waitlistUpdate",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the waitlist.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Waitlist"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Waitlist"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Access denied to the waitlist resource.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denined to waitlist resource."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Waitlist Route"
+                ],
+                "summary": "Delete a waitlist entry.",
+                "description": "Delete a waitlist entry.",
+                "operationId": "waitlistDelete",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "UUID of the waitlist entry",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Waitlist entry successfully deleted"
+                    },
+                    "403": {
+                        "description": "Access denied to waitlist entry.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "Access denied to waitlist entry."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -6860,6 +7074,10 @@
             "Event": {
                 "title": "Events Model",
                 "description": "The data associated with an event.",
+                "required": [
+                    "title",
+                    "description"
+                ],
                 "properties": {
                     "id": {
                         "description": "The id of the event",
@@ -7357,6 +7575,124 @@
                         "type": "string",
                         "format": "date-time",
                         "readOnly": true
+                    }
+                },
+                "type": "object"
+            },
+            "Waitlist": {
+                "title": "Waitlist Model",
+                "description": "The waitlist model is for when websites have a website to attract new customers/users.",
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The UUID of the waitlist entry.",
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "email": {
+                        "description": "The email address of the user on the waitlist.",
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "first_name": {
+                        "description": "The first name of the user signing up to the wait list.",
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "description": "The last name of the user signing up to the wait list.",
+                        "type": "string"
+                    },
+                    "full_name": {
+                        "description": "The full name of the user signing up to the wait list.",
+                        "type": "string"
+                    },
+                    "display_name": {
+                        "description": "The display name of the user signing up to the wait list.",
+                        "type": "string"
+                    },
+                    "username": {
+                        "description": "The user name of the user signing up to the wait list.",
+                        "type": "string"
+                    },
+                    "phone_number": {
+                        "description": "The phone number associated with the user signing up.",
+                        "type": "string"
+                    },
+                    "website": {
+                        "description": "The website associated with the user signing up.",
+                        "type": "string"
+                    },
+                    "title": {
+                        "description": "The job title associated with the user signing up.",
+                        "type": "string"
+                    },
+                    "company": {
+                        "description": "The company associated with the user signing up.",
+                        "type": "string"
+                    },
+                    "meta": {
+                        "description": "A JSON object with dynamic fields",
+                        "type": "object",
+                        "additionalProperties": true
+                    }
+                },
+                "type": "object"
+            },
+            "Webhook": {
+                "title": "Webhook Model Model",
+                "description": "The model for processing webhooks.",
+                "required": [
+                    "incoming_outgoing"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "The UUID of the webhook.",
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": true
+                    },
+                    "incoming_outgoing": {
+                        "description": "Whether the webhook is listening to an incoming request or sending an outgoing request.",
+                        "type": "integer"
+                    },
+                    "action": {
+                        "description": "The action for the webhook.",
+                        "type": "string"
+                    },
+                    "url": {
+                        "description": "The url the webhook will send information too.",
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "request_method": {
+                        "description": "GET, POST, PUT, DELETE method that webhook will use to send requests.",
+                        "type": "string",
+                        "enum": [
+                            "GET",
+                            "POST",
+                            "PUT",
+                            "DELETE"
+                        ]
+                    },
+                    "signature_key": {
+                        "description": "A key for securely prcessing the request.",
+                        "type": "string"
+                    },
+                    "signature_value": {
+                        "description": "A value that is associated witht he signature key to securely processing the request.",
+                        "type": "string"
+                    },
+                    "processed": {
+                        "description": "A boolean that indicates if the webhook has been sent or recieved.",
+                        "type": "boolean"
+                    },
+                    "data": {
+                        "description": "The information assoicated with the request",
+                        "type": "object",
+                        "additionalProperties": true
                     }
                 },
                 "type": "object"

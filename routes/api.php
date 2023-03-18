@@ -218,5 +218,12 @@ Route::post('users/createDonationPage', 'App\Http\Controllers\UserController@cre
 Route::post('images/upload', 'App\Http\Controllers\ImageController@store');
 Route::delete('images/{uuid}', 'App\Http\Controllers\ImageController@destroy');
 
+//Waitlist Routes
+Route::get('waitlists', 'App\Http\Controllers\WaitlistController@index');
+Route::post('waitlists', 'App\Http\Controllers\WaitlistController@store');
+Route::get('waitlists/{uuid}', 'App\Http\Controllers\WaitlistController@show');
+Route::put('waitlists/{uuid}', 'App\Http\Controllers\WaitlistController@update');
+Route::delete('waitlists/{uuid}', 'App\Http\Controllers\WaitlistController@destroy');
+
 
 Route::post('webhooks/invirtu', 'App\Http\Controllers\WebhookController@invirtuWebhook');

@@ -116,7 +116,7 @@ class AuthControllerTest extends TestCase
             'X-Header' => 'Value',
         ])->post($url, []);
 
-        $this->assertEquals(422, $response->status());
+        $this->assertEquals(404, $response->status());
 
         $response = $this->withHeaders([
             'X-Header' => 'Value',

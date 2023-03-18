@@ -10,6 +10,8 @@ use App\Models\EventUser;
 use App\Models\Team;
 use App\Models\TeamUser;
 use App\Models\User;
+use App\Models\UserRole;
+use App\Models\Waitlist;
 
 class PermissionsFacade {
 
@@ -242,13 +244,89 @@ class PermissionsFacade {
 
     }
 
+    public static function waitListCanUpdate(Waitlist $waitlist, User $user) {
 
+        $roles = self::_retriveUserRoles($user);
+
+        $role_found = false;
+
+        foreach($roles as $current_role) {
+
+            if($current_role->user_role == Roles::SuperAdministrator || $current_role->user_role == Roles::Administrator) {
+                $role_found = true;
+            }
+
+        }
+
+
+        return $role_found;
+    }
+
+    /**
+     * Checks if a user belongs to one of the site wide roles.
+     * 
+     * @param User $user The user to check the fole
+     * @param string $role The 
+     * 
+     * @return boolean
+     */
+    public static function userHasSiteRole(User $user, string $role) : bool {
+
+        $roles = self::_retriveUserRoles($user);
+
+        $role_found = false;
+
+        foreach($roles as $current_role) {
+
+            if($current_role->user_role == $role) {
+                $role_found = true;
+            }
+
+        }
+
+        return $role_found;
+
+    }
+
+    /**
+     * Determines if a user belongs to a role. Multiple roles can be passed to this function.
+     * 
+     * @param User $user The user whose role is being checked
+     * @param array $roles A list of roles from the Roles Enum
+     * 
+     * @return boolean
+     */
+    public static function userHasMultipltSiteRoles(User $user, array $roles = []) : bool {
+
+        $found_roles = self::_retriveUserRoles($user);
+
+        $role_found = false;
+
+        foreach($found_roles as $current_role) {
+
+            if(in_array($current_role->user_role, $roles)) {
+                $role_found = true;
+            }
+
+        }
+
+        return $role_found;
+
+    }
+
+    protected static function _retriveUserRoles(User $user) {
+
+        return UserRole::where('user_id', $user->id)
+        ->get();
+
+    }
     protected static function _retrieveEventUser(Event $event, User $user) {
 
         return EventUser::where('event_id', $event->id)
         ->where('user_id', $user->id)
         ->first();
     }
+    
 
     protected static function _retrieveCompetitionUser(Competition $competition, User $user) {
 

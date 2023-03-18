@@ -22,7 +22,6 @@ class CompetitionResource extends JsonResource
      *     title="Competition Model",
      *     description="The model that describes a competition",
      *     required={"name", "description"},
-     * 
      *     allOf={
      *         
      *         @OA\Schema(
