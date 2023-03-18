@@ -13,6 +13,7 @@ use App\Models\EventTicketPurchase;
 use App\Models\EventTicketType;
 use App\Models\Team;
 use App\Models\User;
+use App\Models\UserRole;
 use Tests\TestCase;
 
 class PermissionFacadeTest extends TestCase {
@@ -417,6 +418,49 @@ class PermissionFacadeTest extends TestCase {
 
         $this->assertFalse($result);
 
+        
+    }
+
+    public function testUserHasSiteRole() {
+
+        $user_admin = User::factory()->create();
+
+        UserRole::factory()->create(['user_id' => $user_admin->id, 'user_role' => Roles::Administrator]);
+
+        $user_blocked = User::factory()->create();
+
+        UserRole::factory()->create(['user_id' => $user_blocked->id, 'user_role' => Roles::Blocked]);
+
+        $user_speaker = User::factory()->create();
+
+        UserRole::factory()->create(['user_id' => $user_speaker->id, 'user_role' => Roles::Speaker]);
+
+
+        $this->assertTrue(PermissionsFacade::userHasSiteRole($user_admin, Roles::Administrator));
+        $this->assertFalse(PermissionsFacade::userHasSiteRole($user_admin, Roles::Blocked));
+        $this->assertFalse(PermissionsFacade::userHasSiteRole($user_admin, Roles::Speaker));
+
+
+        $this->assertFalse(PermissionsFacade::userHasSiteRole($user_blocked , Roles::Administrator));
+        $this->assertTrue(PermissionsFacade::userHasSiteRole($user_blocked , Roles::Blocked));
+        $this->assertFalse(PermissionsFacade::userHasSiteRole( $user_blocked , Roles::Speaker));
+
+        $this->assertFalse(PermissionsFacade::userHasSiteRole($user_speaker , Roles::Administrator));
+        $this->assertFalse(PermissionsFacade::userHasSiteRole($user_speaker , Roles::Blocked));
+        $this->assertTrue(PermissionsFacade::userHasSiteRole($user_speaker , Roles::Speaker));
+        
+    }
+
+    public function testuserHasMultipltSiteRoles() {
+
+        $user_admin = User::factory()->create();
+
+        UserRole::factory()->create(['user_id' => $user_admin->id, 'user_role' => Roles::Administrator]);
+        UserRole::factory()->create(['user_id' => $user_admin->id, 'user_role' => Roles::SuperAdministrator ]);
+
+        $this->assertTrue(PermissionsFacade::userHasMultipltSiteRoles($user_admin, [Roles::SuperAdministrator,Roles::Speaker ]));
+        $this->assertTrue(PermissionsFacade::userHasMultipltSiteRoles($user_admin, [Roles::Administrator,Roles::Blocked ]));
+        $this->assertFalse(PermissionsFacade::userHasMultipltSiteRoles($user_admin, [Roles::Blocked, Roles::Speaker]));
         
     }
 

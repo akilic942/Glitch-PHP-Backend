@@ -21,6 +21,7 @@ class EventResource extends JsonResource
      *     schema="Event",
      *     title="Events Model",
      *     description="The data associated with an event.",
+     *     required={"title", "description"},
      *     @OA\Property(
      *          property="id",
      *          description="The id of the event",

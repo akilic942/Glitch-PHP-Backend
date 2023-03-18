@@ -15,8 +15,6 @@ class UserResource extends JsonResource
      */
 
      /**
-     * Class User.
-     *
      * @OA\Schema(
      *     schema="User",
      *     title="User model",
