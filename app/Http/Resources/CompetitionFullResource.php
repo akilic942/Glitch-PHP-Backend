@@ -37,6 +37,12 @@ class CompetitionFullResource extends JsonResource
      *              type="array"
      *          ),
      *          @OA\Property(
+     *              property="teams",
+     *              description="A list teams associated with the competition.",
+     *              @OA\Items(ref="#/components/schemas/Team"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
      *              property="venues",
      *              description="A list of venues associated with the competition.",
      *              @OA\Items(ref="#/components/schemas/Event"),
@@ -134,6 +140,8 @@ class CompetitionFullResource extends JsonResource
             //Users
             'admins' => UserResource::collection($this->admins),
             'contestants' => UserResource::collection($this->contestants),
+
+            'teams' => TeamResource::collection($this->teams),
 
             'venues' => CompetitionVenueResource::collection($this->venues),
             'rounds' => CompetitionRoundResource::collection($this->rounds),

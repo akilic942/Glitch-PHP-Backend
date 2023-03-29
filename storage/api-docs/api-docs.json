@@ -4745,7 +4745,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Team"
+                                "$ref": "#/components/schemas/TeamFull"
                             }
                         }
                     }
@@ -4798,7 +4798,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Team"
+                                    "$ref": "#/components/schemas/TeamFull"
                                 }
                             }
                         }
@@ -4962,7 +4962,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Team"
+                                    "$ref": "#/components/schemas/TeamFull"
                                 }
                             }
                         }
@@ -5049,7 +5049,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Team"
+                                    "$ref": "#/components/schemas/TeamFull"
                                 }
                             }
                         }
@@ -6273,6 +6273,13 @@
                                     "$ref": "#/components/schemas/User"
                                 }
                             },
+                            "teams": {
+                                "description": "A list teams associated with the competition.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Team"
+                                }
+                            },
                             "venues": {
                                 "description": "A list of venues associated with the competition.",
                                 "type": "array",
@@ -7189,6 +7196,34 @@
                 },
                 "type": "object"
             },
+            "TeamFull": {
+                "title": "Team Extended Model",
+                "description": "The model that describes the attributes for a team with sub attirbutes.",
+                "allOf": [
+                    {
+                        "properties": {
+                            "members": {
+                                "description": "Users that are members of the team.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/TeamUser"
+                                }
+                            },
+                            "competitions": {
+                                "description": "A list of competitions the team is associated with.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Competition"
+                                }
+                            }
+                        },
+                        "type": "object"
+                    },
+                    {
+                        "$ref": "#/components/schemas/Team"
+                    }
+                ]
+            },
             "TeamInvite": {
                 "title": "Team Invite Model",
                 "description": "Manages how a user is invited to a team.",
@@ -7374,6 +7409,13 @@
                                 "type": "array",
                                 "items": {
                                     "$ref": "#/components/schemas/Event"
+                                }
+                            },
+                            "teams": {
+                                "description": "A list of teams the user is associated with.",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Team"
                                 }
                             },
                             "competitions": {

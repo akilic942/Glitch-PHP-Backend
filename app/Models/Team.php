@@ -102,4 +102,15 @@ class Team extends BaseModel
 
         'join_process'
     ];
+
+
+    public function users()
+    {
+        return $this->hasManyThrough(User::class, TeamUser::class, 'team_id', 'id','id', 'user_id');
+    }
+
+    public function competitions()
+    {
+        return $this->hasManyThrough(Competition::class, CompetitionTeam::class, 'team_id', 'id','id', 'competition_id');
+    }
 }

@@ -6,6 +6,7 @@ use App\Enums\HttpStatusCodes;
 use App\Facades\PermissionsFacade;
 use App\Facades\RolesFacade;
 use App\Http\Resources\TeamResource;
+use App\Http\Resources\TeamFullResource;
 use App\Models\Team;
 use Illuminate\Http\Request;
 
@@ -62,7 +63,7 @@ class TeamController extends Controller
      *     security={{"bearer": {}}},
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent( ref="#/components/schemas/Team")
+     *         @OA\JsonContent( ref="#/components/schemas/TeamFull")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -96,7 +97,7 @@ class TeamController extends Controller
             RolesFacade::teamMakeSuperAdmin($team, $request->user());
         }
 
-        return new TeamResource($team);
+        return new TeamFullResource($team);
     }
 
     /**
@@ -128,7 +129,7 @@ class TeamController extends Controller
      *         response=200,
      *         description="Success",
      *         @OA\JsonContent(
-     *             ref="#/components/schemas/Team"
+     *             ref="#/components/schemas/TeamFull"
      *         ),
      *     @OA\Response(
      *      response=404,
@@ -142,7 +143,7 @@ class TeamController extends Controller
     {
         $team = Team::where('id', $id)->first();
 
-        return new TeamResource($team);
+        return new TeamFullResource($team);
     }
 
     /**
@@ -306,7 +307,7 @@ class TeamController extends Controller
      *         response=200,
      *         description="Success",
      *     @OA\JsonContent(
-     *             ref="#/components/schemas/Team"
+     *             ref="#/components/schemas/TeamFull"
      *         )
      *     ),
      *     @OA\Response(
@@ -360,7 +361,7 @@ class TeamController extends Controller
 
         $team->save();
 
-        return TeamResource::make($team);
+        return TeamFullResource::make($team);
     }
 
     /**
@@ -400,7 +401,7 @@ class TeamController extends Controller
      *         response=200,
      *         description="Success",
      *     @OA\JsonContent(
-     *             ref="#/components/schemas/Team"
+     *             ref="#/components/schemas/TeamFull"
      *         )
      *     ),
      *     @OA\Response(
@@ -454,6 +455,6 @@ class TeamController extends Controller
 
         $team->save();
 
-        return TeamResource::make($team);
+        return TeamFullResource::make($team);
     }
 }

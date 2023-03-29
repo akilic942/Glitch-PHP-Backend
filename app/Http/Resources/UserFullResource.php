@@ -44,6 +44,12 @@ class UserFullResource extends JsonResource
      *              type="array"
      *          ),
      *          @OA\Property(
+     *              property="teams",
+     *              description="A list of teams the user is associated with.",
+     *              @OA\Items(ref="#/components/schemas/Team"),
+     *              type="array"
+     *          ),
+     *          @OA\Property(
      *              property="competitions",
      *              description="A list of competitions the user is associated with.",
      *              @OA\Items(ref="#/components/schemas/Competition"),

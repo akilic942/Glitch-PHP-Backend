@@ -216,6 +216,11 @@ class Competition extends BaseModel
     {
         return $this->hasMany(CompetitionRoundBracket::class, 'competition_id', 'id');
     }
+
+    public function teams()
+    {
+        return $this->hasManyThrough(Team::class, CompetitionTeam::class, 'competition_id', 'id','id', 'team_id');
+    }
     
 
 }
