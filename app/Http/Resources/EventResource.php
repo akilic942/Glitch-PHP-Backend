@@ -136,7 +136,7 @@ class EventResource extends JsonResource
             'live_last_checkin' => $this->live_last_checkin,
             'mode' => $this->mode,
 
-            'admins' => UserResource::collection($this->admins),
+            'admins' => ($this->admins) ? UserResource::collection($this->admins) : [],
 
             //Timestamp Info
             'created_at' => (string) $this->created_at,
