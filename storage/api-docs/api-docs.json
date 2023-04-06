@@ -6959,7 +6959,7 @@
                 "description": "The event model.",
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/Competition"
+                        "$ref": "#/components/schemas/Event"
                     },
                     {
                         "properties": {

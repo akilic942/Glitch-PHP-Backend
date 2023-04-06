@@ -23,7 +23,7 @@ class EventFullResource extends JsonResource
      *     title="Event Extended Model",
      *     description="The event model.",
      *     allOf={
-     *         @OA\Schema(ref="#/components/schemas/Competition"),
+     *         @OA\Schema(ref="#/components/schemas/Event"),
      *         @OA\Schema(
      *            @OA\Property(
      *              property="admins",
